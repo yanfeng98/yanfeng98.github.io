@@ -4,10 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="00286 neo4j 入门教程, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
-    <meta name="description" content="前言以下是一份利用Python学习Neo4j的入门教程，结合代码示例和关键概念说明。
+    <meta name="keywords" content="00287 neo4j 安装, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="前言介绍如何在 Linux 上安装 neo4j。
 Operating System: Ubuntu 22.04.4 LTS
-Neo4j简介Neo4j是一个高性能的图数据库，使用节点（Node）、关系（Re">
+参考文档
+Installation
+Linux installation
+Debian-based distribu">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +22,7 @@ Neo4j简介Neo4j是一个高性能的图数据库，使用节点（Node）、关
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>00286 neo4j 入门教程 | LuYF-Lemon-love の Blog</title>
+    <title>00287 neo4j 安装 | LuYF-Lemon-love の Blog</title>
     <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
     
     <style>
@@ -420,12 +423,12 @@ Neo4j简介Neo4j是一个高性能的图数据库，使用节点（Node）、关
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/086-%E5%B0%8F%E8%9B%AE%E8%85%B0.webp')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/088-%E7%BE%8E%E5%A5%B3.webp')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">00286 neo4j 入门教程</h1>
+                    <h1 class="description center-align post-title">00287 neo4j 安装</h1>
                 </div>
             </div>
         </div>
@@ -512,107 +515,128 @@ Neo4j简介Neo4j是一个高性能的图数据库，使用节点（Node）、关
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>以下是一份利用Python学习Neo4j的入门教程，结合代码示例和关键概念说明。</p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>介绍如何在 Linux 上安装 neo4j。</p>
 <p>Operating System: Ubuntu 22.04.4 LTS</p>
-<h2 id="Neo4j简介"><a href="#Neo4j简介" class="headerlink" title="Neo4j简介"></a>Neo4j简介</h2><p>Neo4j是一个高性能的<strong>图数据库</strong>，使用节点（Node）、关系（Relationship）和属性（Property）存储数据。适用于社交网络、推荐系统、知识图谱等需要处理复杂关系的场景。</p>
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="安装Neo4j"><a href="#安装Neo4j" class="headerlink" title="安装Neo4j"></a>安装Neo4j</h3><ul>
-<li><strong>方式1</strong>: 下载桌面版 <a href="https://neo4j.com/download/">Neo4j Desktop</a></li>
-<li><strong>方式2</strong>: Docker快速启动<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">--name</span> my_neo4j <span class="token parameter variable">-p</span> <span class="token number">7474</span>:7474 <span class="token parameter variable">-p</span> <span class="token number">7687</span>:7687 <span class="token parameter variable">-e</span> <span class="token assign-left variable">NEO4J_AUTH</span><span class="token operator">=</span>neo4j/password <span class="token parameter variable">-d</span> neo4j:latest<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
-</ul>
-<h3 id="安装Python驱动"><a href="#安装Python驱动" class="headerlink" title="安装Python驱动"></a>安装Python驱动</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> neo4j  <span class="token comment"># 官方驱动</span>
-<span class="token comment"># 或</span>
-pip <span class="token function">install</span> py2neo <span class="token comment"># 社区库（可选）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="连接Neo4j数据库"><a href="#连接Neo4j数据库" class="headerlink" title="连接Neo4j数据库"></a>连接Neo4j数据库</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> neo4j <span class="token keyword">import</span> GraphDatabase
-
-URI <span class="token operator">=</span> <span class="token string">"bolt://localhost:7687"</span>
-USER <span class="token operator">=</span> <span class="token string">"neo4j"</span>
-PASSWORD <span class="token operator">=</span> <span class="token string">"password"</span>  <span class="token comment"># 替换为你的实际密码</span>
-
-driver <span class="token operator">=</span> GraphDatabase<span class="token punctuation">.</span>driver<span class="token punctuation">(</span>URI<span class="token punctuation">,</span> auth<span class="token operator">=</span><span class="token punctuation">(</span>USER<span class="token punctuation">,</span> PASSWORD<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token keyword">def</span> <span class="token function">test_connection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">with</span> driver<span class="token punctuation">.</span>session<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> session<span class="token punctuation">:</span>
-        result <span class="token operator">=</span> session<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token string">"RETURN 'Hello Neo4j!' AS message"</span><span class="token punctuation">)</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>single<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">"message"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-test_connection<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 输出: Hello Neo4j!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="Cypher基础"><a href="#Cypher基础" class="headerlink" title="Cypher基础"></a>Cypher基础</h2><p>Neo4j使用<strong>Cypher查询语言</strong>，语法特点：</p>
-<ul>
-<li><code>()</code> 表示节点</li>
-<li><code>-[]-&gt;</code> 表示关系</li>
-<li><code>CREATE</code> 创建数据</li>
-<li><code>MATCH</code> 查询数据</li>
-</ul>
-<p>示例：</p>
-<pre class="line-numbers language-cypher" data-language="cypher"><code class="language-cypher"><span class="token keyword">CREATE</span> <span class="token punctuation">(</span>a<span class="token operator">:</span><span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>name<span class="token operator">:</span> <span class="token string">'Alice'</span><span class="token punctuation">,</span> age<span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token keyword">CREATE</span> <span class="token punctuation">(</span>b<span class="token operator">:</span><span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>name<span class="token operator">:</span> <span class="token string">'Bob'</span><span class="token punctuation">,</span> age<span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token keyword">CREATE</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token operator">-</span><span class="token punctuation">[</span><span class="token operator">:</span><span class="token relationship property">FRIEND</span><span class="token punctuation">]</span><span class="token operator">-></span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="Python操作Neo4j"><a href="#Python操作Neo4j" class="headerlink" title="Python操作Neo4j"></a>Python操作Neo4j</h2><h3 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_person</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> age<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">with</span> driver<span class="token punctuation">.</span>session<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> session<span class="token punctuation">:</span>
-        query <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-        CREATE (p:Person &#123;name: $name, age: $age&#125;)
-        RETURN p
-        """</span>
-        result <span class="token operator">=</span> session<span class="token punctuation">.</span>run<span class="token punctuation">(</span>query<span class="token punctuation">,</span> name<span class="token operator">=</span>name<span class="token punctuation">,</span> age<span class="token operator">=</span>age<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> result<span class="token punctuation">.</span>single<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-create_person<span class="token punctuation">(</span><span class="token string">"Charlie"</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">find_person</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">with</span> driver<span class="token punctuation">.</span>session<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> session<span class="token punctuation">:</span>
-        query <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-        MATCH (p:Person &#123;name: $name&#125;)
-        RETURN p.name AS name, p.age AS age
-        """</span>
-        result <span class="token operator">=</span> session<span class="token punctuation">.</span>run<span class="token punctuation">(</span>query<span class="token punctuation">,</span> name<span class="token operator">=</span>name<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> <span class="token punctuation">[</span>record <span class="token keyword">for</span> record <span class="token keyword">in</span> result<span class="token punctuation">]</span>
-
-<span class="token keyword">print</span><span class="token punctuation">(</span>find_person<span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 输出: [&#123;'name': 'Alice', 'age': 30&#125;]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="创建关系"><a href="#创建关系" class="headerlink" title="创建关系"></a>创建关系</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_friendship</span><span class="token punctuation">(</span>name1<span class="token punctuation">,</span> name2<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">with</span> driver<span class="token punctuation">.</span>session<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> session<span class="token punctuation">:</span>
-        query <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-        MATCH (a:Person &#123;name: $name1&#125;), (b:Person &#123;name: $name2&#125;)
-        CREATE (a)-[r:FRIEND]->(b)
-        RETURN type(r)
-        """</span>
-        result <span class="token operator">=</span> session<span class="token punctuation">.</span>run<span class="token punctuation">(</span>query<span class="token punctuation">,</span> name1<span class="token operator">=</span>name1<span class="token punctuation">,</span> name2<span class="token operator">=</span>name2<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> result<span class="token punctuation">.</span>single<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-create_friendship<span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token string">"Charlie"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="高级操作"><a href="#高级操作" class="headerlink" title="高级操作"></a>高级操作</h2><h3 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">complex_transaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">with</span> driver<span class="token punctuation">.</span>session<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> session<span class="token punctuation">:</span>
-        tx <span class="token operator">=</span> session<span class="token punctuation">.</span>begin_transaction<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">try</span><span class="token punctuation">:</span>
-            tx<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token string">"CREATE (:Book &#123;title: 'Neo4j Guide'&#125;)"</span><span class="token punctuation">)</span>
-            tx<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token string">"MATCH (b:Book) WHERE b.title = 'Neo4j Guide' SET b.price = 39.99"</span><span class="token punctuation">)</span>
-            tx<span class="token punctuation">.</span>commit<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">except</span> Exception <span class="token keyword">as</span> e<span class="token punctuation">:</span>
-            tx<span class="token punctuation">.</span>rollback<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h3><pre class="line-numbers language-cypher" data-language="cypher"><code class="language-cypher"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token keyword">FOR</span> <span class="token punctuation">(</span>p<span class="token operator">:</span><span class="token class-name">Person</span><span class="token punctuation">)</span> <span class="token keyword">ON</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><ol>
-<li><strong>社交网络</strong>: 查询N度人脉关系</li>
-<li><strong>推荐系统</strong>: “购买此商品的人也买了…”</li>
-<li><strong>欺诈检测</strong>: 分析异常关系网络</li>
-<li><strong>知识图谱</strong>: 实体关系可视化</li>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li><a href="https://neo4j.com/docs/operations-manual/current/installation/">Installation</a></li>
+<li><a href="https://neo4j.com/docs/operations-manual/current/installation/linux/">Linux installation</a></li>
+<li><a href="https://neo4j.com/docs/operations-manual/current/installation/linux/debian/">Debian-based distributions (.deb)</a></li>
+<li><a href="https://neo4j.com/docs/operations-manual/current/installation/linux/systemd/">Neo4j system service</a></li>
+<li><a href="https://neo4j.com/docs/operations-manual/current/configuration/set-initial-password/">Set an initial password</a></li>
 </ol>
-<hr>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
-<li>使用<code>driver.close()</code>关闭连接</li>
-<li>批量操作时使用<code>UNWIND</code>提升性能</li>
-<li>避免深度过大的遍历查询（可设置最大深度）</li>
+<h2 id="安装快速地址"><a href="#安装快速地址" class="headerlink" title="安装快速地址"></a>安装快速地址</h2><ul>
+<li>系统要求: <a href="https://neo4j.com/docs/operations-manual/current/installation/requirements/">https://neo4j.com/docs/operations-manual/current/installation/requirements/</a></li>
+<li>Linux: <a href="https://neo4j.com/docs/operations-manual/current/installation/linux/">https://neo4j.com/docs/operations-manual/current/installation/linux/</a></li>
+<li>macOS: <a href="https://neo4j.com/docs/operations-manual/current/installation/osx/">https://neo4j.com/docs/operations-manual/current/installation/osx/</a></li>
+<li>Windows: <a href="https://neo4j.com/docs/operations-manual/current/installation/windows/">https://neo4j.com/docs/operations-manual/current/installation/windows/</a></li>
+<li>Neo4j Desktop: <a href="https://neo4j.com/docs/operations-manual/current/installation/neo4j-desktop/">https://neo4j.com/docs/operations-manual/current/installation/neo4j-desktop/</a></li>
+<li>Docker: <a href="https://neo4j.com/docs/operations-manual/current/docker/">https://neo4j.com/docs/operations-manual/current/docker/</a></li>
 </ul>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a href="https://neo4j.com/docs/">Neo4j官方文档</a></li>
-<li><a href="https://neo4j.com/developer/cypher/">Cypher查询手册</a></li>
+<h2 id="基于Debian的发行版（-deb）"><a href="#基于Debian的发行版（-deb）" class="headerlink" title="基于Debian的发行版（. deb）"></a>基于Debian的发行版（. deb）</h2><blockquote>
+<p><a href="https://neo4j.com/docs/operations-manual/current/installation/linux/debian/">https://neo4j.com/docs/operations-manual/current/installation/linux/debian/</a></p>
+</blockquote>
+<h3 id="添加存储库"><a href="#添加存储库" class="headerlink" title="添加存储库"></a>添加存储库</h3><p>Debian软件包可从<a href="https://debian.neo4j.com获得./">https://debian.neo4j.com获得。</a></p>
+<ol>
+<li>要将Neo4j存储库添加到包管理器，请以sudo用户身份运行以下命令：</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> <span class="token parameter variable">-O</span> - https://debian.neo4j.com/neotechnology.gpg.key <span class="token operator">|</span> <span class="token function">sudo</span> gpg <span class="token parameter variable">--dearmor</span> <span class="token parameter variable">-o</span> /etc/apt/keyrings/neotechnology.gpg
+<span class="token builtin class-name">echo</span> <span class="token string">'deb [signed-by=/etc/apt/keyrings/neotechnology.gpg] https://debian.neo4j.com stable latest'</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> <span class="token parameter variable">-a</span> /etc/apt/sources.list.d/neo4j.list
+<span class="token function">sudo</span> <span class="token function">apt-get</span> update<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>将存储库添加到apt后，您可以通过运行以下命令来验证哪些Neo4j版本可用：</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">apt</span> list <span class="token parameter variable">-a</span> neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="安装Neo4j"><a href="#安装Neo4j" class="headerlink" title="安装Neo4j"></a>安装Neo4j</h2><p>Neo4j社区版：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> <span class="token assign-left variable">neo4j</span><span class="token operator">=</span><span class="token number">1</span>:2025.01.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="离线安装"><a href="#离线安装" class="headerlink" title="离线安装"></a>离线安装</h3><p>需要注意的是，使用此方法将意味着离线机器不会收到使用apt安装Neo4j时自动下载和安装的依赖项；Cypher Shell和Java（如果尚未安装）：</p>
+<blockquote>
+<ul>
+<li><p>Cypher Shell软件包可以从<a href="https://neo4j.com/deployment-center">Neo4j部署中心</a>下载。</p>
+</li>
+<li><p>有关支持的Java版本的信息，请参阅<a href="https://neo4j.com/docs/operations-manual/current/installation/requirements/">系统要求</a>。</p>
+</li>
 </ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第二百八十六篇博文写完，开心！！！！</p>
+</blockquote>
+<ol>
+<li>Neo4j社区版：</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-O</span> https://dist.neo4j.org/deb/neo4j_2025.01.0_all.deb<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="2">
+<li><p>手动将下载的Debian包移动到离线机器。</p>
+</li>
+<li><p>在离线机器上运行以下命令以安装Neo4j：</p>
+</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> dpkg <span class="token parameter variable">-i</span> <span class="token operator">&lt;</span>deb <span class="token function">file</span> name<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="系统启动时自动启动服务"><a href="#系统启动时自动启动服务" class="headerlink" title="系统启动时自动启动服务"></a>系统启动时自动启动服务</h2><p>在基于Debian的发行版上，运行以下命令以确保Neo4j在启动时自动启动：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>在首次启动数据库之前，建议使用neo4j-admin的set-initial-password命令为本机用户neo4j定义密码。</p>
+<p>如果未使用此方法显式设置密码，则将其设置为默认密码neo4j。在这种情况下，系统会提示您在首次登录时更改默认密码。</p>
+<p>有关详细信息，请参阅<a href="https://neo4j.com/docs/operations-manual/current/configuration/set-initial-password/">设置初始密码</a>。</p>
+</blockquote>
+<p>有关操作Neo4j系统服务的更多信息，请参阅<a href="https://neo4j.com/docs/operations-manual/current/installation/linux/systemd/">Neo4j系统服务</a>。</p>
+<h2 id="Neo4j系统服务"><a href="#Neo4j系统服务" class="headerlink" title="Neo4j系统服务"></a>Neo4j系统服务</h2><blockquote>
+<p>有关如何设置用户可以打开的并发文件数的说明，请参阅<a href="https://neo4j.com/docs/operations-manual/current/installation/linux/tarball/#linux-open-files">设置打开的文件数</a>。</p>
+</blockquote>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>配置存储在 &#x2F;etc&#x2F;neo4j&#x2F;neo4j.conf。有关各种包的文件所在位置的完整库，请参阅<a href="https://neo4j.com/docs/operations-manual/current/configuration/file-locations/">默认文件位置</a>。</p>
+<h3 id="控制服务"><a href="#控制服务" class="headerlink" title="控制服务"></a>控制服务</h3><p>系统服务由systemctl命令控制。它接受许多命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">systemctl <span class="token punctuation">&#123;</span>start<span class="token operator">|</span>stop<span class="token operator">|</span>restart<span class="token punctuation">&#125;</span> neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>服务自定义可以放置在服务覆盖文件中。要编辑您的特定选项，请执行以下命令，该命令将打开相应文件的编辑器：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">systemctl edit neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后将任何自定义项放在[服务]部分下。以下示例列出了某些用户可能需要更改的默认值：</p>
+<pre class="line-numbers language-none"><code class="language-none">[Service]
+# The user and group which the service runs as.
+User&#x3D;neo4j
+Group&#x3D;neo4j
+# If it takes longer than this then the shutdown is considered to have failed.
+# This may need to be increased if the system serves long-running transactions.
+TimeoutSec&#x3D;120<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>您可以使用以下方式打印有效的服务，包括可能的覆盖：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">systemctl <span class="token function">cat</span> neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果您更改任何设置，请记住重新启动neo4j。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">systemctl restart neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h3><p>Neo4j的日志被写入到journald，可以使用journalctl命令查看。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">journalctl <span class="token parameter variable">-e</span> <span class="token parameter variable">-u</span> neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>journald会在一段时间后自动旋转日志，并且默认情况下通常不会在重启后保留。请参阅man journald.conf以获取更多详细信息。</p>
+<h2 id="设置初始密码"><a href="#设置初始密码" class="headerlink" title="设置初始密码"></a>设置初始密码</h2><p>使用neo4j-admin的set-initial-password命令为本机用户neo4j定义密码。这必须在首次启动数据库之前执行。</p>
+<p>如果未使用此方法显式设置密码，则将其设置为默认密码neo4j。在这种情况下，系统会提示您在首次登录时更改默认密码。</p>
+<blockquote>
+<p>默认的最小密码长度是8个字符。</p>
+<p>使用<a href="https://neo4j.com/docs/operations-manual/current/configuration/configuration-settings/#config_config_dbms.security.auth_minimum_password_length">dbms.security.auth_minimum_password_length</a>配置设置来更改默认的最小值。</p>
+</blockquote>
+<p>语法 （可能需要 <code>sudo</code>）：</p>
+<p><code>neo4j-admin dbms set-initial-password &lt;password&gt; [--require-password-change]</code></p>
+<p><strong>示例1.使用neo4j-admin的set-initial-password命令</strong></p>
+<p>在首次启动数据库之前，将本机neo4j用户的密码设置为“h6u4%krd”。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">bin/neo4j-admin dbms set-initial-password h6u4%krd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>示例2.使用带有可选–require-password-change标志的neo4j-admin的set-initial-password命令</strong></p>
+<p>在首次启动数据库之前，将原生Neo4j用户的密码设置为’secretpassword’。在首次登录时，系统将提示您将该密码更改为您选择的密码之一。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">bin/neo4j-admin dbms set-initial-password secretpassword --require-password-change<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="卸载Neo4j"><a href="#卸载Neo4j" class="headerlink" title="卸载Neo4j"></a>卸载Neo4j</h2><p>按照以下步骤卸载Neo4j：</p>
+<ul>
+<li><p>（可选）创建<a href="https://neo4j.com/docs/operations-manual/current/backup-restore/">备份</a>以避免丢失数据。</p>
+</li>
+<li><p>卸载Neo4j：</p>
+</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> remove neo4j<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第二百八十八篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
@@ -640,7 +664,7 @@ create_friendship<span class="token punctuation">(</span><span class="token stri
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://luyf-lemon-love.space/2025/02/23/00286-neo4j-ru-men-jiao-cheng/">https://luyf-lemon-love.space/2025/02/23/00286-neo4j-ru-men-jiao-cheng/</a>
+                    <a href="https://luyf-lemon-love.space/2025/02/23/00288-neo4j-an-zhuang/">https://luyf-lemon-love.space/2025/02/23/00288-neo4j-an-zhuang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -762,9 +786,63 @@ create_friendship<span class="token punctuation">(</span><span class="token stri
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2025/02/23/00288-neo4j-an-zhuang/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/088-%E7%BE%8E%E5%A5%B3.webp" class="responsive-img" alt="00287 neo4j 安装">
+                        
+                        <span class="card-title">00287 neo4j 安装</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%9F%BA%E7%A1%80%E8%BD%AF%E4%BB%B6/" class="post-category">
+                                    基础软件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python/">
+                        <span class="chip bg-color">Python</span>
+                    </a>
+                    
+                    <a href="/tags/neo4j/">
+                        <span class="chip bg-color">neo4j</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2025/02/23/00287-cypher-ji-chu-jiao-cheng/">
                     <div class="card-image">
@@ -781,9 +859,9 @@ create_friendship<span class="token punctuation">(</span><span class="token stri
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-02-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-23
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -801,58 +879,6 @@ create_friendship<span class="token punctuation">(</span><span class="token stri
                     
                     <a href="/tags/neo4j/">
                         <span class="chip bg-color">neo4j</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2025/02/18/00285-shell-ming-ling-cuo-wu-chong-shi/">
-                    <div class="card-image">
-                        
-                        <img src="https://cos.luyf-lemon-love.space/images/085-%E6%B4%97%E5%A4%B4.webp" class="responsive-img" alt="00285 shell 命令错误重试">
-                        
-                        <span class="card-title">00285 shell 命令错误重试</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-02-18
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Python/" class="post-category">
-                                    Python
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Linux/">
-                        <span class="chip bg-color">Linux</span>
-                    </a>
-                    
-                    <a href="/tags/Python/">
-                        <span class="chip bg-color">Python</span>
                     </a>
                     
                 </div>
