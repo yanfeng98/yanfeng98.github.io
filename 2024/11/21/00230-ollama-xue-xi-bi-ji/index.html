@@ -490,7 +490,7 @@ https://ollama.com/download/">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-28
+                    2025-02-24
                 </div>
                 
 
@@ -546,6 +546,24 @@ https://ollama.com/download/">
 </tr>
 </thead>
 <tbody><tr>
+<td>DeepSeek-R1</td>
+<td>7B</td>
+<td>4.7GB</td>
+<td><code>ollama run deepseek-r1</code></td>
+</tr>
+<tr>
+<td>DeepSeek-R1</td>
+<td>671B</td>
+<td>404GB</td>
+<td><code>ollama run deepseek-r1:671b</code></td>
+</tr>
+<tr>
+<td>Llama 3.3</td>
+<td>70B</td>
+<td>43GB</td>
+<td><code>ollama run llama3.3</code></td>
+</tr>
+<tr>
 <td>Llama 3.2</td>
 <td>3B</td>
 <td>2.0GB</td>
@@ -577,27 +595,21 @@ https://ollama.com/download/">
 </tr>
 <tr>
 <td>Llama 3.1</td>
-<td>70B</td>
-<td>40GB</td>
-<td><code>ollama run llama3.1:70b</code></td>
-</tr>
-<tr>
-<td>Llama 3.1</td>
 <td>405B</td>
 <td>231GB</td>
 <td><code>ollama run llama3.1:405b</code></td>
+</tr>
+<tr>
+<td>Phi 4</td>
+<td>14B</td>
+<td>9.1GB</td>
+<td><code>ollama run phi4</code></td>
 </tr>
 <tr>
 <td>Phi 3 Mini</td>
 <td>3.8B</td>
 <td>2.3GB</td>
 <td><code>ollama run phi3</code></td>
-</tr>
-<tr>
-<td>Phi 3 Medium</td>
-<td>14B</td>
-<td>7.9GB</td>
-<td><code>ollama run phi3:medium</code></td>
 </tr>
 <tr>
 <td>Gemma 2</td>
@@ -669,7 +681,24 @@ https://ollama.com/download/">
 <blockquote>
 <p>你应该至少有 8 GB 的 RAM 来运行 7B 模型，16 GB 来运行 13B 模型，以及 32 GB 来运行 33B 模型。</p>
 </blockquote>
-<h2 id="定制一个模型"><a href="#定制一个模型" class="headerlink" title="定制一个模型"></a>定制一个模型</h2><h3 id="定制一个提示"><a href="#定制一个提示" class="headerlink" title="定制一个提示"></a>定制一个提示</h3><p>Ollama 库中的模型可以通过提示进行定制。例如，要定制 llama3.2 模型：</p>
+<h2 id="定制一个模型"><a href="#定制一个模型" class="headerlink" title="定制一个模型"></a>定制一个模型</h2><h3 id="从GGUF导入"><a href="#从GGUF导入" class="headerlink" title="从GGUF导入"></a>从GGUF导入</h3><p>Ollama支持在Modelfile中导入GGUF模型：</p>
+<ol>
+<li>创建一个名为Modelfile的文件，其中包含一个FROM指令，其中包含要导入的模型的本地文件路径。</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">FROM .&#x2F;vicuna-33b.Q4_0.gguf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="2">
+<li>在Ollama中创建模型。</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ollama create example <span class="token parameter variable">-f</span> Modelfile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="3">
+<li>运行模型。</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ollama run example<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="从Safetensors导入"><a href="#从Safetensors导入" class="headerlink" title="从Safetensors导入"></a>从Safetensors导入</h3><p>有关详细信息，请参阅有关导入模型的<a href="https://github.com/ollama/ollama/blob/main/docs/import.md">指南</a>。</p>
+<h3 id="定制一个提示"><a href="#定制一个提示" class="headerlink" title="定制一个提示"></a>定制一个提示</h3><p>Ollama 库中的模型可以通过提示进行定制。例如，要定制 llama3.2 模型：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ollama pull llama3.2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>创建一个模型文件：</p>
@@ -689,7 +718,7 @@ ollama run mario
 <span class="token operator">>></span><span class="token operator">></span> hi
 Hello<span class="token operator">!</span> It's your friend Mario.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>更多示例，请参阅 <a href="https://github.com/ollama/ollama/blob/main/examples">examples</a> 目录。有关使用 Modelfile 的更多信息，请参阅 <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md">Modelfile</a> 文档。</p>
+<p>有关使用Modelfile的更多信息，请参阅<a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md">Modelfile文档</a>。</p>
 <h2 id="CLI-参考"><a href="#CLI-参考" class="headerlink" title="CLI 参考"></a>CLI 参考</h2><h3 id="创建一个模型"><a href="#创建一个模型" class="headerlink" title="创建一个模型"></a>创建一个模型</h3><p>ollama create 用于从 Modelfile 创建一个模型。</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ollama create mymodel <span class="token parameter variable">-f</span> ./Modelfile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
