@@ -10,9 +10,10 @@ Operating System: Ubuntu 22.04.4 LTS
 参考文档
 首次调用 API
 推理模型 (deepseek-reasoner)
-Developer quickstart
+多轮对话
+对话前缀续写（Beta）
 
-首次调">
+首次调用 A">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -490,7 +491,7 @@ Developer quickstart
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-02-24
+                    2025-02-25
                 </div>
                 
 
@@ -522,7 +523,8 @@ Developer quickstart
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
 <li><a href="https://api-docs.deepseek.com/zh-cn/">首次调用 API</a></li>
 <li><a href="https://api-docs.deepseek.com/zh-cn/guides/reasoning_model">推理模型 (deepseek-reasoner)</a></li>
-<li><a href="https://platform.openai.com/docs/quickstart">Developer quickstart</a></li>
+<li><a href="https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat">多轮对话</a></li>
+<li><a href="https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion">对话前缀续写（Beta）</a></li>
 </ol>
 <h2 id="首次调用-API"><a href="#首次调用-API" class="headerlink" title="首次调用 API"></a>首次调用 API</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/">https://api-docs.deepseek.com/zh-cn/</a></p>
 <p>DeepSeek API 使用与 OpenAI 兼容的 API 格式，通过修改配置，您可以使用 OpenAI SDK 来访问 DeepSeek API，或使用与 OpenAI API 兼容的软件。</p>
@@ -660,6 +662,79 @@ response <span class="token operator">=</span> client<span class="token punctuat
     stream<span class="token operator">=</span><span class="token boolean">True</span>
 <span class="token punctuation">)</span>
 <span class="token comment"># ...</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="多轮对话"><a href="#多轮对话" class="headerlink" title="多轮对话"></a>多轮对话</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat">https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat</a></p>
+<p>本指南将介绍如何使用 DeepSeek &#x2F;chat&#x2F;completions API 进行多轮对话。</p>
+<p>DeepSeek &#x2F;chat&#x2F;completions API 是一个“无状态” API，即服务端不记录用户请求的上下文，用户在每次请求时，需将之前所有对话历史拼接好后，传递给对话 API。</p>
+<p>下面的代码以 Python 语言，展示了如何进行上下文拼接，以实现多轮对话。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
+client <span class="token operator">=</span> OpenAI<span class="token punctuation">(</span>api_key<span class="token operator">=</span><span class="token string">"&lt;DeepSeek API Key>"</span><span class="token punctuation">,</span> base_url<span class="token operator">=</span><span class="token string">"https://api.deepseek.com"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Round 1</span>
+messages <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"What's the highest mountain in the world?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span>
+response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
+    model<span class="token operator">=</span><span class="token string">"deepseek-chat"</span><span class="token punctuation">,</span>
+    messages<span class="token operator">=</span>messages
+<span class="token punctuation">)</span>
+
+messages<span class="token punctuation">.</span>append<span class="token punctuation">(</span>response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Messages Round 1: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>messages<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+<span class="token comment"># Round 2</span>
+messages<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"What is the second?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
+    model<span class="token operator">=</span><span class="token string">"deepseek-chat"</span><span class="token punctuation">,</span>
+    messages<span class="token operator">=</span>messages
+<span class="token punctuation">)</span>
+
+messages<span class="token punctuation">.</span>append<span class="token punctuation">(</span>response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Messages Round 2: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>messages<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在第一轮请求时，传递给 API 的 messages 为：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"What's the highest mountain in the world?"</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>在第二轮请求时：</p>
+<ol>
+<li>要将第一轮中模型的输出添加到 messages 末尾</li>
+<li>将新的提问添加到 messages 末尾</li>
+</ol>
+<p>最终传递给 API 的 messages 为：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"What's the highest mountain in the world?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"The highest mountain in the world is Mount Everest."</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"What is the second?"</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="对话前缀续写（Beta）"><a href="#对话前缀续写（Beta）" class="headerlink" title="对话前缀续写（Beta）"></a>对话前缀续写（Beta）</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion">https://api-docs.deepseek.com/zh-cn/guides/chat_prefix_completion</a></p>
+<p>对话前缀续写沿用 <a href="https://api-docs.deepseek.com/zh-cn/api/create-chat-completion">Chat Completion API</a>，用户提供 assistant 开头的消息，来让模型补全其余的消息。</p>
+<p><strong>注意事项</strong></p>
+<ol>
+<li><p>使用对话前缀续写时，用户需确保 messages 列表里最后一条消息的 role 为 assistant，并设置最后一条消息的 prefix 参数为 True。</p>
+</li>
+<li><p>用户需要设置 base_url&#x3D;”<a href="https://api.deepseek.com/beta">https://api.deepseek.com/beta</a>“ 来开启 Beta 功能。</p>
+</li>
+</ol>
+<p><strong>样例代码</strong></p>
+<p>下面给出了对话前缀续写的完整 Python 代码样例。在这个例子中，我们设置 assistant 开头的消息为 “<code>python\n&quot; 来强制模型输出 python 代码，并设置 stop 参数为 [&#39;</code>‘] 来避免模型的额外解释。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
+
+client <span class="token operator">=</span> OpenAI<span class="token punctuation">(</span>
+    api_key<span class="token operator">=</span><span class="token string">"&lt;your api key>"</span><span class="token punctuation">,</span>
+    base_url<span class="token operator">=</span><span class="token string">"https://api.deepseek.com/beta"</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+messages <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Please write quick sort code"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"```python\n"</span><span class="token punctuation">,</span> <span class="token string">"prefix"</span><span class="token punctuation">:</span> <span class="token boolean">True</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span>
+response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
+    model<span class="token operator">=</span><span class="token string">"deepseek-chat"</span><span class="token punctuation">,</span>
+    messages<span class="token operator">=</span>messages<span class="token punctuation">,</span>
+    stop<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"```"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="API-文档"><a href="#API-文档" class="headerlink" title="API 文档"></a>API 文档</h2><h3 id="对话补全"><a href="#对话补全" class="headerlink" title="对话补全"></a>对话补全</h3><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/api/create-chat-completion">https://api-docs.deepseek.com/zh-cn/api/create-chat-completion</a></p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
