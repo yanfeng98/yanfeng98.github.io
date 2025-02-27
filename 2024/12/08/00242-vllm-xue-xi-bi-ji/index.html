@@ -498,7 +498,7 @@ vLLM速度很快：
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-02-12
+                    2025-02-27
                 </div>
                 
 
@@ -953,7 +953,8 @@ outputs <span class="token operator">=</span> ds<span class="token punctuation">
 <span class="token comment">#</span>
 <span class="token comment"># ds.write_parquet("s3://&lt;your-output-bucket>")</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="OpenAI-Compatible-Server"><a href="#OpenAI-Compatible-Server" class="headerlink" title="OpenAI-Compatible Server"></a>OpenAI-Compatible Server</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">"""
+<h2 id="OpenAI-Compatible-Server"><a href="#OpenAI-Compatible-Server" class="headerlink" title="OpenAI-Compatible Server"></a>OpenAI-Compatible Server</h2><p>api: <a href="https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html">https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html</a></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token triple-quoted-string string">"""
 $ pip install vllm
 $ vllm serve Qwen/Qwen2.5-Coder-0.5B-Instruct --tensor-parallel-size 8
 $ curl http://localhost:8000/v1/models

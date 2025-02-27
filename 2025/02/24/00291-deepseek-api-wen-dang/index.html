@@ -491,7 +491,7 @@ Operating System: Ubuntu 22.04.4 LTS
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-02-25
+                    2025-02-27
                 </div>
                 
 
@@ -736,6 +736,49 @@ response <span class="token operator">=</span> client<span class="token punctuat
 <span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<h2 id="Temperature-设置"><a href="#Temperature-设置" class="headerlink" title="Temperature 设置"></a>Temperature 设置</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/quick_start/parameter_settings">https://api-docs.deepseek.com/zh-cn/quick_start/parameter_settings</a></p>
+<p>temperature 参数默认为 1.0。我们建议您根据如下表格，按使用场景设置 temperature。</p>
+<table>
+<thead>
+<tr>
+<th align="center">场景</th>
+<th align="center">温度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">代码生成&#x2F;数学解题</td>
+<td align="center">0.0</td>
+</tr>
+<tr>
+<td align="center">数据抽取&#x2F;分析</td>
+<td align="center">1.0</td>
+</tr>
+<tr>
+<td align="center">通用对话</td>
+<td align="center">1.3</td>
+</tr>
+<tr>
+<td align="center">翻译</td>
+<td align="center">1.3</td>
+</tr>
+<tr>
+<td align="center">创意类写作&#x2F;诗歌创作</td>
+<td align="center">1.5</td>
+</tr>
+</tbody></table>
+<h2 id="模型-价格"><a href="#模型-价格" class="headerlink" title="模型 &amp; 价格"></a>模型 &amp; 价格</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/quick_start/pricing">https://api-docs.deepseek.com/zh-cn/quick_start/pricing</a></p>
+<p>下表所列模型价格以“百万 tokens”为单位。Token 是模型用来表示自然语言文本的的最小单位，可以是一个词、一个数字或一个标点符号等。我们将根据模型输入和输出的总 token 数进行计量计费。</p>
+<h3 id="模型-价格细节"><a href="#模型-价格细节" class="headerlink" title="模型 &amp; 价格细节"></a>模型 &amp; 价格细节</h3><p><img src="https://cos.luyf-lemon-love.space/images/20250227213324.png"></p>
+<ol>
+<li>deepseek-chat 模型对应 DeepSeek-V3；deepseek-reasoner 模型对应 DeepSeek-R1。</li>
+<li>思维链为deepseek-reasoner模型在给出正式回答之前的思考过程，其原理详见推理模型。</li>
+<li>如未指定 max_tokens，默认最大输出长度为 4K。请调整 max_tokens 以支持更长的输出。</li>
+<li>关于上下文缓存的细节，请参考DeepSeek 硬盘缓存。</li>
+<li>deepseek-reasoner的输出 token 数包含了思维链和最终答案的所有 token，其计价相同。</li>
+<li>DeepSeek API 现实行错峰优惠定价，每日优惠时段为北京时间 00:30-08:30，其余时间按照标准价格计费。请求的计价时间为该请求完成的时间。</li>
+</ol>
+<h3 id="扣费规则"><a href="#扣费规则" class="headerlink" title="扣费规则"></a>扣费规则</h3><p>扣减费用 &#x3D; token 消耗量 × 模型单价，对应的费用将直接从充值余额或赠送余额中进行扣减。 当充值余额与赠送余额同时存在时，优先扣减赠送余额。</p>
+<p>产品价格可能发生变动，DeepSeek 保留修改价格的权利。请您依据实际用量按需充值，定期查看此页面以获知最新价格信息。</p>
 <h2 id="API-文档"><a href="#API-文档" class="headerlink" title="API 文档"></a>API 文档</h2><h3 id="对话补全"><a href="#对话补全" class="headerlink" title="对话补全"></a>对话补全</h3><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/api/create-chat-completion">https://api-docs.deepseek.com/zh-cn/api/create-chat-completion</a></p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
 
@@ -759,8 +802,6 @@ response <span class="token operator">=</span> client<span class="token punctuat
 <h2 id="推理模型-deepseek-reasoner-2"><a href="#推理模型-deepseek-reasoner-2" class="headerlink" title="推理模型 (deepseek-reasoner)"></a>推理模型 (deepseek-reasoner)</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/">https://api-docs.deepseek.com/zh-cn/</a></p>
 <h2 id="推理模型-deepseek-reasoner-3"><a href="#推理模型-deepseek-reasoner-3" class="headerlink" title="推理模型 (deepseek-reasoner)"></a>推理模型 (deepseek-reasoner)</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/">https://api-docs.deepseek.com/zh-cn/</a></p>
 <h2 id="推理模型-deepseek-reasoner-4"><a href="#推理模型-deepseek-reasoner-4" class="headerlink" title="推理模型 (deepseek-reasoner)"></a>推理模型 (deepseek-reasoner)</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/">https://api-docs.deepseek.com/zh-cn/</a></p>
-<h2 id="推理模型-deepseek-reasoner-5"><a href="#推理模型-deepseek-reasoner-5" class="headerlink" title="推理模型 (deepseek-reasoner)"></a>推理模型 (deepseek-reasoner)</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/">https://api-docs.deepseek.com/zh-cn/</a></p>
-<h2 id="推理模型-deepseek-reasoner-6"><a href="#推理模型-deepseek-reasoner-6" class="headerlink" title="推理模型 (deepseek-reasoner)"></a>推理模型 (deepseek-reasoner)</h2><p>src link: <a href="https://api-docs.deepseek.com/zh-cn/">https://api-docs.deepseek.com/zh-cn/</a></p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第二百九十一篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
