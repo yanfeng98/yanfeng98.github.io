@@ -493,7 +493,7 @@ InstallTo install Ollama, ru">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-02-25
+                    2025-02-27
                 </div>
                 
 
@@ -529,7 +529,10 @@ InstallTo install Ollama, ru">
 <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>To install Ollama, run the following command:</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-fsSL</span> https://ollama.com/install.sh <span class="token operator">|</span> <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h2 id="Manual-install"><a href="#Manual-install" class="headerlink" title="Manual install"></a>Manual install</h2><p>Download and extract the package:</p>
+<h2 id="Manual-install"><a href="#Manual-install" class="headerlink" title="Manual install"></a>Manual install</h2><blockquote>
+<p>[!NOTE]<br>If you are upgrading from a prior version, you should remove the old libraries with <code>sudo rm -rf /usr/lib/ollama</code> first.</p>
+</blockquote>
+<p>Download and extract the package:</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-L</span> https://ollama.com/download/ollama-linux-amd64.tgz <span class="token parameter variable">-o</span> ollama-linux-amd64.tgz
 <span class="token function">sudo</span> <span class="token function">tar</span> <span class="token parameter variable">-C</span> /usr <span class="token parameter variable">-xzf</span> ollama-linux-amd64.tgz<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
@@ -584,7 +587,7 @@ InstallTo install Ollama, ru">
 <p>[!NOTE]<br>While AMD has contributed the <code>amdgpu</code> driver upstream to the official linux<br>kernel source, the version is older and may not support all ROCm features. We<br>recommend you install the latest driver from<br><a href="https://www.amd.com/en/support/linux-drivers">https://www.amd.com/en/support/linux-drivers</a> for best support of your Radeon<br>GPU.</p>
 </blockquote>
 <h2 id="Customizing"><a href="#Customizing" class="headerlink" title="Customizing"></a>Customizing</h2><p>To customize the installation of Ollama, you can edit the systemd service file or the environment variables by running:</p>
-<pre class="line-numbers language-none"><code class="language-none">sudo systemctl edit ollama<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> systemctl edit ollama<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>Alternatively, create an override file manually in <code>/etc/systemd/system/ollama.service.d/override.conf</code>:</p>
 <pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Service</span><span class="token punctuation">]</span></span>
@@ -599,7 +602,7 @@ InstallTo install Ollama, ru">
 
 <h2 id="Installing-specific-versions"><a href="#Installing-specific-versions" class="headerlink" title="Installing specific versions"></a>Installing specific versions</h2><p>Use <code>OLLAMA_VERSION</code> environment variable with the install script to install a specific version of Ollama, including pre-releases. You can find the version numbers in the <a href="https://github.com/ollama/ollama/releases">releases page</a>.</p>
 <p>For example:</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-fsSL</span> https://ollama.com/install.sh <span class="token operator">|</span> <span class="token assign-left variable">OLLAMA_VERSION</span><span class="token operator">=</span><span class="token number">0.3</span>.9 <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-fsSL</span> https://ollama.com/install.sh <span class="token operator">|</span> <span class="token assign-left variable">OLLAMA_VERSION</span><span class="token operator">=</span><span class="token number">0.5</span>.7 <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="Viewing-logs"><a href="#Viewing-logs" class="headerlink" title="Viewing logs"></a>Viewing logs</h2><p>To view logs of Ollama running as a startup service, run:</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">journalctl <span class="token parameter variable">-e</span> <span class="token parameter variable">-u</span> ollama<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -616,6 +619,9 @@ InstallTo install Ollama, ru">
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-r</span> /usr/share/ollama
 <span class="token function">sudo</span> <span class="token function">userdel</span> ollama
 <span class="token function">sudo</span> <span class="token function">groupdel</span> ollama<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>Remove installed libraries:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">rm</span> <span class="token parameter variable">-rf</span> /usr/local/lib/ollama<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第二百三十一篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
