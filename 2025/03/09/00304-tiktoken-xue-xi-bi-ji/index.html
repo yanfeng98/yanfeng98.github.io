@@ -1,0 +1,1849 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="00304 tiktoken 学习笔记, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="前言tiktoken 是一个快速的 BPE 分词器，用于 OpenAI 的模型。
+import tiktoken
+enc = tiktoken.get_encoding(&#34;o200k_base&#34;)
+assert enc.decode(enc">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>00304 tiktoken 学习笔记 | LuYF-Lemon-love の Blog</title>
+    <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
+    
+    <style>
+        body{
+            background-image: url(https://cos.luyf-lemon-love.space/images/016-%E6%8A%A5%E7%BA%B8%E5%A2%99%E9%BA%BB%E8%A1%A3%E5%AD%A6%E5%A7%90.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">LuYF-Lemon-love の Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>List</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Image</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/verse">
+          
+          <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Verse</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/bilibili">
+          
+          <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Bilibili</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">LuYF-Lemon-love の Blog</div>
+        <div class="logo-desc">
+            
+            天之道，损有余而补不足，人之道则不然，损不足以奉有余。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			List
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Image</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/verse " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Verse</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/bilibili " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Bilibili</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yanfeng98/paper-is-all-you-need" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yanfeng98/paper-is-all-you-need" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/004-%E9%98%B3%E5%85%89-%E6%88%BF%E9%97%B4-%E5%8E%9F%E7%A5%9E%E7%94%98%E9%9B%A8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00304 tiktoken 学习笔记</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">深度学习</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">大语言模型</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
+                                大语言模型
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2025-03-09
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2025-03-09
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>tiktoken 是一个快速的 <a href="https://en.wikipedia.org/wiki/Byte_pair_encoding">BPE</a> 分词器，用于 OpenAI 的模型。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> tiktoken
+enc <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span><span class="token string">"o200k_base"</span><span class="token punctuation">)</span>
+<span class="token keyword">assert</span> enc<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>enc<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"hello world"</span>
+
+<span class="token comment"># To get the tokeniser corresponding to a specific model in the OpenAI API:</span>
+enc <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>encoding_for_model<span class="token punctuation">(</span><span class="token string">"gpt-4o"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>tiktoken的开源版本可以从PyPI安装：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> tiktoken<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>分词器 API 在 tiktoken&#x2F;core.py 中有文档记录。</p>
+<p>使用 tiktoken 的示例代码可以在 <a href="https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb">OpenAI Cookbook</a> 中找到。</p>
+<p>Operating System: Ubuntu 22.04.4 LTS</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li><a href="https://github.com/openai/tiktoken">⏳ tiktoken</a></li>
+<li><a href="https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb">How to count tokens with tiktoken</a></li>
+</ol>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>tiktoken 的速度比一个类似的开源分词器快 3-6 倍。</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20250309143311.png"></p>
+<p>在 1GB 的文本上使用 GPT-2 分词器进行性能测试，使用了 tokenizers&#x3D;&#x3D;0.13.2、transformers&#x3D;&#x3D;4.24.0 和 tiktoken&#x3D;&#x3D;0.2.0 版本。</p>
+<h2 id="BPE到底是什么？"><a href="#BPE到底是什么？" class="headerlink" title="BPE到底是什么？"></a>BPE到底是什么？</h2><p>语言模型不像你和我一样看文本，而是看一系列数字（称为 tokens）。字节对编码（BPE）是将文本转换为 tokens 的一种方法。它有几个理想的特性：</p>
+<ol>
+<li>它是可逆且无损的，所以你可以将 tokens 转换回原始文本。</li>
+<li>它适用于任意文本，即使是分词器训练数据中不包含的文本。</li>
+<li>它压缩文本：token 序列比原始文本对应的字节短。实际上，平均每个 token 大约对应 4 个字节。</li>
+<li>它试图让模型看到常见的子词。例如，”ing” 是英语中的一个常见子词，所以 BPE 编码通常会将有 “encoding” 分割成如 “encod” 和 “ing” 这样的 tokens（而不是例如 “enc” 和 “oding”）。因为模型会一次又一次地在不同上下文中看到 “ing” 这个 token，所以它帮助模型泛化和更好地理解语法。</li>
+</ol>
+<p>tiktoken 包含一个教育性子模块，如果你想了解更多关于 BPE 的细节，它更友好，包括帮助可视化 BPE 过程的代码。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> tiktoken<span class="token punctuation">.</span>_educational <span class="token keyword">import</span> <span class="token operator">*</span>
+
+<span class="token comment"># Train a BPE tokeniser on a small amount of text</span>
+enc <span class="token operator">=</span> train_simple_encoding<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Visualise how the GPT-4 encoder encodes text</span>
+enc <span class="token operator">=</span> SimpleBytePairEncoding<span class="token punctuation">.</span>from_tiktoken<span class="token punctuation">(</span><span class="token string">"cl100k_base"</span><span class="token punctuation">)</span>
+enc<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"hello world aaaaaaaaaaaa"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="扩展-tiktoken"><a href="#扩展-tiktoken" class="headerlink" title="扩展 tiktoken"></a>扩展 tiktoken</h2><p>你可能希望扩展 Tiktoken 以支持新的编码。有两种方法可以做到这一点。</p>
+<ul>
+<li>按照你想要的方式精确创建你的 Encoding 对象，并简单地传递它。</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">cl100k_base <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span><span class="token string">"cl100k_base"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># In production, load the arguments directly instead of accessing private attributes</span>
+<span class="token comment"># See openai_public.py for examples of arguments for specific encodings</span>
+enc <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>Encoding<span class="token punctuation">(</span>
+    <span class="token comment"># If you're changing the set of special tokens, make sure to use a different name</span>
+    <span class="token comment"># It should be clear from the name what behaviour to expect.</span>
+    name<span class="token operator">=</span><span class="token string">"cl100k_im"</span><span class="token punctuation">,</span>
+    pat_str<span class="token operator">=</span>cl100k_base<span class="token punctuation">.</span>_pat_str<span class="token punctuation">,</span>
+    mergeable_ranks<span class="token operator">=</span>cl100k_base<span class="token punctuation">.</span>_mergeable_ranks<span class="token punctuation">,</span>
+    special_tokens<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+        <span class="token operator">**</span>cl100k_base<span class="token punctuation">.</span>_special_tokens<span class="token punctuation">,</span>
+        <span class="token string">"&lt;|im_start|>"</span><span class="token punctuation">:</span> <span class="token number">100264</span><span class="token punctuation">,</span>
+        <span class="token string">"&lt;|im_end|>"</span><span class="token punctuation">:</span> <span class="token number">100265</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>使用 tiktoken_ext 插件机制将你的 Encoding 对象注册到 tiktoken。</li>
+</ul>
+<p>如果你需要 tiktoken.get_encoding 找到你的编码，这才有用，否则请优先选择选项 1。</p>
+<p>为此，你需要在 tiktoken_ext 下创建一个命名空间包。</p>
+<p>像这样布局你的项目，并确保省略 <code>tiktoken_ext/__init__.py</code> 文件：</p>
+<pre class="line-numbers language-none"><code class="language-none">my_tiktoken_extension
+├── tiktoken_ext
+│   └── my_encodings.py
+└── setup.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>my_encodings.py 应该是一个包含名为 ENCODING_CONSTRUCTORS 的变量的模块。这是一个从编码名称到函数的字典，该函数不接受任何参数，并返回可以传递给 tiktoken.Encoding 以构建该编码的参数。例如，请参见 tiktoken_ext&#x2F;openai_public.py。有关精确细节，请参见 tiktoken&#x2F;registry.py。</p>
+<p>你的 setup.py 应该看起来像这样：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> setuptools <span class="token keyword">import</span> setup<span class="token punctuation">,</span> find_namespace_packages
+
+setup<span class="token punctuation">(</span>
+    name<span class="token operator">=</span><span class="token string">"my_tiktoken_extension"</span><span class="token punctuation">,</span>
+    packages<span class="token operator">=</span>find_namespace_packages<span class="token punctuation">(</span>include<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'tiktoken_ext*'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    install_requires<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"tiktoken"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后简单地使用 pip install .&#x2F;my_tiktoken_extension，你应该能够使用你的自定义编码了！确保不要使用可编辑安装。</p>
+<h2 id="如何使用-tiktoken-计算-tokens"><a href="#如何使用-tiktoken-计算-tokens" class="headerlink" title="如何使用 tiktoken 计算 tokens"></a>如何使用 tiktoken 计算 tokens</h2><p><a href="https://github.com/openai/tiktoken/blob/main/README.md"><code>tiktoken</code></a> 是 OpenAI 提供的一个快速开源分词器。</p>
+<p>给定一个文本字符串（例如，”tiktoken is great!”）和一个编码（例如，”cl100k_base”），分词器可以将文本字符串分割成一个 tokens 列表（例如，[“t”, “ik”, “token”, “ is”, “ great”, “!”]）。</p>
+<p>将文本字符串分割成 tokens 很有用，因为 GPT 模型以 tokens 的形式查看文本。知道一个文本字符串中有多少 tokens 可以告诉你（a）这个字符串是否太长，以至于文本模型无法处理，以及（b）一个 OpenAI API 调用的成本是多少（因为使用量是按 token 计价的）。</p>
+<h3 id="Encodings"><a href="#Encodings" class="headerlink" title="Encodings"></a>Encodings</h3><p>编码指定文本如何转换为 tokens。不同的模型使用不同的编码。</p>
+<p><code>tiktoken</code> 支持由 OpenAI 模型使用的三种编码：</p>
+<table>
+<thead>
+<tr>
+<th>Encoding name</th>
+<th>OpenAI models</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>o200k_base</code></td>
+<td><code>gpt-4o</code>, <code>gpt-4o-mini</code></td>
+</tr>
+<tr>
+<td><code>cl100k_base</code></td>
+<td><code>gpt-4-turbo</code>, <code>gpt-4</code>, <code>gpt-3.5-turbo</code>, <code>text-embedding-ada-002</code>, <code>text-embedding-3-small</code>, <code>text-embedding-3-large</code></td>
+</tr>
+<tr>
+<td><code>p50k_base</code></td>
+<td>Codex models, <code>text-davinci-002</code>, <code>text-davinci-003</code></td>
+</tr>
+<tr>
+<td><code>r50k_base</code> (or <code>gpt2</code>)</td>
+<td>GPT-3 models like <code>davinci</code></td>
+</tr>
+</tbody></table>
+<p>你可以使用 <code>tiktoken.encoding_for_model()</code> 来获取模型的编码，如下所示：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>encoding_for_model<span class="token punctuation">(</span><span class="token string">'gpt-4o-mini'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>注意，<code>p50k_base</code> 与 <code>r50k_base</code> 有很大重叠，对于非代码应用，它们通常会给出相同的 tokens。</p>
+<h3 id="按语言划分的分词器库"><a href="#按语言划分的分词器库" class="headerlink" title="按语言划分的分词器库"></a>按语言划分的分词器库</h3><p>对于 <code>o200k_base</code>、<code>cl100k_base</code> 和 <code>p50k_base</code> 编码：</p>
+<ul>
+<li>Python: <a href="https://github.com/openai/tiktoken/blob/main/README.md">tiktoken</a></li>
+<li>.NET &#x2F; C#: <a href="https://github.com/dmitry-brazhenko/SharpToken">SharpToken</a>, <a href="https://github.com/aiqinxuancai/TiktokenSharp">TiktokenSharp</a></li>
+<li>Java: <a href="https://github.com/knuddelsgmbh/jtokkit">jtokkit</a></li>
+<li>Golang: <a href="https://github.com/pkoukk/tiktoken-go">tiktoken-go</a></li>
+<li>Rust: <a href="https://github.com/zurawiki/tiktoken-rs">tiktoken-rs</a></li>
+</ul>
+<p>对于 <code>r50k_base</code> (<code>gpt2</code>) 编码，分词器支持多种语言。</p>
+<ul>
+<li>Python: <a href="https://github.com/openai/tiktoken/blob/main/README.md">tiktoken</a> (or alternatively <a href="https://huggingface.co/docs/transformers/model_doc/gpt2#transformers.GPT2TokenizerFast">GPT2TokenizerFast</a>)</li>
+<li>JavaScript: <a href="https://www.npmjs.com/package/gpt-3-encoder">gpt-3-encoder</a></li>
+<li>.NET &#x2F; C#: <a href="https://github.com/dluc/openai-tools">GPT Tokenizer</a></li>
+<li>Java: <a href="https://github.com/hyunwoongko/gpt2-tokenizer-java">gpt2-tokenizer-java</a></li>
+<li>PHP: <a href="https://github.com/CodeRevolutionPlugins/GPT-3-Encoder-PHP">GPT-3-Encoder-PHP</a></li>
+<li>Golang: <a href="https://github.com/pkoukk/tiktoken-go">tiktoken-go</a></li>
+<li>Rust: <a href="https://github.com/zurawiki/tiktoken-rs">tiktoken-rs</a></li>
+</ul>
+<p>（OpenAI 不对第三方库进行任何背书或保证。）</p>
+<h3 id="字符串通常是如何被分词的"><a href="#字符串通常是如何被分词的" class="headerlink" title="字符串通常是如何被分词的"></a>字符串通常是如何被分词的</h3><p>在英语中，tokens 的长度通常从一个字符到一个单词不等（例如，”t” 或 “ great”），尽管在某些语言中，tokens 可以短于一个字符或长于一个单词。空格通常与单词的开头组合在一起（例如，” is” 而不是 “is “ 或 “ “+ “is”）。你可以快速在 <a href="https://beta.openai.com/tokenizer">OpenAI Tokenizer</a> 或第三方 <a href="https://tiktokenizer.vercel.app/">Tiktokenizer</a> 网络应用程序中检查一个字符串是如何被分词的。</p>
+<h3 id="安装-tiktoken"><a href="#安装-tiktoken" class="headerlink" title="安装 tiktoken"></a>安装 <code>tiktoken</code></h3><p>如果需要，使用 <code>pip</code> 安装 <code>tiktoken</code>：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">%</span>pip install <span class="token operator">-</span><span class="token operator">-</span>upgrade tiktoken <span class="token operator">-</span>q
+<span class="token operator">%</span>pip install <span class="token operator">-</span><span class="token operator">-</span>upgrade openai <span class="token operator">-</span>q<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>notice<span class="token punctuation">]</span> A new release of pip is available: <span class="token number">24.0</span> -<span class="token operator">></span> <span class="token number">24.2</span>
+<span class="token punctuation">[</span>notice<span class="token punctuation">]</span> To update, run: pip <span class="token function">install</span> <span class="token parameter variable">--upgrade</span> pip
+Note: you may need to restart the kernel to use updated packages.
+
+<span class="token punctuation">[</span>notice<span class="token punctuation">]</span> A new release of pip is available: <span class="token number">24.0</span> -<span class="token operator">></span> <span class="token number">24.2</span>
+<span class="token punctuation">[</span>notice<span class="token punctuation">]</span> To update, run: pip <span class="token function">install</span> <span class="token parameter variable">--upgrade</span> pip
+Note: you may need to restart the kernel to use updated packages.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="导入-tiktoken"><a href="#导入-tiktoken" class="headerlink" title="导入 tiktoken"></a>导入 <code>tiktoken</code></h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> tiktoken<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="加载一个编码"><a href="#加载一个编码" class="headerlink" title="加载一个编码"></a>加载一个编码</h3><p>使用 <code>tiktoken.get_encoding()</code> 通过名称加载一个编码。</p>
+<p>第一次运行时，它将需要一个互联网连接来下载。后来的运行不需要互联网连接。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span><span class="token string">"cl100k_base"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用 <code>tiktoken.encoding_for_model()</code> 自动加载给定模型名称的正确编码。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>encoding_for_model<span class="token punctuation">(</span><span class="token string">"gpt-4o-mini"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="使用-encoding-encode-将文本转换为-tokens"><a href="#使用-encoding-encode-将文本转换为-tokens" class="headerlink" title="使用 encoding.encode() 将文本转换为 tokens"></a>使用 <code>encoding.encode()</code> 将文本转换为 tokens</h3><p><code>.encode()</code> 方法将文本字符串转换为 token 整数列表。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"tiktoken is great!"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token number">83</span>, <span class="token number">8251</span>, <span class="token number">2488</span>, <span class="token number">382</span>, <span class="token number">2212</span>, <span class="token number">0</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>通过计算 <code>.encode()</code> 返回的列表的长度来计算 tokens 的数量。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">num_tokens_from_string</span><span class="token punctuation">(</span>string<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> encoding_name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Returns the number of tokens in a text string."""</span>
+    encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span>encoding_name<span class="token punctuation">)</span>
+    num_tokens <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>string<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> num_tokens<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">num_tokens_from_string<span class="token punctuation">(</span><span class="token string">"tiktoken is great!"</span><span class="token punctuation">,</span> <span class="token string">"o200k_base"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token number">6</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="使用-encoding-decode-将-tokens-转换为文本"><a href="#使用-encoding-decode-将-tokens-转换为文本" class="headerlink" title="使用 encoding.decode() 将 tokens 转换为文本"></a>使用 <code>encoding.decode()</code> 将 tokens 转换为文本</h3><p><code>.decode()</code> 方法将 token 整数列表转换回字符串。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">83</span><span class="token punctuation">,</span> <span class="token number">8251</span><span class="token punctuation">,</span> <span class="token number">2488</span><span class="token punctuation">,</span> <span class="token number">382</span><span class="token punctuation">,</span> <span class="token number">2212</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token string">'tiktoken is great!'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>警告：尽管 <code>.decode()</code> 可以应用于单个 tokens，但请注意，对于不在 utf-8 边界上的 tokens，它可能会丢失信息。</p>
+<p>对于单个 tokens，<code>.decode_single_token_bytes()</code> 安全地将单个整数 token 转换为它所代表的字节。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span>encoding<span class="token punctuation">.</span>decode_single_token_bytes<span class="token punctuation">(</span>token<span class="token punctuation">)</span> <span class="token keyword">for</span> token <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token number">83</span><span class="token punctuation">,</span> <span class="token number">8251</span><span class="token punctuation">,</span> <span class="token number">2488</span><span class="token punctuation">,</span> <span class="token number">382</span><span class="token punctuation">,</span> <span class="token number">2212</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>b<span class="token string">'t'</span>, b<span class="token string">'ikt'</span>, b<span class="token string">'oken'</span>, b<span class="token string">' is'</span>, b<span class="token string">' great'</span>, b<span class="token string">'!'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>（字符串前的 <code>b</code> 表示这些字符串是字节字符串。）</p>
+<h3 id="比较编码"><a href="#比较编码" class="headerlink" title="比较编码"></a>比较编码</h3><p>不同的编码在分割单词、组合空格和处理非英语字符方面有所不同。使用上述方法，我们可以比较几个示例字符串上的不同编码。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">compare_encodings</span><span class="token punctuation">(</span>example_string<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Prints a comparison of three string encodings."""</span>
+    <span class="token comment"># print the example string</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'\nExample string: "</span><span class="token interpolation"><span class="token punctuation">&#123;</span>example_string<span class="token punctuation">&#125;</span></span><span class="token string">"'</span></span><span class="token punctuation">)</span>
+    <span class="token comment"># for each encoding, print the # of tokens, the token integers, and the token bytes</span>
+    <span class="token keyword">for</span> encoding_name <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">"r50k_base"</span><span class="token punctuation">,</span> <span class="token string">"p50k_base"</span><span class="token punctuation">,</span> <span class="token string">"cl100k_base"</span><span class="token punctuation">,</span> <span class="token string">"o200k_base"</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span>encoding_name<span class="token punctuation">)</span>
+        token_integers <span class="token operator">=</span> encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>example_string<span class="token punctuation">)</span>
+        num_tokens <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>token_integers<span class="token punctuation">)</span>
+        token_bytes <span class="token operator">=</span> <span class="token punctuation">[</span>encoding<span class="token punctuation">.</span>decode_single_token_bytes<span class="token punctuation">(</span>token<span class="token punctuation">)</span> <span class="token keyword">for</span> token <span class="token keyword">in</span> token_integers<span class="token punctuation">]</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>encoding_name<span class="token punctuation">&#125;</span></span><span class="token string">: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_tokens<span class="token punctuation">&#125;</span></span><span class="token string"> tokens"</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"token integers: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>token_integers<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"token bytes: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>token_bytes<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">compare_encodings<span class="token punctuation">(</span><span class="token string">"antidisestablishmentarianism"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Example string: <span class="token string">"antidisestablishmentarianism"</span>
+
+r50k_base: <span class="token number">5</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">415</span>, <span class="token number">29207</span>, <span class="token number">44390</span>, <span class="token number">3699</span>, <span class="token number">1042</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'ant'</span>, b<span class="token string">'idis'</span>, b<span class="token string">'establishment'</span>, b<span class="token string">'arian'</span>, b<span class="token string">'ism'</span><span class="token punctuation">]</span>
+
+p50k_base: <span class="token number">5</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">415</span>, <span class="token number">29207</span>, <span class="token number">44390</span>, <span class="token number">3699</span>, <span class="token number">1042</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'ant'</span>, b<span class="token string">'idis'</span>, b<span class="token string">'establishment'</span>, b<span class="token string">'arian'</span>, b<span class="token string">'ism'</span><span class="token punctuation">]</span>
+
+cl100k_base: <span class="token number">6</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">519</span>, <span class="token number">85342</span>, <span class="token number">34500</span>, <span class="token number">479</span>, <span class="token number">8997</span>, <span class="token number">2191</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'ant'</span>, b<span class="token string">'idis'</span>, b<span class="token string">'establish'</span>, b<span class="token string">'ment'</span>, b<span class="token string">'arian'</span>, b<span class="token string">'ism'</span><span class="token punctuation">]</span>
+
+o200k_base: <span class="token number">6</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">493</span>, <span class="token number">129901</span>, <span class="token number">376</span>, <span class="token number">160388</span>, <span class="token number">21203</span>, <span class="token number">2367</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'ant'</span>, b<span class="token string">'idis'</span>, b<span class="token string">'est'</span>, b<span class="token string">'ablishment'</span>, b<span class="token string">'arian'</span>, b<span class="token string">'ism'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">compare_encodings<span class="token punctuation">(</span><span class="token string">"2 + 2 = 4"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Example string: <span class="token string">"2 + 2 = 4"</span>
+
+r50k_base: <span class="token number">5</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">17</span>, <span class="token number">1343</span>, <span class="token number">362</span>, <span class="token number">796</span>, <span class="token number">604</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'2'</span>, b<span class="token string">' +'</span>, b<span class="token string">' 2'</span>, b<span class="token string">' ='</span>, b<span class="token string">' 4'</span><span class="token punctuation">]</span>
+
+p50k_base: <span class="token number">5</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">17</span>, <span class="token number">1343</span>, <span class="token number">362</span>, <span class="token number">796</span>, <span class="token number">604</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'2'</span>, b<span class="token string">' +'</span>, b<span class="token string">' 2'</span>, b<span class="token string">' ='</span>, b<span class="token string">' 4'</span><span class="token punctuation">]</span>
+
+cl100k_base: <span class="token number">7</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">17</span>, <span class="token number">489</span>, <span class="token number">220</span>, <span class="token number">17</span>, <span class="token number">284</span>, <span class="token number">220</span>, <span class="token number">19</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'2'</span>, b<span class="token string">' +'</span>, b<span class="token string">' '</span>, b<span class="token string">'2'</span>, b<span class="token string">' ='</span>, b<span class="token string">' '</span>, b<span class="token string">'4'</span><span class="token punctuation">]</span>
+
+o200k_base: <span class="token number">7</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">17</span>, <span class="token number">659</span>, <span class="token number">220</span>, <span class="token number">17</span>, <span class="token number">314</span>, <span class="token number">220</span>, <span class="token number">19</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'2'</span>, b<span class="token string">' +'</span>, b<span class="token string">' '</span>, b<span class="token string">'2'</span>, b<span class="token string">' ='</span>, b<span class="token string">' '</span>, b<span class="token string">'4'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">compare_encodings<span class="token punctuation">(</span><span class="token string">"お誕生日おめでとう"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Example string: <span class="token string">"お誕生日おめでとう"</span>
+
+r50k_base: <span class="token number">14</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">2515</span>, <span class="token number">232</span>, <span class="token number">45739</span>, <span class="token number">243</span>, <span class="token number">37955</span>, <span class="token number">33768</span>, <span class="token number">98</span>, <span class="token number">2515</span>, <span class="token number">232</span>, <span class="token number">1792</span>, <span class="token number">223</span>, <span class="token number">30640</span>, <span class="token number">30201</span>, <span class="token number">29557</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'\xe3\x81'</span>, b<span class="token string">'\x8a'</span>, b<span class="token string">'\xe8\xaa'</span>, b<span class="token string">'\x95'</span>, b<span class="token string">'\xe7\x94\x9f'</span>, b<span class="token string">'\xe6\x97'</span>, b<span class="token string">'\xa5'</span>, b<span class="token string">'\xe3\x81'</span>, b<span class="token string">'\x8a'</span>, b<span class="token string">'\xe3\x82'</span>, b<span class="token string">'\x81'</span>, b<span class="token string">'\xe3\x81\xa7'</span>, b<span class="token string">'\xe3\x81\xa8'</span>, b<span class="token string">'\xe3\x81\x86'</span><span class="token punctuation">]</span>
+
+p50k_base: <span class="token number">14</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">2515</span>, <span class="token number">232</span>, <span class="token number">45739</span>, <span class="token number">243</span>, <span class="token number">37955</span>, <span class="token number">33768</span>, <span class="token number">98</span>, <span class="token number">2515</span>, <span class="token number">232</span>, <span class="token number">1792</span>, <span class="token number">223</span>, <span class="token number">30640</span>, <span class="token number">30201</span>, <span class="token number">29557</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'\xe3\x81'</span>, b<span class="token string">'\x8a'</span>, b<span class="token string">'\xe8\xaa'</span>, b<span class="token string">'\x95'</span>, b<span class="token string">'\xe7\x94\x9f'</span>, b<span class="token string">'\xe6\x97'</span>, b<span class="token string">'\xa5'</span>, b<span class="token string">'\xe3\x81'</span>, b<span class="token string">'\x8a'</span>, b<span class="token string">'\xe3\x82'</span>, b<span class="token string">'\x81'</span>, b<span class="token string">'\xe3\x81\xa7'</span>, b<span class="token string">'\xe3\x81\xa8'</span>, b<span class="token string">'\xe3\x81\x86'</span><span class="token punctuation">]</span>
+
+cl100k_base: <span class="token number">9</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">33334</span>, <span class="token number">45918</span>, <span class="token number">243</span>, <span class="token number">21990</span>, <span class="token number">9080</span>, <span class="token number">33334</span>, <span class="token number">62004</span>, <span class="token number">16556</span>, <span class="token number">78699</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'\xe3\x81\x8a'</span>, b<span class="token string">'\xe8\xaa'</span>, b<span class="token string">'\x95'</span>, b<span class="token string">'\xe7\x94\x9f'</span>, b<span class="token string">'\xe6\x97\xa5'</span>, b<span class="token string">'\xe3\x81\x8a'</span>, b<span class="token string">'\xe3\x82\x81'</span>, b<span class="token string">'\xe3\x81\xa7'</span>, b<span class="token string">'\xe3\x81\xa8\xe3\x81\x86'</span><span class="token punctuation">]</span>
+
+o200k_base: <span class="token number">8</span> tokens
+token integers: <span class="token punctuation">[</span><span class="token number">8930</span>, <span class="token number">9697</span>, <span class="token number">243</span>, <span class="token number">128225</span>, <span class="token number">8930</span>, <span class="token number">17693</span>, <span class="token number">4344</span>, <span class="token number">48669</span><span class="token punctuation">]</span>
+token bytes: <span class="token punctuation">[</span>b<span class="token string">'\xe3\x81\x8a'</span>, b<span class="token string">'\xe8\xaa'</span>, b<span class="token string">'\x95'</span>, b<span class="token string">'\xe7\x94\x9f\xe6\x97\xa5'</span>, b<span class="token string">'\xe3\x81\x8a'</span>, b<span class="token string">'\xe3\x82\x81'</span>, b<span class="token string">'\xe3\x81\xa7'</span>, b<span class="token string">'\xe3\x81\xa8\xe3\x81\x86'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="计算聊天补全-API-调用的-tokens-数量"><a href="#计算聊天补全-API-调用的-tokens-数量" class="headerlink" title="计算聊天补全 API 调用的 tokens 数量"></a>计算聊天补全 API 调用的 tokens 数量</h3><p>像 <code>gpt-4o-mini</code> 和 <code>gpt-4</code> 这样的 ChatGPT 模型使用 tokens 的方式与旧的补全模型相同，但由于它们基于消息的格式，计算一次对话将使用多少 tokens 更为困难。</p>
+<p>下面是一个示例函数，用于计算传递给 <code>gpt-3.5-turbo</code>、<code>gpt-4</code>、<code>gpt-4o</code> 和 <code>gpt-4o-mini</code> 的消息的 tokens 数量。</p>
+<p>请注意，从消息中计算 tokens 的确切方式可能会从模型到模型有所不同。考虑以下函数计算的数字是一个估计值，而不是一个永恒的保证。</p>
+<p>特别是，使用可选函数输入的请求将在下面计算的估计值之上消耗额外的 tokens。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">num_tokens_from_messages</span><span class="token punctuation">(</span>messages<span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"gpt-4o-mini-2024-07-18"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Return the number of tokens used by a list of messages."""</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>encoding_for_model<span class="token punctuation">(</span>model<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> KeyError<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Warning: model not found. Using o200k_base encoding."</span><span class="token punctuation">)</span>
+        encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span><span class="token string">"o200k_base"</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> model <span class="token keyword">in</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"gpt-3.5-turbo-0125"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4-0314"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4-32k-0314"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4-0613"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4-32k-0613"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4o-mini-2024-07-18"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4o-2024-08-06"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">:</span>
+        tokens_per_message <span class="token operator">=</span> <span class="token number">3</span>
+        tokens_per_name <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token keyword">elif</span> <span class="token string">"gpt-3.5-turbo"</span> <span class="token keyword">in</span> model<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Warning: gpt-3.5-turbo may update over time. Returning num tokens assuming gpt-3.5-turbo-0125."</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> num_tokens_from_messages<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"gpt-3.5-turbo-0125"</span><span class="token punctuation">)</span>
+    <span class="token keyword">elif</span> <span class="token string">"gpt-4o-mini"</span> <span class="token keyword">in</span> model<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Warning: gpt-4o-mini may update over time. Returning num tokens assuming gpt-4o-mini-2024-07-18."</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> num_tokens_from_messages<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"gpt-4o-mini-2024-07-18"</span><span class="token punctuation">)</span>
+    <span class="token keyword">elif</span> <span class="token string">"gpt-4o"</span> <span class="token keyword">in</span> model<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Warning: gpt-4o and gpt-4o-mini may update over time. Returning num tokens assuming gpt-4o-2024-08-06."</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> num_tokens_from_messages<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"gpt-4o-2024-08-06"</span><span class="token punctuation">)</span>
+    <span class="token keyword">elif</span> <span class="token string">"gpt-4"</span> <span class="token keyword">in</span> model<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Warning: gpt-4 may update over time. Returning num tokens assuming gpt-4-0613."</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> num_tokens_from_messages<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"gpt-4-0613"</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> NotImplementedError<span class="token punctuation">(</span>
+            <span class="token string-interpolation"><span class="token string">f"""num_tokens_from_messages() is not implemented for model </span><span class="token interpolation"><span class="token punctuation">&#123;</span>model<span class="token punctuation">&#125;</span></span><span class="token string">."""</span></span>
+        <span class="token punctuation">)</span>
+    num_tokens <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> message <span class="token keyword">in</span> messages<span class="token punctuation">:</span>
+        num_tokens <span class="token operator">+=</span> tokens_per_message
+        <span class="token keyword">for</span> key<span class="token punctuation">,</span> value <span class="token keyword">in</span> message<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            num_tokens <span class="token operator">+=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> key <span class="token operator">==</span> <span class="token string">"name"</span><span class="token punctuation">:</span>
+                num_tokens <span class="token operator">+=</span> tokens_per_name
+    num_tokens <span class="token operator">+=</span> <span class="token number">3</span>  <span class="token comment"># every reply is primed with &lt;|start|>assistant&lt;|message|></span>
+    <span class="token keyword">return</span> num_tokens<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># let's verify the function above matches the OpenAI API response</span>
+
+<span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
+<span class="token keyword">import</span> os
+
+client <span class="token operator">=</span> OpenAI<span class="token punctuation">(</span>api_key<span class="token operator">=</span>os<span class="token punctuation">.</span>environ<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"OPENAI_API_KEY"</span><span class="token punctuation">,</span> <span class="token string">"&lt;your OpenAI API key if not set as env var>"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+example_messages <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"You are a helpful, pattern-following assistant that translates corporate jargon into plain English."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"example_user"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"New synergies will help drive top-line growth."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"example_assistant"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Things working well together will increase revenue."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"example_user"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Let's circle back when we have more bandwidth to touch base on opportunities for increased leverage."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"example_assistant"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Let's talk later when we're less busy about how to do better."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"This late pivot means we don't have time to boil the ocean for the client deliverable."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> model <span class="token keyword">in</span> <span class="token punctuation">[</span>
+    <span class="token string">"gpt-3.5-turbo"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4-0613"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4o"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4o-mini"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span>
+    <span class="token comment"># example token count from the function defined above</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_tokens_from_messages<span class="token punctuation">(</span>example_messages<span class="token punctuation">,</span> model<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> prompt tokens counted by num_tokens_from_messages()."</span></span><span class="token punctuation">)</span>
+    <span class="token comment"># example token count from the OpenAI API</span>
+    response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>model<span class="token operator">=</span>model<span class="token punctuation">,</span>
+    messages<span class="token operator">=</span>example_messages<span class="token punctuation">,</span>
+    temperature<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>
+    max_tokens<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>response<span class="token punctuation">.</span>usage<span class="token punctuation">.</span>prompt_tokens<span class="token punctuation">&#125;</span></span><span class="token string"> prompt tokens counted by the OpenAI API.'</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gpt-3.5-turbo
+Warning: gpt-3.5-turbo may update over time. Returning num tokens assuming gpt-3.5-turbo-0125.
+<span class="token number">129</span> prompt tokens counted by num_tokens_from_messages<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">129</span> prompt tokens counted by the OpenAI API.
+
+gpt-4-0613
+<span class="token number">129</span> prompt tokens counted by num_tokens_from_messages<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">129</span> prompt tokens counted by the OpenAI API.
+
+gpt-4
+Warning: gpt-4 may update over time. Returning num tokens assuming gpt-4-0613.
+<span class="token number">129</span> prompt tokens counted by num_tokens_from_messages<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">129</span> prompt tokens counted by the OpenAI API.
+
+gpt-4o
+Warning: gpt-4o and gpt-4o-mini may update over time. Returning num tokens assuming gpt-4o-2024-08-06.
+<span class="token number">124</span> prompt tokens counted by num_tokens_from_messages<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">124</span> prompt tokens counted by the OpenAI API.
+
+gpt-4o-mini
+Warning: gpt-4o-mini may update over time. Returning num tokens assuming gpt-4o-mini-2024-07-18.
+<span class="token number">124</span> prompt tokens counted by num_tokens_from_messages<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">124</span> prompt tokens counted by the OpenAI API.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="计算带有工具调用的聊天补全的-tokens-数量"><a href="#计算带有工具调用的聊天补全的-tokens-数量" class="headerlink" title="计算带有工具调用的聊天补全的 tokens 数量"></a>计算带有工具调用的聊天补全的 tokens 数量</h3><p>接下来，我们将研究如何将这些计算应用于可能包含函数调用的消息。由于工具本身的格式，这并不是立即显而易见的。</p>
+<p>下面是一个示例函数，用于计算传递给 <code>gpt-3.5-turbo</code>、<code>gpt-4</code>、<code>gpt-4o</code> 和 <code>gpt-4o-mini</code> 的包含工具的消息的 tokens 数量。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">num_tokens_for_tools</span><span class="token punctuation">(</span>functions<span class="token punctuation">,</span> messages<span class="token punctuation">,</span> model<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    
+    <span class="token comment"># Initialize function settings to 0</span>
+    func_init <span class="token operator">=</span> <span class="token number">0</span>
+    prop_init <span class="token operator">=</span> <span class="token number">0</span>
+    prop_key <span class="token operator">=</span> <span class="token number">0</span>
+    enum_init <span class="token operator">=</span> <span class="token number">0</span>
+    enum_item <span class="token operator">=</span> <span class="token number">0</span>
+    func_end <span class="token operator">=</span> <span class="token number">0</span>
+    
+    <span class="token keyword">if</span> model <span class="token keyword">in</span> <span class="token punctuation">[</span>
+        <span class="token string">"gpt-4o"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4o-mini"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">:</span>
+        
+        <span class="token comment"># Set function settings for the above models</span>
+        func_init <span class="token operator">=</span> <span class="token number">7</span>
+        prop_init <span class="token operator">=</span> <span class="token number">3</span>
+        prop_key <span class="token operator">=</span> <span class="token number">3</span>
+        enum_init <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">3</span>
+        enum_item <span class="token operator">=</span> <span class="token number">3</span>
+        func_end <span class="token operator">=</span> <span class="token number">12</span>
+    <span class="token keyword">elif</span> model <span class="token keyword">in</span> <span class="token punctuation">[</span>
+        <span class="token string">"gpt-3.5-turbo"</span><span class="token punctuation">,</span>
+        <span class="token string">"gpt-4"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token comment"># Set function settings for the above models</span>
+        func_init <span class="token operator">=</span> <span class="token number">10</span>
+        prop_init <span class="token operator">=</span> <span class="token number">3</span>
+        prop_key <span class="token operator">=</span> <span class="token number">3</span>
+        enum_init <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">3</span>
+        enum_item <span class="token operator">=</span> <span class="token number">3</span>
+        func_end <span class="token operator">=</span> <span class="token number">12</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> NotImplementedError<span class="token punctuation">(</span>
+            <span class="token string-interpolation"><span class="token string">f"""num_tokens_for_tools() is not implemented for model </span><span class="token interpolation"><span class="token punctuation">&#123;</span>model<span class="token punctuation">&#125;</span></span><span class="token string">."""</span></span>
+        <span class="token punctuation">)</span>
+    
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>encoding_for_model<span class="token punctuation">(</span>model<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> KeyError<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Warning: model not found. Using o200k_base encoding."</span><span class="token punctuation">)</span>
+        encoding <span class="token operator">=</span> tiktoken<span class="token punctuation">.</span>get_encoding<span class="token punctuation">(</span><span class="token string">"o200k_base"</span><span class="token punctuation">)</span>
+    
+    func_token_count <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>functions<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> f <span class="token keyword">in</span> functions<span class="token punctuation">:</span>
+            func_token_count <span class="token operator">+=</span> func_init  <span class="token comment"># Add tokens for start of each function</span>
+            function <span class="token operator">=</span> f<span class="token punctuation">[</span><span class="token string">"function"</span><span class="token punctuation">]</span>
+            f_name <span class="token operator">=</span> function<span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">]</span>
+            f_desc <span class="token operator">=</span> function<span class="token punctuation">[</span><span class="token string">"description"</span><span class="token punctuation">]</span>
+            <span class="token keyword">if</span> f_desc<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                f_desc <span class="token operator">=</span> f_desc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+            line <span class="token operator">=</span> f_name <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> f_desc
+            func_token_count <span class="token operator">+=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># Add tokens for set name and description</span>
+            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>function<span class="token punctuation">[</span><span class="token string">"parameters"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"properties"</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+                func_token_count <span class="token operator">+=</span> prop_init  <span class="token comment"># Add tokens for start of each property</span>
+                <span class="token keyword">for</span> key <span class="token keyword">in</span> <span class="token builtin">list</span><span class="token punctuation">(</span>function<span class="token punctuation">[</span><span class="token string">"parameters"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"properties"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    func_token_count <span class="token operator">+=</span> prop_key  <span class="token comment"># Add tokens for each set property</span>
+                    p_name <span class="token operator">=</span> key
+                    p_type <span class="token operator">=</span> function<span class="token punctuation">[</span><span class="token string">"parameters"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"properties"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"type"</span><span class="token punctuation">]</span>
+                    p_desc <span class="token operator">=</span> function<span class="token punctuation">[</span><span class="token string">"parameters"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"properties"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"description"</span><span class="token punctuation">]</span>
+                    <span class="token keyword">if</span> <span class="token string">"enum"</span> <span class="token keyword">in</span> function<span class="token punctuation">[</span><span class="token string">"parameters"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"properties"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                        func_token_count <span class="token operator">+=</span> enum_init  <span class="token comment"># Add tokens if property has enum list</span>
+                        <span class="token keyword">for</span> item <span class="token keyword">in</span> function<span class="token punctuation">[</span><span class="token string">"parameters"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"properties"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"enum"</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                            func_token_count <span class="token operator">+=</span> enum_item
+                            func_token_count <span class="token operator">+=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> p_desc<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                        p_desc <span class="token operator">=</span> p_desc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+                    line <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>p_name<span class="token punctuation">&#125;</span></span><span class="token string">:</span><span class="token interpolation"><span class="token punctuation">&#123;</span>p_type<span class="token punctuation">&#125;</span></span><span class="token string">:</span><span class="token interpolation"><span class="token punctuation">&#123;</span>p_desc<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+                    func_token_count <span class="token operator">+=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        func_token_count <span class="token operator">+=</span> func_end
+        
+    messages_token_count <span class="token operator">=</span> num_tokens_from_messages<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> model<span class="token punctuation">)</span>
+    total_tokens <span class="token operator">=</span> messages_token_count <span class="token operator">+</span> func_token_count
+    
+    <span class="token keyword">return</span> total_tokens<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tools <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"function"</span><span class="token punctuation">,</span>
+    <span class="token string">"function"</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"get_current_weather"</span><span class="token punctuation">,</span>
+      <span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"Get the current weather in a given location"</span><span class="token punctuation">,</span>
+      <span class="token string">"parameters"</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"object"</span><span class="token punctuation">,</span>
+        <span class="token string">"properties"</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span>
+            <span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"The city and state, e.g. San Francisco, CA"</span><span class="token punctuation">,</span>
+          <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+          <span class="token string">"unit"</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span> 
+                   <span class="token string">"description"</span><span class="token punctuation">:</span> <span class="token string">"The unit of temperature to return"</span><span class="token punctuation">,</span>
+                   <span class="token string">"enum"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"celsius"</span><span class="token punctuation">,</span> <span class="token string">"fahrenheit"</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"required"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"location"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span>
+
+example_messages <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"You are a helpful assistant that can answer to questions about the weather."</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"What's the weather like in San Francisco?"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> model <span class="token keyword">in</span> <span class="token punctuation">[</span>
+    <span class="token string">"gpt-3.5-turbo"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4o"</span><span class="token punctuation">,</span>
+    <span class="token string">"gpt-4o-mini"</span>
+    <span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>model<span class="token punctuation">)</span>
+    <span class="token comment"># example token count from the function defined above</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"</span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_tokens_for_tools<span class="token punctuation">(</span>tools<span class="token punctuation">,</span> example_messages<span class="token punctuation">,</span> model<span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string"> prompt tokens counted by num_tokens_for_tools()."</span></span><span class="token punctuation">)</span>
+    <span class="token comment"># example token count from the OpenAI API</span>
+    response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>model<span class="token operator">=</span>model<span class="token punctuation">,</span>
+          messages<span class="token operator">=</span>example_messages<span class="token punctuation">,</span>
+          tools<span class="token operator">=</span>tools<span class="token punctuation">,</span>
+          temperature<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'</span><span class="token interpolation"><span class="token punctuation">&#123;</span>response<span class="token punctuation">.</span>usage<span class="token punctuation">.</span>prompt_tokens<span class="token punctuation">&#125;</span></span><span class="token string"> prompt tokens counted by the OpenAI API.'</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gpt-3.5-turbo
+Warning: gpt-3.5-turbo may update over time. Returning num tokens assuming gpt-3.5-turbo-0125.
+<span class="token number">105</span> prompt tokens counted by num_tokens_for_tools<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">105</span> prompt tokens counted by the OpenAI API.
+
+gpt-4
+Warning: gpt-4 may update over time. Returning num tokens assuming gpt-4-0613.
+<span class="token number">105</span> prompt tokens counted by num_tokens_for_tools<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">105</span> prompt tokens counted by the OpenAI API.
+
+gpt-4o
+Warning: gpt-4o and gpt-4o-mini may update over time. Returning num tokens assuming gpt-4o-2024-08-06.
+<span class="token number">101</span> prompt tokens counted by num_tokens_for_tools<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">101</span> prompt tokens counted by the OpenAI API.
+
+gpt-4o-mini
+Warning: gpt-4o-mini may update over time. Returning num tokens assuming gpt-4o-mini-2024-07-18.
+<span class="token number">101</span> prompt tokens counted by num_tokens_for_tools<span class="token punctuation">(</span><span class="token punctuation">)</span>.
+<span class="token number">101</span> prompt tokens counted by the OpenAI API.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百零四篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2025/03/09/00304-tiktoken-xue-xi-bi-ji/">https://luyf-lemon-love.space/2025/03/09/00304-tiktoken-xue-xi-bi-ji/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">深度学习</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">大语言模型</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2025/03/09/00304-tiktoken-xue-xi-bi-ji/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/004-%E9%98%B3%E5%85%89-%E6%88%BF%E9%97%B4-%E5%8E%9F%E7%A5%9E%E7%94%98%E9%9B%A8.jpg" class="responsive-img" alt="00304 tiktoken 学习笔记">
+                        
+                        <span class="card-title">00304 tiktoken 学习笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
+                                    大语言模型
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/03/08/00303-microsoft-markitdown-xue-xi-bi-ji/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/003-%E6%98%9F%E8%90%A4%E5%90%88%E5%BD%B1%E6%B5%81%E8%90%A4%E6%98%9F-%E5%B4%A9%E5%9D%8F%E6%98%9F%E7%A9%B9%E9%93%81%E9%81%93.jpg" class="responsive-img" alt="00303 microsoft markitdown 学习笔记">
+                        
+                        <span class="card-title">00303 microsoft markitdown 学习笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-03-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Python/" class="post-category">
+                                    Python
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Markdown/">
+                        <span class="chip bg-color">Markdown</span>
+                    </a>
+                    
+                    <a href="/tags/Python/">
+                        <span class="chip bg-color">Python</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2025</span>
+            
+            <a href="/about" target="_blank">LuYF-Lemon-love</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "5";
+                        var startDate = "7";
+                        var startHour = "4";
+                        var startMinute = "53";
+                        var startSecond = "32";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+                <span id="icp"><img src="/medias/icp.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="https://beian.miit.gov.cn" target="_blank">冀ICP备2022012632号-1</a>
+            </span>
+            
+            <br>
+            
+                <span id="gongan"><img src="https://cos.luyf-lemon-love.space/images/备案图标.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011618" target="_blank">苏公网安备 32011502011618号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yanfeng98" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:luyanfeng_nlp@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
