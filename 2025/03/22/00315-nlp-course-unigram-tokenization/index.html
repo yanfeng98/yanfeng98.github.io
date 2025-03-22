@@ -489,7 +489,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-03-22
+                    2025-03-23
                 </div>
                 
 
@@ -525,7 +525,11 @@
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
 <li><a href="https://huggingface.co/learn/nlp-course/chapter6/7">NLP Course - Unigram tokenization</a></li>
 </ol>
-<h2 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百一十五篇博文写完，开心！！！！</p>
+<h2 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h2><p>与BPE和WordPiece相比，Unigram的工作方向相反：它从一个大的词汇表开始，从中移除标记，直到达到所需的词汇表大小。构建这个基础词汇表有几种选择：例如，我们可以取预分词单词中最常见的子串，或者在对初始语料库应用BPE时使用较大的词汇表大小。</p>
+<p>在训练的每一步中，Unigram算法都会根据当前的词汇表计算在整个语料库上的损失。然后，对于词汇表中的每个符号，算法计算如果移除该符号，整体损失将增加多少，并寻找那些移除后损失增加最小的符号。这些符号对整个语料库的损失影响较小，因此在某种意义上，它们是“不太需要的”，是移除的最佳候选。</p>
+<p>这是一个非常耗时的操作，因此我们不只是移除与最小损失增加相关的单个符号，而是移除与最小损失增加相关的符号的 p（p是一个可以控制的超参数，通常为10或20）百分比。然后，这个过程会重复进行，直到词汇表达到所需的大小。</p>
+<p>请注意，我们永远不会移除基础字符，以确保任何单词都可以被分词。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百一十五篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
