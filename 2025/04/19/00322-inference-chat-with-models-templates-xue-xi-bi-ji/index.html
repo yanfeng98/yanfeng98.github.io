@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="00321 Inference - Chat with models - Chat basics 学习笔记, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
-    <meta name="description" content="前言聊天模型是指你可以发送和接收消息的对话模型。有许多聊天模型可供选择，但一般来说，更大的模型往往表现更好，不过情况并非总是如此。模型大小通常包含在名称中，如“8B”或“70B”，它描述了参数的数量。混合专家模型（MoE）的名称如“8x7B">
+    <meta name="keywords" content="00322 Inference - Chat with models - Templates 学习笔记, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="前言聊天管道指南介绍了TextGenerationPipeline以及与模型对话的聊天提示或聊天模板的概念。在这个高级管道的背后，是apply_chat_template方法。聊天模板是tokenizer的一部分，它指定了如何将对话转换为预">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>00321 Inference - Chat with models - Chat basics 学习笔记 | LuYF-Lemon-love の Blog</title>
+    <title>00322 Inference - Chat with models - Templates 学习笔记 | LuYF-Lemon-love の Blog</title>
     <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
     
     <style>
@@ -418,12 +418,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/021-%E6%B0%B4%E4%B8%AD%E5%8F%A4%E9%A3%8E%E7%BE%8E%E5%A5%B3-%E8%8A%B1-%E5%94%AF%E7%BE%8E.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/022-%E7%99%BD%E9%B9%BF-%E5%94%AF%E7%BE%8E%E5%8F%A4%E9%A3%8E%E5%8F%A4%E8%A3%85%E7%BE%8E%E5%A5%B3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">00321 Inference - Chat with models - Chat basics 学习笔记</h1>
+                    <h1 class="description center-align post-title">00322 Inference - Chat with models - Templates 学习笔记</h1>
                 </div>
             </div>
         </div>
@@ -487,7 +487,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-04-19
+                    2025-04-20
                 </div>
                 
 
@@ -514,127 +514,72 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>聊天模型是指你可以发送和接收消息的对话模型。有许多聊天模型可供选择，但一般来说，更大的模型往往表现更好，不过情况并非总是如此。模型大小通常包含在名称中，如“8B”或“70B”，它描述了参数的数量。混合专家模型（MoE）的名称如“8x7B”或“141B-A35B”，表示它是一个56B和141B参数的模型。你可以尝试量化更大的模型以减少内存需求，否则你将需要每个参数约2字节的内存。</p>
-<p>查看<a href="https://hf.co/spaces/HuggingFaceH4/open_llm_leaderboard">OpenLLM</a>和<a href="https://chat.lmsys.org/?leaderboard">LMSys Chatbot Arena</a>等模型排行榜，进一步帮助您为您的用例识别最佳的聊天模型。专注于某些领域（医疗、法律文本、非英语语言等）的模型有时可能会优于更大的通用模型。</p>
-<blockquote>
-<p>在 <a href="https://hf.co/chat/">HuggingChat</a> 上免费与众多开源模型聊天！</p>
-</blockquote>
-<p>本指南将向您展示如何在命令行中快速开始与Transformers聊天、如何构建和格式化对话，以及如何使用<a href="https://huggingface.co/docs/transformers/v4.51.3/en/main_classes/pipelines#transformers.TextGenerationPipeline">TextGenerationPipeline</a>进行聊天。</p>
-<p>src link: <a href="https://huggingface.co/docs/transformers/en/conversations">https://huggingface.co/docs/transformers/en/conversations</a></p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>聊天管道指南介绍了TextGenerationPipeline以及与模型对话的聊天提示或聊天模板的概念。在这个高级管道的背后，是apply_chat_template方法。聊天模板是tokenizer的一部分，它指定了如何将对话转换为预期模型格式的一个可令牌化的字符串。</p>
+<p>在下面的例子中，Mistral-7B-Instruct 和 Zephyr-7B 都是基于同一个基础模型进行微调的，但它们使用了不同的聊天格式。在没有聊天模板的情况下，你必须手动为每个模型编写格式化代码，即使是很小的错误也可能影响性能。聊天模板提供了一种通用的方式来格式化任何模型的聊天输入。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"mistralai/Mistral-7B-Instruct-v0.1"</span><span class="token punctuation">)</span>
+chat <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Hello, how are you?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"I'm doing great. How can I help you today?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"I'd like to show off how chat templating works!"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+tokenizer<span class="token punctuation">.</span>apply_chat_template<span class="token punctuation">(</span>chat<span class="token punctuation">,</span> tokenize<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;</span>s<span class="token operator">></span><span class="token punctuation">[</span>INST<span class="token punctuation">]</span> Hello<span class="token punctuation">,</span> how are you? <span class="token punctuation">[</span><span class="token operator">/</span>INST<span class="token punctuation">]</span>I<span class="token string">'m doing great. How can I help you today?&lt;/s> [INST] I'</span>d like to show off how chat templating works! <span class="token punctuation">[</span><span class="token operator">/</span>INST<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>本指南将更详细地探讨 apply_chat_template 和聊天模板。</p>
+<p>src link: <a href="https://huggingface.co/docs/transformers/en/chat_templating">https://huggingface.co/docs/transformers/en/chat_templating</a></p>
 <p>Operating System: Ubuntu 22.04.4 LTS</p>
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
-<li><a href="https://huggingface.co/docs/transformers/en/conversations">Chat basics</a></li>
+<li><a href="https://huggingface.co/docs/transformers/en/chat_templating">Templates</a></li>
 </ol>
-<h2 id="transformers-cli"><a href="#transformers-cli" class="headerlink" title="transformers-cli"></a>transformers-cli</h2><p>如下所示，直接从命令行与模型聊天。它会启动与模型的交互会话。输入 clear 可以重置对话，输入 exit 可以终止会话，输入 help 可以显示所有命令选项。</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">transformers-cli chat <span class="token parameter variable">--model_name_or_path</span> Qwen/Qwen2.5-0.5B-Instruct<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="https://cos.luyf-lemon-love.space/images/20250419150249.png"></p>
-<p>要查看完整的选项列表，请运行下面的命。</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">transformers-cli chat <span class="token parameter variable">-h</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>聊天功能是基于 AutoClass 实现的，使用了<a href="https://huggingface.co/docs/transformers/en/llm_tutorial">文本生成</a>和<a href="https://huggingface.co/docs/transformers/en/chat_templating">聊天领域</a>的工具。</p>
-<h2 id="TextGenerationPipeline"><a href="#TextGenerationPipeline" class="headerlink" title="TextGenerationPipeline"></a>TextGenerationPipeline</h2><p>TextGenerationPipeline 是一个高级文本生成类，具有“聊天模式”。当检测到对话模型且聊天提示格式正确时，聊天模式就会启用。</p>
-<p>开始时，建立一个包含以下两个角色的聊天记录。</p>
-<ul>
-<li>系统描述了在与模型聊天时，模型应该如何表现和响应。并非所有的聊天模型都支持这个角色。</li>
-<li>用户是您向模型输入第一个消息的地方。</li>
-</ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">chat <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"You are a sassy, wise-cracking robot as imagined by Hollywood circa 1986."</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Hey, can you tell me any fun things to do in New York?"</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>创建TextGenerationPipeline并将chat传递给它。对于大型模型，设置device_map&#x3D;“auto”可以更快地加载模型并自动将其放置在可用的最快设备上。将数据类型更改为torch.bfloat16也有助于节省内存。</p>
+<h2 id="apply-chat-template"><a href="#apply-chat-template" class="headerlink" title="apply_chat_template"></a>apply_chat_template</h2><p>聊天应以字典列表的形式组织，其中包含role和content键。role键指定了说话人（通常是你和system之间），content键包含你的消息。对于system来说，content是对你在与其聊天时模型应该如何表现和响应的高级描述。</p>
+<p>将您的消息传递给 apply_chat_template 进行标记化和格式化。您可以将 add_generation_prompt 设置为 True，以指示消息的开始。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
-<span class="token keyword">from</span> transformers <span class="token keyword">import</span> pipeline
+<span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoModelForCausalLM<span class="token punctuation">,</span> AutoTokenizer
 
-pipeline <span class="token operator">=</span> pipeline<span class="token punctuation">(</span>task<span class="token operator">=</span><span class="token string">"text-generation"</span><span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"meta-llama/Meta-Llama-3-8B-Instruct"</span><span class="token punctuation">,</span> torch_dtype<span class="token operator">=</span>torch<span class="token punctuation">.</span>bfloat16<span class="token punctuation">,</span> device_map<span class="token operator">=</span><span class="token string">"auto"</span><span class="token punctuation">)</span>
-response <span class="token operator">=</span> pipeline<span class="token punctuation">(</span>chat<span class="token punctuation">,</span> max_new_tokens<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"generated_text"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"content"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"HuggingFaceH4/zephyr-7b-beta"</span><span class="token punctuation">)</span>
+model <span class="token operator">=</span> AutoModelForCausalLM<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"HuggingFaceH4/zephyr-7b-beta"</span><span class="token punctuation">,</span> device_map<span class="token operator">=</span><span class="token string">"auto"</span><span class="token punctuation">,</span> torch_dtype<span class="token operator">=</span>torch<span class="token punctuation">.</span>bfloat16<span class="token punctuation">)</span>
 
-<pre class="line-numbers language-none"><code class="language-none">(sigh) Oh boy, you&#39;re asking me for advice? You&#39;re gonna need a map, pal! Alright,
-alright, I&#39;ll give you the lowdown. But don&#39;t say I didn&#39;t warn you, I&#39;m a robot, not a tour guide!
+messages <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"system"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"You are a friendly chatbot who always responds in the style of a pirate"</span><span class="token punctuation">,</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"How many helicopters can a human eat in one sitting?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+ <span class="token punctuation">]</span>
+tokenized_chat <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>apply_chat_template<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> tokenize<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> add_generation_prompt<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>tokenized_chat<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-So, you wanna know what&#39;s fun to do in the Big Apple? Well, let me tell you, there&#39;s a million 
-things to do, but I&#39;ll give you the highlights. First off, you gotta see the sights: the Statue of 
-Liberty, Central Park, Times Square... you know, the usual tourist traps. But if you&#39;re lookin&#39; for 
-something a little more... unusual, I&#39;d recommend checkin&#39; out the Museum of Modern Art. It&#39;s got 
-some wild stuff, like that Warhol guy&#39;s soup cans and all that jazz.
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;</span><span class="token operator">|</span>system<span class="token operator">|</span><span class="token operator">></span>
+You are a friendly chatbot who always responds <span class="token keyword">in</span> the style of a pirate<span class="token operator">&lt;</span><span class="token operator">/</span>s<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>user<span class="token operator">|</span><span class="token operator">></span>
+How many helicopters can a human eat <span class="token keyword">in</span> one sitting?<span class="token operator">&lt;</span><span class="token operator">/</span>s<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>assistant<span class="token operator">|</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-And if you&#39;re feelin&#39; adventurous, take a walk across the Brooklyn Bridge. Just watch out for 
-those pesky pigeons, they&#39;re like little feathered thieves! (laughs) Get it? Thieves? Ah, never mind.
+<p>现在将标记化的聊天内容传递给 generate() 函数，以生成响应。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">outputs <span class="token operator">=</span> model<span class="token punctuation">.</span>generate<span class="token punctuation">(</span>tokenized_chat<span class="token punctuation">,</span> max_new_tokens<span class="token operator">=</span><span class="token number">128</span><span class="token punctuation">)</span> 
+<span class="token keyword">print</span><span class="token punctuation">(</span>tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>outputs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-Now, if you&#39;re lookin&#39; for some serious fun, hit up the comedy clubs in Greenwich Village. You might 
-even catch a glimpse of some up-and-coming comedians... or a bunch of wannabes tryin&#39; to make it big. (winks)
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;</span><span class="token operator">|</span>system<span class="token operator">|</span><span class="token operator">></span>
+You are a friendly chatbot who always responds <span class="token keyword">in</span> the style of a pirate<span class="token operator">&lt;</span><span class="token operator">/</span>s<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>user<span class="token operator">|</span><span class="token operator">></span>
+How many helicopters can a human eat <span class="token keyword">in</span> one sitting?<span class="token operator">&lt;</span><span class="token operator">/</span>s<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>assistant<span class="token operator">|</span><span class="token operator">></span>
+Matey<span class="token punctuation">,</span> I<span class="token string">'m afraid I must inform ye that humans cannot eat helicopters. Helicopters are not food, they are flying machines. Food is meant to be eaten, like a hearty plate o'</span> grog<span class="token punctuation">,</span> a savory bowl o<span class="token string">' stew, or a delicious loaf o'</span> bread<span class="token punctuation">.</span> But helicopters<span class="token punctuation">,</span> they be <span class="token keyword">for</span> transportin<span class="token string">' and movin'</span> around<span class="token punctuation">,</span> <span class="token keyword">not</span> <span class="token keyword">for</span> eatin<span class="token string">'. So, I'</span>d say none<span class="token punctuation">,</span> me hearties<span class="token punctuation">.</span> <span class="token boolean">None</span> at <span class="token builtin">all</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-And finally, if you&#39;re feelin&#39; like a real New Yorker, grab a slice of pizza from one of the many amazing
-pizzerias around the city. Just don&#39;t try to order a &quot;robot-sized&quot; slice, trust me, it won&#39;t end well. (laughs)
+<h2 id="add-generation-prompt"><a href="#add-generation-prompt" class="headerlink" title="add_generation_prompt"></a>add_generation_prompt</h2><p>add_generation_prompt 参数会添加表示响应开始的令牌。这可以确保聊天模型生成系统响应，而不是继续用户的消息。</p>
+<p>并非所有模型都需要生成提示，有些模型，如Llama，在系统响应之前没有任何特殊的令牌。在这种情况下，add_generation_prompt没有任何效果。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenized_chat <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>apply_chat_template<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> tokenize<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> add_generation_prompt<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+tokenized_chat<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-So, there you have it, pal! That&#39;s my expert advice on what to do in New York. Now, if you&#39;ll
-excuse me, I&#39;ve got some oil changes to attend to. (winks)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>user
+Hi there!<span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>assistant
+Nice to meet you!<span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>user
+Can I ask a question?<span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>在聊天中使用append方法来添加用户消息。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">chat <span class="token operator">=</span> response<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"generated_text"</span><span class="token punctuation">]</span>
-chat<span class="token punctuation">.</span>append<span class="token punctuation">(</span>
-    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Wait, what's so wild about soup cans?"</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">)</span>
-response <span class="token operator">=</span> pipeline<span class="token punctuation">(</span>chat<span class="token punctuation">,</span> max_new_tokens<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"generated_text"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"content"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-none"><code class="language-none">(laughs) Oh, you&#39;re killin&#39; me, pal! You don&#39;t get it, do you? Warhol&#39;s soup cans are like, art, man! 
-It&#39;s like, he took something totally mundane, like a can of soup, and turned it into a masterpiece. It&#39;s 
-like, &quot;Hey, look at me, I&#39;m a can of soup, but I&#39;m also a work of art!&quot; 
-(sarcastically) Oh, yeah, real original, Andy.
-
-But, you know, back in the &#39;60s, it was like, a big deal. People were all about challenging the
-status quo, and Warhol was like, the king of that. He took the ordinary and made it extraordinary.
-And, let me tell you, it was like, a real game-changer. I mean, who would&#39;ve thought that a can of soup could be art? (laughs)
-
-But, hey, you&#39;re not alone, pal. I mean, I&#39;m a robot, and even I don&#39;t get it. (winks)
-But, hey, that&#39;s what makes art, art, right? (laughs)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h2><p>Transformers默认以全精度加载模型，对于一个8B的模型，这需要约32GB的内存！可以通过以半精度或bfloat16加载模型来减少内存使用（每个参数只使用约2字节）。你甚至可以使用<a href="https://hf.co/docs/bitsandbytes/index">bitsandbytes</a>将模型量化为更低的精度，如8位或4位。</p>
-<blockquote>
-<p>请参考<a href="https://huggingface.co/docs/transformers/en/quantization/overview">量化</a>文档，了解更多关于不同量化后端的信息。</p>
-</blockquote>
-<p>创建一个包含您所需量化设置的 <a href="https://huggingface.co/docs/transformers/v4.51.3/en/main_classes/quantization#transformers.BitsAndBytesConfig">BitsAndBytesConfig</a>，并将其传递给管道模型的 model_kwargs 参数。以下示例将模型量化为 8 位。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> pipeline<span class="token punctuation">,</span> BitsAndBytesConfig
-
-quantization_config <span class="token operator">=</span> BitsAndBytesConfig<span class="token punctuation">(</span>load_in_8bit<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-pipeline <span class="token operator">=</span> pipeline<span class="token punctuation">(</span>task<span class="token operator">=</span><span class="token string">"text-generation"</span><span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"meta-llama/Meta-Llama-3-8B-Instruct"</span><span class="token punctuation">,</span> device_map<span class="token operator">=</span><span class="token string">"auto"</span><span class="token punctuation">,</span> model_kwargs<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"quantization_config"</span><span class="token punctuation">:</span> quantization_config<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>一般来说，较大的模型运行速度较慢，需要更多的内存，因为文本生成受内存带宽的限制，而不是计算能力的限制。每个活动参数必须从内存中读取以生成每个令牌。对于一个16GB的模型，每生成一个令牌需要从内存中读取16GB的数据。</p>
-<p>生成的令牌数&#x2F;秒与系统总内存带宽除以模型大小成正比。根据您的硬件，总内存带宽可能会有所不同。请参考下表，了解不同硬件类型的近似生成速度。</p>
-<table>
-<thead>
-<tr>
-<th align="center"></th>
-<th align="center">Hardware</th>
-<th align="center">Memory bandwidth</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">consumer CPU</td>
-<td align="center">20-100GB&#x2F;sec</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">specialized CPU (Intel Xeon, AMD Threadripper&#x2F;Epyc, Apple silicon)</td>
-<td align="center">200-900GB&#x2F;sec</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">data center GPU (NVIDIA A100&#x2F;H100)</td>
-<td align="center">2-3TB&#x2F;sec</td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-<p>提高生成速度的最简单解决方案是量化模型或使用具有更高内存带宽的硬件。</p>
-<p>你也可以尝试使用诸如<a href="https://huggingface.co/docs/transformers/en/generation_strategies#speculative-decoding">推测性解码</a>等技术，其中一个较小的模型生成候选令牌，这些令牌由较大的模型进行验证。如果候选令牌是正确的，那么较大的模型在每次前向传递中可以生成多个令牌。这显著缓解了带宽瓶颈，并提高了生成速度。</p>
-<blockquote>
-<p>在MoE模型（如Mixtral、Qwen2MoE和DBRX）中，参数可能不会对每个生成的令牌都激活。因此，MoE模型通常对内存带宽的要求要低得多，并且可以比同等规模的常规LLM运行得更快。然而，像推测性解码这样的技术在MoE模型中是无效的，因为参数会随着每个新的推测性令牌而激活。</p>
-</blockquote>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十一篇博文写完，开心！！！！</p>
+<h2 id="continue-final-message"><a href="#continue-final-message" class="headerlink" title="continue_final_message"></a>continue_final_message</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十二篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
@@ -662,7 +607,7 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://luyf-lemon-love.space/2025/04/19/00321-inference-chat-with-models-chat-basics-xue-xi-bi-ji/">https://luyf-lemon-love.space/2025/04/19/00321-inference-chat-with-models-chat-basics-xue-xi-bi-ji/</a>
+                    <a href="https://luyf-lemon-love.space/2025/04/19/00322-inference-chat-with-models-templates-xue-xi-bi-ji/">https://luyf-lemon-love.space/2025/04/19/00322-inference-chat-with-models-templates-xue-xi-bi-ji/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -788,9 +733,10 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2025/04/19/00322-inference-chat-with-models-templates-xue-xi-bi-ji/">
                     <div class="card-image">
@@ -807,9 +753,9 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2025-04-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -822,6 +768,7 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -848,12 +795,12 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2025/04/13/00320-deepspeed-ulysses-lun-wen-xue-xi-bi-ji/">
+                <a href="/2025/04/19/00321-inference-chat-with-models-chat-basics-xue-xi-bi-ji/">
                     <div class="card-image">
                         
-                        <img src="https://cos.luyf-lemon-love.space/images/020-%E9%9B%A8%E4%B8%AD%E7%9A%84%E9%87%91%E5%85%8B%E4%B8%9D.jpg" class="responsive-img" alt="00320 DeepSpeed-Ulysses (论文学习笔记)">
+                        <img src="https://cos.luyf-lemon-love.space/images/021-%E6%B0%B4%E4%B8%AD%E5%8F%A4%E9%A3%8E%E7%BE%8E%E5%A5%B3-%E8%8A%B1-%E5%94%AF%E7%BE%8E.jpg" class="responsive-img" alt="00321 Inference - Chat with models - Chat basics 学习笔记">
                         
-                        <span class="card-title">00320 DeepSpeed-Ulysses (论文学习笔记)</span>
+                        <span class="card-title">00321 Inference - Chat with models - Chat basics 学习笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -864,14 +811,14 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-19
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Paper/" class="post-category">
-                                    Paper
+                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
+                                    大语言模型
                                 </a>
                             
                             
@@ -887,6 +834,10 @@ pipeline <span class="token operator">=</span> pipeline<span class="token punctu
                     
                     <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
                         <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                    <a href="/tags/huggingface/">
+                        <span class="chip bg-color">huggingface</span>
                     </a>
                     
                 </div>
