@@ -579,7 +579,73 @@ Nice to meet you!<span class="token operator">&lt;</span><span class="token oper
 <span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>user
 Can I ask a question?<span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="continue-final-message"><a href="#continue-final-message" class="headerlink" title="continue_final_message"></a>continue_final_message</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十二篇博文写完，开心！！！！</p>
+<h2 id="continue-final-message"><a href="#continue-final-message" class="headerlink" title="continue_final_message"></a>continue_final_message</h2><p>continue_final_message 参数控制聊天中的最后一条消息是否应该继续生成，而不是开始一条新消息。它会删除序列结束标记，以便模型从最后一条消息继续生成。</p>
+<p>这对于“预填充”模型响应很有用。在下面的例子中，模型生成的文本会继续 JSON 字符串，而不是开始一条新消息。当你知道如何启动它的回复时，这对于提高指令跟随的准确性非常有用。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">chat <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Can you format the answer in JSON?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">'&#123;"name": "'</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+
+formatted_chat <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>apply_chat_template<span class="token punctuation">(</span>chat<span class="token punctuation">,</span> tokenize<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> return_dict<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> continue_final_message<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+model<span class="token punctuation">.</span>generate<span class="token punctuation">(</span><span class="token operator">**</span>formatted_chat<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>你不应该同时使用 add_generation_prompt 和 continue_final_message。前者会添加开始新消息的令牌，而后者会删除序列结束令牌。同时使用它们会返回一个错误。</p>
+</blockquote>
+<p>TextGenerationPipeline默认将add_generation_prompt设置为True，以开始一条新消息。然而，如果聊天中的最后一条消息具有“assistant”角色，它会假设该消息是预填充内容，并切换到continue_final_message&#x3D;True。这是因为大多数模型不支持多个连续的助手消息。要覆盖此行为，请显式地将continue_final_message传递给管道。</p>
+<h2 id="Multiple-templates"><a href="#Multiple-templates" class="headerlink" title="Multiple templates"></a>Multiple templates</h2><p>一个模型可能有几个不同的模板，用于不同的用例。例如，一个模型可能有一个用于常规聊天、工具使用和RAG的模板。</p>
+<p>当有多个模板时，聊天模板是一个字典。每个键对应一个模板的名称。apply_chat_template根据模板的名称处理多个模板。在大多数情况下，它会寻找名为”default”的模板，如果找不到，就会抛出一个错误。</p>
+<p>对于一个调用工具的模板，如果用户传递了一个工具参数，并且存在一个tool_use模板，那么这个工具调用模板将被使用，而不是默认模板。</p>
+<p>如果要访问其他名称的模板，请在 apply_chat_template 中将模板名称传递给 chat_template 参数。例如，如果您正在使用 RAG 模板，则应设置 chat_template&#x3D;”rag”。</p>
+<p>然而，管理多个模板可能会让人感到困惑，所以我们建议在所有用例中使用单一模板。使用 Jinja 语句，如 if tools is defined 和 <code>&#123;% macro %&#125;</code> 定义来在单一模板中封装多个代码路径。</p>
+<h2 id="Template-selection"><a href="#Template-selection" class="headerlink" title="Template selection"></a>Template selection</h2><p>重要的是要设置一个与模型预训练时使用的模板格式相匹配的聊天模板格式，否则性能可能会受到影响。即使你正在进一步训练模型，如果保持聊天令牌不变，性能也会更好。</p>
+<p>如果你正在从零开始训练模型或为聊天应用微调模型，你就有更多选择来选择模板。例如，<a href="https://github.com/openai/openai-python/blob/release-v0.28.0/chatml.md">ChatML</a>是一种流行的格式，足够灵活，可以处理许多用例。它甚至包括对生成提示的支持，但不添加字符串开始（BOS）或字符串结束（EOS）标记。如果你的模型需要BOS和EOS标记，请设置add_special_tokens&#x3D;True，并确保在你的模板中添加它们。</p>
+<pre class="line-numbers language-jinja" data-language="jinja"><code class="language-jinja">&#123;%- for message in messages %&#125;
+    &#123;&#123;- &#39;&lt;|im_start|&gt;&#39; + message[&#39;role&#39;] + &#39;\n&#39; + message[&#39;content&#39;] + &#39;&lt;|im_end|&gt;&#39; + &#39;\n&#39; &#125;&#125;
+&#123;%- endfor %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>设置以下逻辑的模板以支持生成提示。模板用 <code>&lt;|im_start|&gt;</code> 和 <code>&lt;|im_end|&gt;</code> 标记包裹每条消息，并将角色作为字符串输出。这使您可以轻松定制要训练的角色。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>chat_template <span class="token operator">=</span> <span class="token string">"&#123;% if not add_generation_prompt is defined %&#125;&#123;% set add_generation_prompt = false %&#125;&#123;% endif %&#125;&#123;% for message in messages %&#125;&#123;&#123;'&lt;|im_start|>' + message['role'] + '\n' + message['content'] + '&lt;|im_end|>' + '\n'&#125;&#125;&#123;% endfor %&#125;&#123;% if add_generation_prompt %&#125;&#123;&#123; '&lt;|im_start|>assistant\n' &#125;&#125;&#123;% endif %&#125;"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>用户、系统和助手角色是聊天模板中的标准角色。我们建议在合适的情况下使用这些角色，特别是当你将模型与TextGenerationPipeline一起使用时。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>system
+You are a helpful chatbot that will do its best <span class="token keyword">not</span> to say anything so stupid that people tweet about it<span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>user
+How are you?<span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>im_start<span class="token operator">|</span><span class="token operator">></span>assistant
+I'm doing great!<span class="token operator">&lt;</span><span class="token operator">|</span>im_end<span class="token operator">|</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Model-training"><a href="#Model-training" class="headerlink" title="Model training"></a>Model training</h2><p>使用聊天模板训练模型是一种很好的方法，可以确保聊天模板与模型训练时使用的令牌相匹配。在数据集中应用聊天模板作为预处理步骤。设置add_generation_prompt&#x3D;False，因为在训练过程中提示助手响应的额外令牌并无帮助。</p>
+<p>以下是一个使用聊天模板预处理数据集的示例。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer
+<span class="token keyword">from</span> datasets <span class="token keyword">import</span> Dataset
+
+tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span><span class="token string">"HuggingFaceH4/zephyr-7b-beta"</span><span class="token punctuation">)</span>
+
+chat1 <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Which is bigger, the moon or the sun?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"The sun."</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span>
+chat2 <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"Which is bigger, a virus or a bacterium?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"A bacterium."</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span>
+
+dataset <span class="token operator">=</span> Dataset<span class="token punctuation">.</span>from_dict<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"chat"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>chat1<span class="token punctuation">,</span> chat2<span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+dataset <span class="token operator">=</span> dataset<span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> <span class="token punctuation">&#123;</span><span class="token string">"formatted_chat"</span><span class="token punctuation">:</span> tokenizer<span class="token punctuation">.</span>apply_chat_template<span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">"chat"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> tokenize<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> add_generation_prompt<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dataset<span class="token punctuation">[</span><span class="token string">'formatted_chat'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;</span><span class="token operator">|</span>user<span class="token operator">|</span><span class="token operator">></span>
+Which <span class="token keyword">is</span> bigger<span class="token punctuation">,</span> the moon <span class="token keyword">or</span> the sun?<span class="token operator">&lt;</span><span class="token operator">/</span>s<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">|</span>assistant<span class="token operator">|</span><span class="token operator">></span>
+The sun<span class="token punctuation">.</span><span class="token operator">&lt;</span><span class="token operator">/</span>s<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>完成此步骤后，您可以继续按照训练因果语言模型的教程，使用formatted_chat列。</p>
+<p>一些标记器会添加特殊的<code>&lt;bos&gt;</code>和<code>&lt;eos&gt;</code>标记。聊天模板应该包含所有必要的特殊标记，添加额外的特殊标记通常是错误的或重复的，会损害模型性能。当使用apply_chat_template(tokenize&#x3D;False)格式化文本时，请确保也将add_special_tokens&#x3D;False设置为false，以避免重复使用它们。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">apply_chat_template<span class="token punctuation">(</span>messages<span class="token punctuation">,</span> tokenize<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> add_special_tokens<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果使用 apply_chat_template(tokenize&#x3D;True)，这个问题就不会出现。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十二篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
