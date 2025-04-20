@@ -498,7 +498,7 @@ vLLM速度很快：
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-02-27
+                    2025-04-20
                 </div>
                 
 
@@ -708,6 +708,151 @@ content <span class="token operator">=</span> response<span class="token punctua
 
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"reasoning_content:"</span><span class="token punctuation">,</span> reasoning_content<span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"content:"</span><span class="token punctuation">,</span> content<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="OpenAI-Chat-Completion-With-Reasoning"><a href="#OpenAI-Chat-Completion-With-Reasoning" class="headerlink" title="OpenAI Chat Completion With Reasoning"></a>OpenAI Chat Completion With Reasoning</h2><blockquote>
+<p>link: <a href="https://docs.vllm.ai/en/latest/getting_started/examples/openai_chat_completion_with_reasoning.html">https://docs.vllm.ai/en/latest/getting_started/examples/openai_chat_completion_with_reasoning.html</a></p>
+</blockquote>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># SPDX-License-Identifier: Apache-2.0</span>
+<span class="token triple-quoted-string string">"""
+An example shows how to generate chat completions from reasoning models
+like DeepSeekR1.
+
+To run this example, you need to start the vLLM server
+with the reasoning parser:
+
+vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B \
+     --enable-reasoning --reasoning-parser deepseek_r1
+
+This example demonstrates how to generate chat completions from reasoning models
+using the OpenAI Python client library.
+"""</span>
+
+<span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
+
+<span class="token comment"># Modify OpenAI's API key and API base to use vLLM's API server.</span>
+openai_api_key <span class="token operator">=</span> <span class="token string">"EMPTY"</span>
+openai_api_base <span class="token operator">=</span> <span class="token string">"http://localhost:8000/v1"</span>
+
+
+<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    client <span class="token operator">=</span> OpenAI<span class="token punctuation">(</span>
+        api_key<span class="token operator">=</span>openai_api_key<span class="token punctuation">,</span>
+        base_url<span class="token operator">=</span>openai_api_base<span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+
+    models <span class="token operator">=</span> client<span class="token punctuation">.</span>models<span class="token punctuation">.</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    model <span class="token operator">=</span> models<span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">id</span>
+
+    <span class="token comment"># Round 1</span>
+    messages <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"9.11 and 9.8, which is greater?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span>
+    <span class="token comment"># ruff: noqa: E501</span>
+    <span class="token comment"># For granite, add: `extra_body=&#123;"chat_template_kwargs": &#123;"thinking": True&#125;&#125;`</span>
+    response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>model<span class="token operator">=</span>model<span class="token punctuation">,</span> messages<span class="token operator">=</span>messages<span class="token punctuation">)</span>
+
+    reasoning_content <span class="token operator">=</span> response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>reasoning_content
+    content <span class="token operator">=</span> response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>content
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"reasoning_content for Round 1:"</span><span class="token punctuation">,</span> reasoning_content<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"content for Round 1:"</span><span class="token punctuation">,</span> content<span class="token punctuation">)</span>
+
+    <span class="token comment"># Round 2</span>
+    messages<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"assistant"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> content<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    messages<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        <span class="token string">"role"</span><span class="token punctuation">:</span>
+        <span class="token string">"user"</span><span class="token punctuation">,</span>
+        <span class="token string">"content"</span><span class="token punctuation">:</span>
+        <span class="token string">"How many Rs are there in the word 'strawberry'?"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    response <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>model<span class="token operator">=</span>model<span class="token punctuation">,</span> messages<span class="token operator">=</span>messages<span class="token punctuation">)</span>
+
+    reasoning_content <span class="token operator">=</span> response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>reasoning_content
+    content <span class="token operator">=</span> response<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span>content
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"reasoning_content for Round 2:"</span><span class="token punctuation">,</span> reasoning_content<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"content for Round 2:"</span><span class="token punctuation">,</span> content<span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="OpenAI-Chat-Completion-With-Reasoning-Streaming"><a href="#OpenAI-Chat-Completion-With-Reasoning-Streaming" class="headerlink" title="OpenAI Chat Completion With Reasoning Streaming"></a>OpenAI Chat Completion With Reasoning Streaming</h2><blockquote>
+<p>link: <a href="https://docs.vllm.ai/en/latest/getting_started/examples/openai_chat_completion_with_reasoning_streaming.html">https://docs.vllm.ai/en/latest/getting_started/examples/openai_chat_completion_with_reasoning_streaming.html</a></p>
+</blockquote>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># SPDX-License-Identifier: Apache-2.0</span>
+<span class="token triple-quoted-string string">"""
+An example shows how to generate chat completions from reasoning models
+like DeepSeekR1.
+
+To run this example, you need to start the vLLM server with the reasoning
+parser:
+
+vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B \
+     --enable-reasoning --reasoning-parser deepseek_r1
+
+Unlike openai_chat_completion_with_reasoning.py, this example demonstrates the
+streaming chat completions feature.
+
+The streaming chat completions feature allows you to receive chat completions
+in real-time as they are generated by the model. This is useful for scenarios
+where you want to display chat completions to the user as they are generated
+by the model.
+
+Remember to check content and reasoning_content exist in `ChatCompletionChunk`,
+content may not exist leading to errors if you try to access it.
+"""</span>
+
+<span class="token keyword">from</span> openai <span class="token keyword">import</span> OpenAI
+
+<span class="token comment"># Modify OpenAI's API key and API base to use vLLM's API server.</span>
+openai_api_key <span class="token operator">=</span> <span class="token string">"EMPTY"</span>
+openai_api_base <span class="token operator">=</span> <span class="token string">"http://localhost:8000/v1"</span>
+
+messages <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string">"9.11 and 9.8, which is greater?"</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span>
+
+
+<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    client <span class="token operator">=</span> OpenAI<span class="token punctuation">(</span>
+        api_key<span class="token operator">=</span>openai_api_key<span class="token punctuation">,</span>
+        base_url<span class="token operator">=</span>openai_api_base<span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+
+    models <span class="token operator">=</span> client<span class="token punctuation">.</span>models<span class="token punctuation">.</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    model <span class="token operator">=</span> models<span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">id</span>
+
+    <span class="token comment"># ruff: noqa: E501</span>
+    <span class="token comment"># For granite: add: `extra_body=&#123;"chat_template_kwargs": &#123;"thinking": True&#125;&#125;`</span>
+    stream <span class="token operator">=</span> client<span class="token punctuation">.</span>chat<span class="token punctuation">.</span>completions<span class="token punctuation">.</span>create<span class="token punctuation">(</span>model<span class="token operator">=</span>model<span class="token punctuation">,</span>
+                                            messages<span class="token operator">=</span>messages<span class="token punctuation">,</span>
+                                            stream<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"client: Start streaming chat completions..."</span><span class="token punctuation">)</span>
+    printed_reasoning_content <span class="token operator">=</span> <span class="token boolean">False</span>
+    printed_content <span class="token operator">=</span> <span class="token boolean">False</span>
+
+    <span class="token keyword">for</span> chunk <span class="token keyword">in</span> stream<span class="token punctuation">:</span>
+        reasoning_content <span class="token operator">=</span> <span class="token boolean">None</span>
+        content <span class="token operator">=</span> <span class="token boolean">None</span>
+        <span class="token comment"># Check the content is reasoning_content or content</span>
+        <span class="token keyword">if</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>chunk<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>delta<span class="token punctuation">,</span> <span class="token string">"reasoning_content"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            reasoning_content <span class="token operator">=</span> chunk<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>delta<span class="token punctuation">.</span>reasoning_content
+        <span class="token keyword">elif</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>chunk<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>delta<span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            content <span class="token operator">=</span> chunk<span class="token punctuation">.</span>choices<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>delta<span class="token punctuation">.</span>content
+
+        <span class="token keyword">if</span> reasoning_content <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token keyword">not</span> printed_reasoning_content<span class="token punctuation">:</span>
+                printed_reasoning_content <span class="token operator">=</span> <span class="token boolean">True</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"reasoning_content:"</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">""</span><span class="token punctuation">,</span> flush<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>reasoning_content<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">""</span><span class="token punctuation">,</span> flush<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> content <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token keyword">not</span> printed_content<span class="token punctuation">:</span>
+                printed_content <span class="token operator">=</span> <span class="token boolean">True</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\ncontent:"</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">""</span><span class="token punctuation">,</span> flush<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+            <span class="token comment"># Extract and print the content</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>content<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">""</span><span class="token punctuation">,</span> flush<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="Basic-With-Model-Default-Sampling"><a href="#Basic-With-Model-Default-Sampling" class="headerlink" title="Basic With Model Default Sampling"></a>Basic With Model Default Sampling</h2><blockquote>
 <p>link: <a href="https://docs.vllm.ai/en/latest/getting_started/examples/basic_with_model_default_sampling.html">https://docs.vllm.ai/en/latest/getting_started/examples/basic_with_model_default_sampling.html</a></p>
