@@ -490,7 +490,7 @@ link: https:">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-04-21
+                    2025-04-22
                 </div>
                 
 
@@ -528,6 +528,206 @@ link: https:">
 </blockquote>
 <p>这是一个简单的Hydra应用程序，打印您的配置。my_app函数是您的代码的占位符。我们将慢慢发展这个例子，以展示更多的Hydra功能。</p>
 <p>本教程中的示例可在<a href="https://github.com/facebookresearch/hydra/blob/main/examples/tutorials/basic">此处</a>获得。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># my_app.py</span>
+<span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig<span class="token punctuation">,</span> OmegaConf
+<span class="token keyword">import</span> hydra
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>OmegaConf<span class="token punctuation">.</span>to_yaml<span class="token punctuation">(</span>cfg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在此示例中，Hydra创建一个空的cfg对象并将其传递给用@hydra. main注释的函数。</p>
+<p>您可以通过命令行添加配置值。+表示该字段是新的。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py +db.driver<span class="token operator">=</span>mysql +db.user<span class="token operator">=</span>omry +db.password<span class="token operator">=</span>secret
+db:
+  driver: mysql
+  user: omry
+  password: secret<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>有关version_base参数的详细信息，请参阅<a href="https://hydra.cc/docs/upgrades/version_base/">version_base页</a>。</p>
+</blockquote>
+<p>有关命令行的更多信息，请参阅<a href="https://hydra.cc/docs/advanced/hydra-command-line-flags/">Hydra的命令行标志</a>和<a href="https://hydra.cc/docs/advanced/override_grammar/basic/">基本覆盖语法</a>。</p>
+<h2 id="指定配置文件"><a href="#指定配置文件" class="headerlink" title="指定配置文件"></a>指定配置文件</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/your_first_app/config_file/">https://hydra.cc/docs/tutorials/basic/your_first_app/config_file/</a></p>
+</blockquote>
+<p>键入所有这些命令行参数可能会变得乏味。您可以通过在my_app.py旁边创建一个配置文件来解决这个问题。Hydra配置文件是yaml文件，应该具有.yaml文件扩展名。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># config. yaml</span>
+<span class="token key atrule">db</span><span class="token punctuation">:</span> 
+  <span class="token key atrule">driver</span><span class="token punctuation">:</span> mysql
+  <span class="token key atrule">user</span><span class="token punctuation">:</span> omry
+  <span class="token key atrule">password</span><span class="token punctuation">:</span> secret<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>通过向@hydra.main()装饰器传递一个config_name参数来指定配置名称。请注意，您应该省略.yaml扩展名。Hydra还需要知道在哪里找到您的配置。通过传递config_path来指定其相对于应用程序的目录。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># my_app.py</span>
+<span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig<span class="token punctuation">,</span> OmegaConf
+<span class="token keyword">import</span> hydra
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> config_path<span class="token operator">=</span><span class="token string">"."</span><span class="token punctuation">,</span> config_name<span class="token operator">=</span><span class="token string">"config"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>cfg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>OmegaConf<span class="token punctuation">.</span>to_yaml<span class="token punctuation">(</span>cfg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>config. yaml会在您运行应用程序时自动加载。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py
+db:
+  driver: mysql
+  user: omry
+  password: secret<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>您可以从命令行覆盖加载的配置中的值。请注意缺少+前缀。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py <span class="token assign-left variable">db.user</span><span class="token operator">=</span>root <span class="token assign-left variable">db.password</span><span class="token operator">=</span><span class="token number">1234</span>
+db:
+  driver: mysql
+  user: root
+  password: <span class="token number">1234</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如果配置值已经在配置中，请使用++覆盖配置值，或者添加它。例如：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Override an existing item</span>
+$ python my_app.py ++db.password<span class="token operator">=</span><span class="token number">1234</span>
+
+<span class="token comment"># Add a new item</span>
+$ python my_app.py ++db.timeout<span class="token operator">=</span><span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>您可以为您的Hydra应用程序启用<a href="https://hydra.cc/docs/tutorials/basic/running_your_app/tab_completion/">Tab完成</a>。</p>
+<h2 id="使用配置对象"><a href="#使用配置对象" class="headerlink" title="使用配置对象"></a>使用配置对象</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/your_first_app/using_config/">https://hydra.cc/docs/tutorials/basic/your_first_app/using_config/</a></p>
+</blockquote>
+<p>以下是Hydra配置对象的一些基本功能：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># config.yaml</span>
+<span class="token key atrule">node</span><span class="token punctuation">:</span>                         <span class="token comment"># Config is hierarchical</span>
+  <span class="token key atrule">loompa</span><span class="token punctuation">:</span> <span class="token number">10</span>                  <span class="token comment"># Simple value</span>
+  <span class="token key atrule">zippity</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span>node.loompa<span class="token punctuation">&#125;</span>     <span class="token comment"># Value interpolation</span>
+  <span class="token key atrule">do</span><span class="token punctuation">:</span> <span class="token string">"oompa $&#123;node.loompa&#125;"</span>  <span class="token comment"># String interpolation</span>
+  <span class="token key atrule">waldo</span><span class="token punctuation">:</span> <span class="token punctuation">?</span><span class="token punctuation">?</span><span class="token punctuation">?</span>                  <span class="token comment"># Missing value, must be populated prior to access</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># main.py</span>
+<span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig<span class="token punctuation">,</span> OmegaConf
+<span class="token keyword">import</span> hydra
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> config_path<span class="token operator">=</span><span class="token string">"."</span><span class="token punctuation">,</span> config_name<span class="token operator">=</span><span class="token string">"config"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">assert</span> cfg<span class="token punctuation">.</span>node<span class="token punctuation">.</span>loompa <span class="token operator">==</span> <span class="token number">10</span>          <span class="token comment"># attribute style access</span>
+    <span class="token keyword">assert</span> cfg<span class="token punctuation">[</span><span class="token string">"node"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"loompa"</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">10</span>    <span class="token comment"># dictionary style access</span>
+
+    <span class="token keyword">assert</span> cfg<span class="token punctuation">.</span>node<span class="token punctuation">.</span>zippity <span class="token operator">==</span> <span class="token number">10</span>         <span class="token comment"># Value interpolation</span>
+    <span class="token keyword">assert</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>cfg<span class="token punctuation">.</span>node<span class="token punctuation">.</span>zippity<span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span>  <span class="token comment"># Value interpolation type</span>
+    <span class="token keyword">assert</span> cfg<span class="token punctuation">.</span>node<span class="token punctuation">.</span>do <span class="token operator">==</span> <span class="token string">"oompa 10"</span>      <span class="token comment"># string interpolation</span>
+
+    cfg<span class="token punctuation">.</span>node<span class="token punctuation">.</span>waldo                        <span class="token comment"># raises an exception</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输出：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py 
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span>:
+  File <span class="token string">"my_app.py"</span>, line <span class="token number">32</span>, <span class="token keyword">in</span> my_app
+    cfg.node.waldo
+omegaconf.errors.MissingMandatoryValue: Missing mandatory value: node.waldo
+    full_key: node.waldo
+    <span class="token assign-left variable">object_type</span><span class="token operator">=</span>dict<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Hydra的配置对象是OmegaConf的DictConfig的一个实例。您可以<a href="https://omegaconf.readthedocs.io/en/latest/usage.html#access-and-manipulation">在此处</a>了解有关OmegaConf的更多信息。</p>
+<h2 id="分组配置文件"><a href="#分组配置文件" class="headerlink" title="分组配置文件"></a>分组配置文件</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/your_first_app/config_groups/">https://hydra.cc/docs/tutorials/basic/your_first_app/config_groups/</a></p>
+</blockquote>
+<p>假设您想在每个PostgreSQL和MySQL上对您的应用程序进行基准测试。为此，请使用配置组。</p>
+<p>配置组是具有一组有效选项的命名组。选择不存在的配置选项会生成包含有效选项的错误消息。</p>
+<h3 id="创建配置组"><a href="#创建配置组" class="headerlink" title="创建配置组"></a>创建配置组</h3><p>要创建配置组，请创建一个目录，例如db，以保存每个数据库配置选项的文件。由于我们期望有多个配置组，我们将主动将所有配置文件移动到conf目录中。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Directory layout</span>
+├─ conf
+│  └─ db
+│      ├─ mysql.yaml
+│      └─ postgresql.yaml
+└── my_app.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># db/mysql.yaml</span>
+<span class="token key atrule">driver</span><span class="token punctuation">:</span> mysql
+<span class="token key atrule">user</span><span class="token punctuation">:</span> omry
+<span class="token key atrule">password</span><span class="token punctuation">:</span> secret<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># db/postgresql.yaml</span>
+<span class="token key atrule">driver</span><span class="token punctuation">:</span> postgresql
+<span class="token key atrule">user</span><span class="token punctuation">:</span> postgres_user
+<span class="token key atrule">password</span><span class="token punctuation">:</span> drowssap
+<span class="token key atrule">timeout</span><span class="token punctuation">:</span> <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="使用配置组"><a href="#使用配置组" class="headerlink" title="使用配置组"></a>使用配置组</h3><p>由于我们将所有配置移动到conf目录中，我们需要使用config_path参数告诉Hydra在哪里可以找到它们。config_path是相对于my_app.py的目录。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># my_app.py</span>
+<span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig<span class="token punctuation">,</span> OmegaConf
+<span class="token keyword">import</span> hydra
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> config_path<span class="token operator">=</span><span class="token string">"conf"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>OmegaConf<span class="token punctuation">.</span>to_yaml<span class="token punctuation">(</span>cfg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>运行my_app.py而不请求配置将打印一个空配置。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py
+<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>使用 +GROUP&#x3D;OPTION 从配置组中选择一个项目，例如：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py +db<span class="token operator">=</span>postgresql
+db:
+  driver: postgresql
+  pass: drowssap
+  timeout: <span class="token number">10</span>
+  user: postgres_user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>默认情况下，配置组决定最终配置对象中配置内容的放置位置。在Hydra中，配置内容的路径被称为配置包。db&#x2F;postgresql.yaml的包名为db。</p>
+<p>和之前一样，你仍然可以覆盖生成的配置中的单个值：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py +db<span class="token operator">=</span>postgresql <span class="token assign-left variable">db.timeout</span><span class="token operator">=</span><span class="token number">20</span>
+db:
+  driver: postgresql
+  pass: drowssap
+  timeout: <span class="token number">20</span>
+  user: postgres_user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="高级主题"><a href="#高级主题" class="headerlink" title="高级主题"></a>高级主题</h3><ul>
+<li>可以通过包覆盖重新定位配置内容。请参阅<a href="https://hydra.cc/docs/advanced/overriding_packages/">参考手册&#x2F;包</a>。</li>
+<li>通过将多个选项指定为列表，可以从同一个配置组中选择多个选项。请参阅<a href="https://hydra.cc/docs/patterns/select_multiple_configs_from_config_group/">常见模式&#x2F;从配置组中选择多个配置</a>。</li>
+</ul>
+<h2 id="选择默认配置"><a href="#选择默认配置" class="headerlink" title="选择默认配置"></a>选择默认配置</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/your_first_app/defaults/">https://hydra.cc/docs/tutorials/basic/your_first_app/defaults/</a></p>
+</blockquote>
+<p>在办公室政治之后，您决定默认使用MySQL。您不再希望每次运行应用程序时都输入+db&#x3D;mysql。</p>
+<p>您可以将默认列表添加到配置文件中。默认列表是一个列表，告诉Hydra如何组合最终的配置对象。按照惯例，它是配置中的第一项。</p>
+<h3 id="配置组默认值"><a href="#配置组默认值" class="headerlink" title="配置组默认值"></a>配置组默认值</h3><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># config.yaml</span>
+<span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>请记住指定config_name：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig<span class="token punctuation">,</span> OmegaConf
+<span class="token keyword">import</span> hydra
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> config_path<span class="token operator">=</span><span class="token string">"conf"</span><span class="token punctuation">,</span> config_name<span class="token operator">=</span><span class="token string">"config"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>OmegaConf<span class="token punctuation">.</span>to_yaml<span class="token punctuation">(</span>cfg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>当您运行更新的应用程序时，默认情况下会加载MySQL。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py
+db:
+  driver: mysql
+  pass: secret
+  user: omry<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>您可以在默认列表中包含多个项目，例如。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+ <span class="token punctuation">-</span> <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql
+ <span class="token punctuation">-</span> <span class="token key atrule">db/mysql/engine</span><span class="token punctuation">:</span> innodb<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十五篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
