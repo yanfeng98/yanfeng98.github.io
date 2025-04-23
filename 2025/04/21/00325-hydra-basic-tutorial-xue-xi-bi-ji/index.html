@@ -490,7 +490,7 @@ link: https:">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-04-22
+                    2025-04-24
                 </div>
                 
 
@@ -727,8 +727,143 @@ db:
  <span class="token punctuation">-</span> <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql
  <span class="token punctuation">-</span> <span class="token key atrule">db/mysql/engine</span><span class="token punctuation">:</span> innodb<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
+<p>默认值按顺序排列：</p>
+<ul>
+<li>如果多个配置定义相同的值，则最后一个获胜。</li>
+<li>如果多个配置为同一个字典做出贡献，则结果是组合字典。</li>
+</ul>
+<hr>
+<p><strong>覆盖配置组默认值</strong></p>
+<p>您仍然可以加载PostgreSQL并覆盖单个值。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py <span class="token assign-left variable">db</span><span class="token operator">=</span>postgresql <span class="token assign-left variable">db.timeout</span><span class="token operator">=</span><span class="token number">20</span>
+db:
+  driver: postgresql
+  pass: drowssap
+  timeout: <span class="token number">20</span>
+  user: postgres_user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十五篇博文写完，开心！！！！</p>
+<p>你可以通过在默认列表中为默认条目添加前缀 ~ 来将其删除：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py ~db
+<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="主配置的组成顺序"><a href="#主配置的组成顺序" class="headerlink" title="主配置的组成顺序"></a>主配置的组成顺序</h3><p>你的主配置文件可以同时包含配置值和默认列表。在这种情况下，你应该在默认列表中添加 <code>_self_</code> 关键字，以指定配置文件相对于默认列表中项目的组合顺序。</p>
+<ul>
+<li>如果你想让你的主配置文件覆盖默认列表中的配置值，可以在默认列表的末尾添加 <code>_self_</code>。</li>
+<li>如果你想让默认列表中的配置覆盖主配置中的值，请在默认列表中将 <code>_self_</code> 作为第一个项目插入。</li>
+</ul>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># config.yaml</span>
+<span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql
+  <span class="token punctuation">-</span> _self_
+
+<span class="token key atrule">db</span><span class="token punctuation">:</span>
+  <span class="token key atrule">user</span><span class="token punctuation">:</span> root<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># Result config: db.user from config.yaml</span>
+<span class="token key atrule">db</span><span class="token punctuation">:</span>
+  <span class="token key atrule">driver</span><span class="token punctuation">:</span> mysql  <span class="token comment"># db/mysql.yaml</span>
+  <span class="token key atrule">pass</span><span class="token punctuation">:</span> secret   <span class="token comment"># db/mysql.yaml </span>
+  <span class="token key atrule">user</span><span class="token punctuation">:</span> root     <span class="token comment"># config.yaml</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># config.yaml</span>
+<span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> _self_
+  <span class="token punctuation">-</span> <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql
+
+<span class="token key atrule">db</span><span class="token punctuation">:</span>
+  <span class="token key atrule">user</span><span class="token punctuation">:</span> root<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># Result config: All values from db/mysql</span>
+<span class="token key atrule">db</span><span class="token punctuation">:</span>
+  <span class="token key atrule">driver</span><span class="token punctuation">:</span> mysql <span class="token comment"># db/mysql.yaml</span>
+  <span class="token key atrule">pass</span><span class="token punctuation">:</span> secret  <span class="token comment"># db/mysql.yaml</span>
+  <span class="token key atrule">user</span><span class="token punctuation">:</span> omry    <span class="token comment"># db/mysql.yaml</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>有关详细信息，请参阅<a href="https://hydra.cc/docs/advanced/defaults_list/#composition-order">组合顺序</a>。</p>
+<blockquote>
+<p>Hydra 1.0和Hydra 1.1之间的默认组合顺序发生了变化。</p>
+<ul>
+<li><p>Hydra 1.0：默认列表中的配置正在覆盖主要配置。</p>
+</li>
+<li><p>Hydra 1.1：一个配置正在覆盖默认列表中的配置。</p>
+</li>
+</ul>
+<p>为了减少混乱，Hydra 1.1会发出警告，如果主配置文件中同时包含默认列表和配置值，并且在默认列表中没有指定_self_。</p>
+<p>如果你根据期望的行为将 <em>self</em> 添加到默认列表中，警告就会消失。</p>
+</blockquote>
+<h3 id="非配置组默认值"><a href="#非配置组默认值" class="headerlink" title="非配置组默认值"></a>非配置组默认值</h3><p>有时候配置文件不属于任何配置组。你仍然可以默认加载它。以下是 some_file.yaml 的一个例子。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> some_file<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>不属于配置组的配置文件将始终被加载。它们不能被覆盖。更喜欢使用配置组。</p>
+<blockquote>
+<p>有关默认列表的更多信息，请参阅<a href="https://hydra.cc/docs/advanced/defaults_list/">参考手册&#x2F;默认列表</a>。</p>
+</blockquote>
+<h2 id="把这一切放在一起"><a href="#把这一切放在一起" class="headerlink" title="把这一切放在一起"></a>把这一切放在一起</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/your_first_app/composition/">https://hydra.cc/docs/tutorials/basic/your_first_app/composition/</a></p>
+<p>example: <a href="https://github.com/facebookresearch/hydra/blob/main/examples/tutorials/basic/your_first_hydra_app/6_composition">https://github.com/facebookresearch/hydra/blob/main/examples/tutorials/basic/your_first_hydra_app/6_composition</a></p>
+</blockquote>
+<p>随着软件变得越来越复杂，我们使用模块化和组合来保持其可管理性。我们在配置方面也可以这样做。假设我们希望我们的工作示例支持多个数据库，每个数据库有多个模式，以及不同的用户界面。我们不会为每个数据库、模式和用户界面的组合写一个单独的类，所以我们也不应该写单独的配置。在配置方面，我们使用了与编写底层软件相同的解决方案：组合。</p>
+<p>在 Hydra 中执行此操作时，我们首先添加一个模式和一个 UI 配置组：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Directory layout</span>
+├── conf
+│   ├── config.yaml
+│   ├── db
+│   │   ├── mysql.yaml
+│   │   └── postgresql.yaml
+│   ├── schema
+│   │   ├── school.yaml
+│   │   ├── support.yaml
+│   │   └── warehouse.yaml
+│   └── ui
+│       ├── full.yaml
+│       └── view.yaml
+└── my_app.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>有了这些配置，我们已经有12种可能的组合。如果没有组合，我们就需要12个单独的配置。一个简单的更改，比如将db.user重命名为db.username，就需要编辑全部12个。这简直是维护的噩梦。</p>
+<p>使用组合可以解决这个问题。与其创建 12 个不同的配置文件，完全指定每个配置，不如创建一个单一的配置文件，指定不同的配置维度，以及每个维度的默认值。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># config.yaml</span>
+<span class="token key atrule">defaults</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql
+  <span class="token punctuation">-</span> <span class="token key atrule">ui</span><span class="token punctuation">:</span> full
+  <span class="token punctuation">-</span> <span class="token key atrule">schema</span><span class="token punctuation">:</span> school<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>最终的配置是由MySQL数据库、完整的用户界面和学校模式（我们在这里首次看到）组成的：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py
+db:
+  driver: mysql
+  user: omry
+  pass: secret
+ui:
+  windows:
+    create_db: <span class="token boolean">true</span>
+    view: <span class="token boolean">true</span>
+schema:
+  database: school
+  tables:
+  - name: students
+    fields:
+    - name: string
+    - class: int
+  - name: exams
+    fields:
+    - profession: string
+    - time: data
+    - class: int<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>请继续关注如何自动运行所有组合（<a href="https://hydra.cc/docs/tutorials/basic/running_your_app/multi-run/">多运行</a>）。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>添加每个新数据库、模式或用户界面只需要一个文件。</li>
+<li>每个配置组都可以在默认列表中指定一个默认值。</li>
+<li>可以通过在默认列表或命令行中从每个配置组中选择所需的选项来组成任何组合。</li>
+</ul>
+<h2 id="多运行"><a href="#多运行" class="headerlink" title="多运行"></a>多运行</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/running_your_app/multi-run/">https://hydra.cc/docs/tutorials/basic/running_your_app/multi-run/</a></p>
+</blockquote>
+<p>有时候你想用多个不同的配置运行同一个应用程序。<br>例如，对每个数据库的每个模式运行性能测试。</p>
+<p>你可以通过命令行或配置文件来多运行 Hydra 应用程序：</p>
+<h3 id="配置-hydra-mode（Hydra-1-2-的新功能）"><a href="#配置-hydra-mode（Hydra-1-2-的新功能）" class="headerlink" title="配置 hydra.mode（Hydra 1.2 的新功能）"></a>配置 hydra.mode（Hydra 1.2 的新功能）</h3><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十五篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
