@@ -863,7 +863,110 @@ schema:
 </blockquote>
 <p>有时候你想用多个不同的配置运行同一个应用程序。<br>例如，对每个数据库的每个模式运行性能测试。</p>
 <p>你可以通过命令行或配置文件来多运行 Hydra 应用程序：</p>
-<h3 id="配置-hydra-mode（Hydra-1-2-的新功能）"><a href="#配置-hydra-mode（Hydra-1-2-的新功能）" class="headerlink" title="配置 hydra.mode（Hydra 1.2 的新功能）"></a>配置 hydra.mode（Hydra 1.2 的新功能）</h3><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十五篇博文写完，开心！！！！</p>
+<h3 id="配置-hydra-mode（Hydra-1-2-的新功能）"><a href="#配置-hydra-mode（Hydra-1-2-的新功能）" class="headerlink" title="配置 hydra.mode（Hydra 1.2 的新功能）"></a>配置 hydra.mode（Hydra 1.2 的新功能）</h3><p>你可以以任何支持的方式配置 hydra.mode。合法的值是 RUN 和 MULTIRUN。以下是如何从命令行覆盖并遍历所有数据库和模式的组合。在你的输入配置中设置 hydra.mode&#x3D;MULTIRUN 将使你的应用程序默认启用多运行。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py <span class="token assign-left variable">hydra.mode</span><span class="token operator">=</span>MULTIRUN <span class="token assign-left variable">db</span><span class="token operator">=</span>mysql,postgresql <span class="token assign-left variable">schema</span><span class="token operator">=</span>warehouse,support,school
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,317<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span> Launching <span class="token number">6</span> <span class="token function">jobs</span> locally
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,318<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#0 : db=mysql schema=warehouse</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,458<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#1 : db=mysql schema=support</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,602<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#2 : db=mysql schema=school</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,755<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#3 : db=postgresql schema=warehouse</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,895<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#4 : db=postgresql schema=support</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:04,040<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#5 : db=postgresql schema=school</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>为简洁起见，省略了打印的配置。</p>
+<h3 id="从命令行使用-–multirun-m-选项"><a href="#从命令行使用-–multirun-m-选项" class="headerlink" title="从命令行使用 –multirun (-m) 选项"></a>从命令行使用 –multirun (-m) 选项</h3><p>您也可以从命令行实现上述操作：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python my_app.py <span class="token parameter variable">--multirun</span> <span class="token assign-left variable">db</span><span class="token operator">=</span>mysql,postgresql <span class="token assign-left variable">schema</span><span class="token operator">=</span>warehouse,support,school<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python my_app.py <span class="token parameter variable">-m</span> <span class="token assign-left variable">db</span><span class="token operator">=</span>mysql,postgresql <span class="token assign-left variable">schema</span><span class="token operator">=</span>warehouse,support,school<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>你可以在运行时访问 hydra.mode 来确定应用程序是处于 RUN 模式还是 MULTIRUN 模式。在这里查看如何在运行时访问 Hydra 配置。</p>
+<p>如果出现冲突（例如，hydra.mode&#x3D;RUN，而应用程序是使用–multirun运行的），Hydra将在运行时确定hydra.mode的值。下表显示了在不同输入配置和命令行组合下，运行时hydra.mode的值。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">No multirun commandline flag</th>
+<th align="center">–multirun ( -m)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">hydra.mode&#x3D;RUN</td>
+<td align="center">RunMode.RUN</td>
+<td align="center">RunMode.MULTIRUN (with UserWarning)</td>
+</tr>
+<tr>
+<td align="center">hydra.mode&#x3D;MULTIRUN</td>
+<td align="center">RunMode.MULTIRUN</td>
+<td align="center">RunMode.MULTIRUN</td>
+</tr>
+<tr>
+<td align="center">hydra.mode&#x3D;None (default)</td>
+<td align="center">RunMode.RUN</td>
+<td align="center">RunMode.MULTIRUN</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Hydra在作业启动时懒散地组合配置。如果你在启动作业&#x2F;扫描后更改代码或配置，最终组合的配置可能会受到影响。</p>
+</blockquote>
+<h3 id="通过-hydra-sweeper-params-进行扫描"><a href="#通过-hydra-sweeper-params-进行扫描" class="headerlink" title="通过 hydra.sweeper.params 进行扫描"></a>通过 hydra.sweeper.params 进行扫描</h3><p>你也可以通过重写 hydra.sweeper.params 在输入配置中定义扫描。使用上述示例，相同的多运行可以通过以下配置来实现。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">hydra</span><span class="token punctuation">:</span>
+  <span class="token key atrule">sweeper</span><span class="token punctuation">:</span>
+    <span class="token key atrule">params</span><span class="token punctuation">:</span>
+      <span class="token key atrule">db</span><span class="token punctuation">:</span> mysql<span class="token punctuation">,</span>postgresql
+      <span class="token key atrule">schema</span><span class="token punctuation">:</span> warehouse<span class="token punctuation">,</span>support<span class="token punctuation">,</span>school<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>输入配置和命令行覆盖的语法是一致的。如果在输入配置和命令行中都指定了扫描，则命令行扫描将优先于输入配置中定义的扫描。如果我们使用上述输入配置和新的命令行覆盖运行相同的应用程序：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py <span class="token parameter variable">-m</span> <span class="token assign-left variable">db</span><span class="token operator">=</span>mysql
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,317<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span> Launching <span class="token number">3</span> <span class="token function">jobs</span> locally
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,318<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#0 : db=mysql schema=warehouse</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,458<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#1 : db=mysql schema=support</span>
+<span class="token punctuation">[</span><span class="token number">2021</span>-01-20 <span class="token number">17</span>:25:03,602<span class="token punctuation">]</span><span class="token punctuation">[</span>HYDRA<span class="token punctuation">]</span>        <span class="token comment">#2 : db=mysql schema=school</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>以上配置方法目前仅适用于Hydra的默认BasicSweeper。对于其他扫描器，请查看相应的文档。</p>
+</blockquote>
+<h3 id="其他扫描类型"><a href="#其他扫描类型" class="headerlink" title="其他扫描类型"></a>其他扫描类型</h3><p>Hydra支持其他类型的扫描，例如：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">x=range(1<span class="token punctuation">,</span>10)                  <span class="token comment"># 1-9</span>
+schema=glob(<span class="token important">*)</span>                 <span class="token comment"># warehouse,support,school</span>
+schema=glob(*<span class="token punctuation">,</span>exclude=w<span class="token important">*)</span>      <span class="token comment"># support,school</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>有关详细信息，请参阅<a href="https://hydra.cc/docs/advanced/override_grammar/extended/">扩展覆盖语法</a>。</p>
+<h3 id="Sweeper"><a href="#Sweeper" class="headerlink" title="Sweeper"></a>Sweeper</h3><p>Hydra 内置了默认的扫描逻辑。还有一些额外的扫描器可作为插件使用。例如，<a href="https://hydra.cc/docs/plugins/ax_sweeper/">Ax Sweeper</a> 可以自动寻找最佳的参数组合！</p>
+<h3 id="Launcher"><a href="#Launcher" class="headerlink" title="Launcher"></a>Launcher</h3><p>默认情况下，Hydra在本地串行运行您的多运行作业。其他启动器可作为插件提供，用于并行启动和在不同集群上运行。例如，<a href="https://hydra.cc/docs/plugins/joblib_launcher/">JobLib启动器</a>可以使用多处理在您的本地机器上并行执行不同的参数组合。</p>
+<h2 id="输出-工作目录"><a href="#输出-工作目录" class="headerlink" title="输出&#x2F;工作目录"></a>输出&#x2F;工作目录</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/">https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/</a></p>
+</blockquote>
+<p>Hydra可以解决每次运行时需要指定新输出目录的问题，方法是为每次运行创建一个目录，并在该输出目录中执行您的代码。默认情况下，此输出目录用于存储该运行的Hydra输出（配置、日志等）。</p>
+<p>每次运行应用程序时，都会创建一个新的输出目录。您可以通过<a href="https://hydra.cc/docs/configure_hydra/intro/#accessing-the-hydra-config">检查Hydra配置</a>来获取输出目录的路径，如下面的示例所示。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># my_app.py</span>
+<span class="token keyword">import</span> os
+<span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig
+<span class="token keyword">import</span> hydra
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>_cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Working directory : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Output directory  : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>hydra<span class="token punctuation">.</span>core<span class="token punctuation">.</span>hydra_config<span class="token punctuation">.</span>HydraConfig<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>runtime<span class="token punctuation">.</span>output_dir<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py
+Working directory <span class="token builtin class-name">:</span> /home/omry/dev/hydra
+Output directory  <span class="token builtin class-name">:</span> /home/omry/dev/hydra/outputs/2019-09-25/15-16-17
+
+$ python my_app.py
+Working directory <span class="token builtin class-name">:</span> /home/omry/dev/hydra
+Output directory  <span class="token builtin class-name">:</span> /home/omry/dev/hydra/outputs/2019-09-25/15-16-19<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>让我们看一下其中一个输出目录：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ tree outputs/2019-09-25/15-16-17
+outputs/2019-09-25/15-16-17
+├── .hydra
+│   ├── config.yaml
+│   ├── hydra.yaml
+│   └── overrides.yaml
+└── my_app.log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十五篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
