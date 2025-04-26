@@ -490,7 +490,7 @@ link: https:">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-04-24
+                    2025-04-26
                 </div>
                 
 
@@ -966,6 +966,157 @@ outputs/2019-09-25/15-16-17
 │   └── overrides.yaml
 └── my_app.log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<p>我们有 Hydra 输出目录（默认是 .hydra），以及应用程序日志文件。在 Hydra 输出目录中，我们有：</p>
+<ul>
+<li>config.yaml：用户指定配置的转储文件</li>
+<li>Hydra.yaml：Hydra配置的转储文件</li>
+<li>overrides.yaml：使用的命令行覆盖设置</li>
+</ul>
+<p>在主输出目录中：</p>
+<ul>
+<li>my_app.log：为本次运行创建的日志文件</li>
+</ul>
+<p>你可以使用<a href="https://hydra.cc/docs/configure_hydra/workdir/">自定义工作目录</a>模式来配置输出目录的名称。</p>
+<h3 id="自动将当前工作目录更改为作业的输出目录"><a href="#自动将当前工作目录更改为作业的输出目录" class="headerlink" title="自动将当前工作目录更改为作业的输出目录"></a>自动将当前工作目录更改为作业的输出目录</h3><p>通过设置 hydra.job.chdir&#x3D;True，您可以配置 Hydra 的 @hydra.main 装饰器在将控制权传递给用户的装饰主函数之前调用 os.chdir 来更改 Python 的工作目录。截至 Hydra v1.2，hydra.job.chdir 的默认值为 False。设置 hydra.job.chdir&#x3D;True 可以方便地使用输出目录来存储应用程序的输出（例如，数据库转储文件）。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># check current working dir</span>
+$ <span class="token builtin class-name">pwd</span>
+/home/jasha/dev/hydra
+
+<span class="token comment"># for Hydra >= 1.2, working dir remains unchanged by default</span>
+$ python my_app.py
+Working directory <span class="token builtin class-name">:</span> /home/jasha/dev/hydra
+Output directory  <span class="token builtin class-name">:</span> /home/jasha/dev/hydra/outputs/2023-04-18/13-43-24
+
+<span class="token comment"># working dir changed to output dir</span>
+$ python my_app.py <span class="token assign-left variable">hydra.job.chdir</span><span class="token operator">=</span>True
+Working directory <span class="token builtin class-name">:</span> /home/jasha/dev/hydra/outputs/2023-04-18/13-43-17
+Output directory  <span class="token builtin class-name">:</span> /home/jasha/dev/hydra/outputs/2023-04-18/13-43-17
+
+<span class="token comment"># output dir and files are still created even if `chdir` is disabled:</span>
+$ tree <span class="token parameter variable">-a</span> outputs/2023-04-18/13-43-24/
+outputs/2023-04-18/13-43-24/
+├── .hydra
+│   ├── config.yaml
+│   ├── hydra.yaml
+│   └── overrides.yaml
+└── my_app.log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="更改或禁用Hydra的输出子目录"><a href="#更改或禁用Hydra的输出子目录" class="headerlink" title="更改或禁用Hydra的输出子目录"></a>更改或禁用Hydra的输出子目录</h3><p>你可以通过覆盖 hydra.output_subdir 来更改 .hydra 子目录的名称。你也可以通过将 hydra.output_subdir 设置为 null 来禁用它的创建。</p>
+<h3 id="访问应用程序中的原始工作目录"><a href="#访问应用程序中的原始工作目录" class="headerlink" title="访问应用程序中的原始工作目录"></a>访问应用程序中的原始工作目录</h3><p>如果启用了 hydra.job.chdir&#x3D;True，你仍然可以通过在 hydra.utils 中导入 get_original_cwd() 和 to_absolute_path() 来访问原始的工作目录：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> hydra<span class="token punctuation">.</span>utils <span class="token keyword">import</span> get_original_cwd<span class="token punctuation">,</span> to_absolute_path
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span>version_base<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>_cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Current working directory : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Orig working directory    : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>get_original_cwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"to_absolute_path('foo')   : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>to_absolute_path<span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"to_absolute_path('/foo')  : </span><span class="token interpolation"><span class="token punctuation">&#123;</span>to_absolute_path<span class="token punctuation">(</span><span class="token string">'/foo'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python examples/tutorial/8_working_directory/original_cwd.py
+Current working directory  <span class="token builtin class-name">:</span> /Users/omry/dev/hydra/outputs/2019-10-23/10-53-03
+Original working directory <span class="token builtin class-name">:</span> /Users/omry/dev/hydra
+to_absolute_path<span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span>    <span class="token builtin class-name">:</span> /Users/omry/dev/hydra/foo
+to_absolute_path<span class="token punctuation">(</span><span class="token string">'/foo'</span><span class="token punctuation">)</span>   <span class="token builtin class-name">:</span> /foo<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以<a href="https://hydra.cc/docs/configure_hydra/workdir/">自定义</a>生成的工作目录的名称。</p>
+<h2 id="Logging"><a href="#Logging" class="headerlink" title="Logging"></a>Logging</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/running_your_app/logging/">https://hydra.cc/docs/tutorials/basic/running_your_app/logging/</a></p>
+</blockquote>
+<p>由于设置成本，人们通常不使用Python日志记录。Hydra通过为你配置Python日志记录来解决这个问题。</p>
+<p>默认情况下，Hydra 会在控制台和自动工作目录中的日志文件中记录 INFO 级别的信息。</p>
+<p>使用Hydra进行日志记录的示例：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> logging
+<span class="token keyword">from</span> omegaconf <span class="token keyword">import</span> DictConfig
+<span class="token keyword">import</span> hydra
+
+<span class="token comment"># A logger for this file</span>
+log <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+
+<span class="token decorator annotation punctuation">@hydra<span class="token punctuation">.</span>main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">my_app</span><span class="token punctuation">(</span>_cfg<span class="token punctuation">:</span> DictConfig<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+    log<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">"Info level message"</span><span class="token punctuation">)</span>
+    log<span class="token punctuation">.</span>debug<span class="token punctuation">(</span><span class="token string">"Debug level message"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    my_app<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+$ python my_app<span class="token punctuation">.</span>py
+<span class="token punctuation">[</span><span class="token number">2019</span><span class="token operator">-</span><span class="token number">06</span><span class="token operator">-</span><span class="token number">27</span> <span class="token number">00</span><span class="token punctuation">:</span><span class="token number">52</span><span class="token punctuation">:</span><span class="token number">46</span><span class="token punctuation">,</span><span class="token number">653</span><span class="token punctuation">]</span><span class="token punctuation">[</span>__main__<span class="token punctuation">]</span><span class="token punctuation">[</span>INFO<span class="token punctuation">]</span> <span class="token operator">-</span> Info level message<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>你可以通过覆盖 hydra.verbose 来在命令行启用 DEBUG 级别的日志记录。</p>
+<p>Hydra.verbose可以是布尔值、字符串或列表：</p>
+<p>例子：</p>
+<ul>
+<li>Hydra.verbose&#x3D;true：将所有日志记录器的日志级别设置为 DEBUG。</li>
+<li>Hydra.verbose&#x3D;NAME：将记录器 NAME 的日志级别设置为 DEBUG。相当于 import logging; logging.getLogger(NAME).setLevel(logging.DEBUG)。</li>
+<li>Hydra.verbose&#x3D;[NAME1,NAME2]：将记录器 NAME1 和 NAME2 的日志级别设置为 DEBUG。</li>
+</ul>
+<p>示例输出：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py <span class="token assign-left variable">hydra.verbose</span><span class="token operator">=</span><span class="token punctuation">[</span>__main__,hydra<span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">2019</span>-09-29 <span class="token number">13</span>:06:00,880<span class="token punctuation">]</span> - Installed Hydra Plugins
+<span class="token punctuation">[</span><span class="token number">2019</span>-09-29 <span class="token number">13</span>:06:00,880<span class="token punctuation">]</span> - ***********************
+<span class="token punctuation">..</span>.
+<span class="token punctuation">[</span><span class="token number">2019</span>-09-29 <span class="token number">13</span>:06:00,896<span class="token punctuation">]</span><span class="token punctuation">[</span>__main__<span class="token punctuation">]</span><span class="token punctuation">[</span>INFO<span class="token punctuation">]</span> - Info level message
+<span class="token punctuation">[</span><span class="token number">2019</span>-09-29 <span class="token number">13</span>:06:00,896<span class="token punctuation">]</span><span class="token punctuation">[</span>__main__<span class="token punctuation">]</span><span class="token punctuation">[</span>DEBUG<span class="token punctuation">]</span> - Debug level message<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>你可以通过将 hydra&#x2F;job_logging 设置为 disabled 来禁用日志输出。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py hydra/job_logging<span class="token operator">=</span>disabled
+<span class="token operator">&lt;</span>NO OUTPUT<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>如果你不想让Hydra配置日志记录，你也可以设置hydra&#x2F;job_logging&#x3D;none和hydra&#x2F;hydra_logging&#x3D;none。</p>
+<p>可以<a href="https://hydra.cc/docs/configure_hydra/logging/">自定义</a>日志记录。</p>
+<h2 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/running_your_app/debugging/">https://hydra.cc/docs/tutorials/basic/running_your_app/debugging/</a></p>
+</blockquote>
+<p>Hydra提供了一些选项来提高可调试性。</p>
+<h3 id="打印配置"><a href="#打印配置" class="headerlink" title="打印配置"></a>打印配置</h3><p>在命令行中添加 –cfg 或 -c 参数，即可在不运行函数的情况下打印应用程序的配置。</p>
+<p>–cfg 选项接受一个参数，指定要打印配置文件的哪个部分：</p>
+<ul>
+<li>job：你的配置</li>
+<li>hydra：Hydra的配置</li>
+<li>all：完整的配置，这是job和hydra的结合。</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># A normal run:</span>
+$ python my_app.py
+MySQL connecting to localhost with <span class="token assign-left variable">user</span><span class="token operator">=</span>root and <span class="token assign-left variable">password</span><span class="token operator">=</span><span class="token number">1234</span>
+
+<span class="token comment"># just show the config without running your function:</span>
+$ python my_app.py <span class="token parameter variable">--cfg</span> job
+db:
+  host: localhost
+  user: root
+  password: <span class="token number">1234</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>打印的配置包括通过命令行完成的任何修改：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python my_app.py <span class="token assign-left variable">db.host</span><span class="token operator">=</span><span class="token number">10.0</span>.0.1 <span class="token parameter variable">--cfg</span> job
+db:
+  host: <span class="token number">10.0</span>.0.1
+  user: root
+  password: <span class="token number">1234</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>你可以使用 –package 或 -p 来显示配置的一部分：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python my_app.py <span class="token parameter variable">--cfg</span> hydra <span class="token parameter variable">--package</span> hydra.job
+<span class="token comment"># @package hydra.job</span>
+name: my_app
+config_name: config
+<span class="token punctuation">..</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>默认情况下，配置插值不会被解析。要打印已解析的配置，请在使用 –cfg 标志的同时使用 –resolve 标志。</p>
+<h3 id="Info"><a href="#Info" class="headerlink" title="Info"></a>Info</h3><p>–info 标志可以提供有关 Hydra 和您的应用程序的各个方面的信息：</p>
+<ul>
+<li>–info all：默认行为，输出所有信息</li>
+<li>–info config：打印有助于理解配置组成的信息：配置搜索路径、默认树、默认列表以及最终的配置。</li>
+<li>–info defaults：打印最终默认设置列表</li>
+<li>–info defaults-tree：打印默认设置树</li>
+<li>–info plugins：显示已安装插件的信息</li>
+</ul>
+<h2 id="Tab-completion"><a href="#Tab-completion" class="headerlink" title="Tab completion"></a>Tab completion</h2><blockquote>
+<p>link: <a href="https://hydra.cc/docs/tutorials/basic/running_your_app/tab_completion/">https://hydra.cc/docs/tutorials/basic/running_your_app/tab_completion/</a></p>
+</blockquote>
+<p>使用Tab键可以完成配置组、配置节点和值的输入。若要完成路径的输入，请以&#x2F;或.&#x2F;开头。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十五篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
