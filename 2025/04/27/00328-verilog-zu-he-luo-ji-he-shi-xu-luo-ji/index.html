@@ -1,0 +1,1777 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="00328 Verilog 组合逻辑和时序逻辑, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="前言本文介绍了 Verilog 组合逻辑和时序逻辑。
+操作系统：Windows 11 家庭中文版
+信号时钟信号（Clock Signal）时钟信号的名称
+在Verilog设计中，时钟信号一般用作电路的时序驱动，用于触发寄存器、状态机等时序逻">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>00328 Verilog 组合逻辑和时序逻辑 | LuYF-Lemon-love の Blog</title>
+    <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
+    
+    <style>
+        body{
+            background-image: url(https://cos.luyf-lemon-love.space/images/016-%E6%8A%A5%E7%BA%B8%E5%A2%99%E9%BA%BB%E8%A1%A3%E5%AD%A6%E5%A7%90.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">LuYF-Lemon-love の Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>List</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Image</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/verse">
+          
+          <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Verse</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/bilibili">
+          
+          <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Bilibili</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">LuYF-Lemon-love の Blog</div>
+        <div class="logo-desc">
+            
+            天之道，损有余而补不足，人之道则不然，损不足以奉有余。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			List
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Image</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/verse " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Verse</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/bilibili " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Bilibili</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yanfeng98/paper-is-all-you-need" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yanfeng98/paper-is-all-you-need" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/028-%E6%95%96%E9%97%B0%E5%A7%91%E5%A7%91.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00328 Verilog 组合逻辑和时序逻辑</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Verilog/">
+                                <span class="chip bg-color">Verilog</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Verilog/" class="post-category">
+                                Verilog
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2025-04-27
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2025-04-27
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文介绍了 Verilog 组合逻辑和时序逻辑。</p>
+<p>操作系统：Windows 11 家庭中文版</p>
+<h2 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h2><h3 id="时钟信号（Clock-Signal）"><a href="#时钟信号（Clock-Signal）" class="headerlink" title="时钟信号（Clock Signal）"></a><strong>时钟信号（Clock Signal）</strong></h3><h4 id="时钟信号的名称"><a href="#时钟信号的名称" class="headerlink" title="时钟信号的名称"></a><strong>时钟信号的名称</strong></h4><ul>
+<li><p>在Verilog设计中，时钟信号一般用作电路的<strong>时序驱动</strong>，用于触发寄存器、状态机等时序逻辑模块。</p>
+</li>
+<li><p>时钟信号通常在Verilog代码中以<code>clk</code>、<code>clock</code>等名字出现。例如：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token keyword">input</span> clk<span class="token punctuation">;</span>     <span class="token comment">// clk就是时钟信号的名称</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h4 id="时钟信号的频率"><a href="#时钟信号的频率" class="headerlink" title="时钟信号的频率"></a><strong>时钟信号的频率</strong></h4><ul>
+<li><p>时钟信号是一个周期性的方波信号，频率决定了电路中数据变化或寄存器更新的速度。</p>
+</li>
+<li><p>在设计文档或代码注释中，需要说明时钟信号的<strong>频率</strong>，比如“时钟频率为50MHz”。</p>
+</li>
+<li><p>代码层面通常不会直接描述频率，但在仿真(testbench)中会用#延时来模拟，例如：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token comment">// 50MHz时钟周期为20ns</span>
+<span class="token important">always</span> <span class="token number">#10</span> clk <span class="token operator">=</span> <span class="token operator">~</span>clk<span class="token punctuation">;</span> <span class="token comment">// 每10ns翻转一次，周期为20ns，频率为50MHz</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<h3 id="重置信号（Reset-Signal）"><a href="#重置信号（Reset-Signal）" class="headerlink" title="重置信号（Reset Signal）"></a><strong>重置信号（Reset Signal）</strong></h3><h4 id="重置信号的名称"><a href="#重置信号的名称" class="headerlink" title="重置信号的名称"></a><strong>重置信号的名称</strong></h4><ul>
+<li><p>重置信号用于<strong>初始化</strong>或<strong>清零</strong>电路状态。</p>
+</li>
+<li><p>常见的名字有<code>rst</code>、<code>reset</code>、<code>rst_n</code>、<code>reset_n</code>等。例如：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token keyword">input</span> rst_n<span class="token punctuation">;</span>   <span class="token comment">// rst_n为重置信号的名称</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h4 id="重置类型"><a href="#重置类型" class="headerlink" title="重置类型"></a><strong>重置类型</strong></h4><ul>
+<li><p>重置信号的类型通常有两种：</p>
+<ul>
+<li><strong>同步复位（Synchronous Reset）</strong>：在时钟沿到来时，判断重置信号是否有效。如果有效，再做初始化操作。</li>
+<li><strong>异步复位（Asynchronous Reset）</strong>：不依赖时钟信号，只要复位信号有效，立即初始化。</li>
+</ul>
+</li>
+<li><p>另外，重置信号还分为<strong>高有效</strong>和<strong>低有效</strong>两种：</p>
+<ul>
+<li><strong>高有效（Active High）</strong>：重置信号为<code>1</code>时有效（如<code>reset</code>）。</li>
+<li><strong>低有效（Active Low）</strong>：重置信号为<code>0</code>时有效（如<code>reset_n</code>、<code>rst_n</code>，末尾的<code>_n</code>表示低有效）。</li>
+</ul>
+</li>
+<li><p>代码示例：</p>
+<p><strong>同步低有效复位：</strong></p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>rst_n<span class="token punctuation">)</span> <span class="token comment">// 低有效</span>
+    q <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">else</span>
+    q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>异步高有效复位：</strong></p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk <span class="token keyword">or</span> <span class="token keyword">posedge</span> reset<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>reset<span class="token punctuation">)</span> <span class="token comment">// 高有效</span>
+    q <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">else</span>
+    q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<h2 id="组合逻辑和时序逻辑"><a href="#组合逻辑和时序逻辑" class="headerlink" title="组合逻辑和时序逻辑"></a>组合逻辑和时序逻辑</h2><h3 id="组合逻辑（Combinational-Logic）"><a href="#组合逻辑（Combinational-Logic）" class="headerlink" title="组合逻辑（Combinational Logic）"></a>组合逻辑（Combinational Logic）</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>组合逻辑是一种<strong>没有记忆能力</strong>的电路逻辑。</li>
+<li>其<strong>输出仅依赖于当前输入</strong>，输入信号变化马上影响输出。</li>
+<li>没有时钟信号的参与。</li>
+</ul>
+<h4 id="典型例子"><a href="#典型例子" class="headerlink" title="典型例子"></a>典型例子</h4><ul>
+<li>与门（AND）、或门（OR）、非门（NOT）</li>
+<li>加法器、比较器、多路选择器等</li>
+</ul>
+<h4 id="Verilog描述方式"><a href="#Verilog描述方式" class="headerlink" title="Verilog描述方式"></a>Verilog描述方式</h4><ul>
+<li>使用<code>assign</code>语句，或者在<code>always @(*)</code>块中描述。</li>
+<li>没有触发器（如D触发器）。</li>
+</ul>
+<h4 id="组合逻辑Verilog代码示例"><a href="#组合逻辑Verilog代码示例" class="headerlink" title="组合逻辑Verilog代码示例"></a>组合逻辑Verilog代码示例</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token comment">// 2输入与门</span>
+<span class="token keyword">assign</span> y <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>
+
+<span class="token comment">// 4选1多路选择器</span>
+<span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    <span class="token keyword">case</span> <span class="token punctuation">(</span>sel<span class="token punctuation">)</span>
+        <span class="token number">2'b00</span><span class="token punctuation">:</span> y <span class="token operator">=</span> a<span class="token punctuation">;</span>
+        <span class="token number">2'b01</span><span class="token punctuation">:</span> y <span class="token operator">=</span> b<span class="token punctuation">;</span>
+        <span class="token number">2'b10</span><span class="token punctuation">:</span> y <span class="token operator">=</span> c<span class="token punctuation">;</span>
+        <span class="token number">2'b11</span><span class="token punctuation">:</span> y <span class="token operator">=</span> d<span class="token punctuation">;</span>
+    <span class="token keyword">endcase</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="时序逻辑（Sequential-Logic）"><a href="#时序逻辑（Sequential-Logic）" class="headerlink" title="时序逻辑（Sequential Logic）"></a>时序逻辑（Sequential Logic）</h3><h4 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>时序逻辑是一种<strong>有记忆能力</strong>的电路逻辑。</li>
+<li>其<strong>输出不仅依赖当前输入，还依赖于以往的输入（历史状态）</strong>。</li>
+<li>需要<strong>时钟信号</strong>或<strong>重置信号</strong>参与。</li>
+</ul>
+<h4 id="典型例子-1"><a href="#典型例子-1" class="headerlink" title="典型例子"></a>典型例子</h4><ul>
+<li>寄存器、触发器、计数器、状态机等</li>
+</ul>
+<h4 id="Verilog描述方式-1"><a href="#Verilog描述方式-1" class="headerlink" title="Verilog描述方式"></a>Verilog描述方式</h4><ul>
+<li>使用<code>always @(posedge clk)</code>或<code>always @(negedge clk)</code>等时钟沿敏感的块。</li>
+<li>通常用于描述同步逻辑（同步时钟驱动），并可加入复位逻辑。</li>
+</ul>
+<h4 id="时序逻辑Verilog代码示例"><a href="#时序逻辑Verilog代码示例" class="headerlink" title="时序逻辑Verilog代码示例"></a>时序逻辑Verilog代码示例</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token comment">// D触发器，有同步复位</span>
+<span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>rst<span class="token punctuation">)</span>         <span class="token comment">// rst为高有效复位信号</span>
+        q <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+<span class="token keyword">end</span>
+
+<span class="token comment">// 简单的二进制计数器</span>
+<span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk <span class="token keyword">or</span> <span class="token keyword">posedge</span> rst<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>rst<span class="token punctuation">)</span>
+        count <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        count <span class="token operator">&lt;=</span> count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="区别与联系"><a href="#区别与联系" class="headerlink" title="区别与联系"></a>区别与联系</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>组合逻辑</th>
+<th>时序逻辑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否有记忆</td>
+<td>无</td>
+<td>有</td>
+</tr>
+<tr>
+<td>输出依赖</td>
+<td>仅当前输入</td>
+<td>当前输入+历史状态</td>
+</tr>
+<tr>
+<td>时钟参与</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>例子</td>
+<td>与非门、多路选择器</td>
+<td>寄存器、计数器、状态机</td>
+</tr>
+<tr>
+<td>Verilog描述</td>
+<td>assign、always @(*)</td>
+<td>always @(posedge&#x2F;negedge clk)</td>
+</tr>
+</tbody></table>
+<h4 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h4><ul>
+<li>时序逻辑的实现通常<strong>依赖组合逻辑和触发器的共同作用</strong>。<ul>
+<li>例如，状态机的状态转移部分是组合逻辑，状态寄存则是时序逻辑。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>组合逻辑</strong>：“现在的输入决定现在的输出”，没有记忆能力。</li>
+<li><strong>时序逻辑</strong>：“现在的输入+过去的状态决定现在的输出”，有记忆能力，需要时钟或复位信号。</li>
+</ul>
+<h2 id="D触发器"><a href="#D触发器" class="headerlink" title="D触发器"></a>D触发器</h2><p>下面详细介绍一下<strong>D触发器</strong>（D Flip-Flop），包括它的原理、功能、符号、应用以及在Verilog中的实现方法。</p>
+<hr>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p><strong>D触发器</strong>是一种最基本的时序逻辑存储单元，用于存储1位二进制信息。  </p>
+<p>“D”代表“Data”或“Delay”，也叫做<strong>数据触发器</strong>或<strong>延迟触发器</strong>。</p>
+<hr>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><ul>
+<li><strong>输入端</strong>：有<code>D</code>（数据输入）、<code>CLK</code>（时钟输入）。</li>
+<li><strong>输出端</strong>：<code>Q</code>（输出），有时还有<code>Q̅</code>（Q的反相）。</li>
+<li><strong>功能</strong>：在时钟信号的特定沿（通常为上升沿<code>posedge</code>或下降沿<code>negedge</code>）到来时，将<code>D</code>端的数值锁存到<code>Q</code>输出端，并保持直到下一个时钟沿到来。</li>
+<li><strong>记忆能力</strong>：D触发器只在时钟的有效沿采样并保存输入，其余时间输出不变。</li>
+</ul>
+<h3 id="真值表"><a href="#真值表" class="headerlink" title="真值表"></a>真值表</h3><table>
+<thead>
+<tr>
+<th>时钟</th>
+<th>D</th>
+<th>Q（下一个时刻）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>↑</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>↑</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>X</td>
+<td>Q（保持原值）</td>
+</tr>
+</tbody></table>
+<p>（↑ 表示时钟上升沿，X表示无关）</p>
+<hr>
+<h3 id="逻辑符号（图示）"><a href="#逻辑符号（图示）" class="headerlink" title="逻辑符号（图示）"></a>逻辑符号（图示）</h3><pre class="line-numbers language-none"><code class="language-none">      +-----+
+ D ---|     |--- Q
+      | DFF |
+CLK --|     |
+      +-----+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="典型应用"><a href="#典型应用" class="headerlink" title="典型应用"></a>典型应用</h3><ul>
+<li>作为<strong>寄存器</strong>的基本单元，用来存储数据</li>
+<li>构建<strong>计数器</strong>、<strong>移位寄存器</strong></li>
+<li>实现<strong>同步状态机</strong>的状态寄存</li>
+<li>用于<strong>边沿检测</strong>、<strong>数据同步</strong>等</li>
+</ul>
+<hr>
+<h3 id="Verilog实现"><a href="#Verilog实现" class="headerlink" title="Verilog实现"></a>Verilog实现</h3><h4 id="最常见的同步D触发器代码："><a href="#最常见的同步D触发器代码：" class="headerlink" title="最常见的同步D触发器代码："></a>最常见的同步D触发器代码：</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token comment">// 同步复位的D触发器</span>
+<span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>rst<span class="token punctuation">)</span>         <span class="token comment">// rst为高有效同步复位</span>
+        q <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="带异步复位的D触发器："><a href="#带异步复位的D触发器：" class="headerlink" title="带异步复位的D触发器："></a>带异步复位的D触发器：</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token comment">// 异步复位的D触发器</span>
+<span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk <span class="token keyword">or</span> <span class="token keyword">posedge</span> rst<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>rst<span class="token punctuation">)</span>         <span class="token comment">// rst为高有效异步复位</span>
+        q <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="只有时钟，无复位的D触发器："><a href="#只有时钟，无复位的D触发器：" class="headerlink" title="只有时钟，无复位的D触发器："></a>只有时钟，无复位的D触发器：</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>其中，<code>clk</code>是时钟信号，<code>rst</code>是复位信号，<code>d</code>是输入数据，<code>q</code>是输出数据。</li>
+</ul>
+<hr>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>D触发器</strong>是最基本的时序逻辑单元，工作在时钟同步下，用来存储1位数据。</li>
+<li>只在时钟有效沿采样输入，输出保持稳定，具有“记忆”能力。</li>
+<li>是寄存器、状态机等复杂时序电路的基础单元。</li>
+</ul>
+<h2 id="解释-和"><a href="#解释-和" class="headerlink" title="解释&#x3D;和&lt;&#x3D;"></a>解释&#x3D;和&lt;&#x3D;</h2><p>下面详细解释一下在Verilog中<code>=</code>和<code>&lt;=</code>的区别，这也是Verilog初学者和实际设计中非常重要的知识点。</p>
+<hr>
+<h3 id="和"><a href="#和" class="headerlink" title="= 和 &lt;= 的基本区别"></a><code>=</code> 和 <code>&lt;=</code> 的基本区别</h3><h4 id="：阻塞赋值（Blocking-Assignment）"><a href="#：阻塞赋值（Blocking-Assignment）" class="headerlink" title="= ：阻塞赋值（Blocking Assignment）"></a><code>=</code> ：阻塞赋值（Blocking Assignment）</h4><ul>
+<li><p><strong>英文名</strong>：Blocking Assignment</p>
+</li>
+<li><p><strong>使用场合</strong>：一般用于<strong>组合逻辑</strong>（如<code>always @(*)</code>块中），也可用于仿真中的临时变量赋值。</p>
+</li>
+<li><p><strong>执行方式</strong>：<strong>顺序执行</strong>。等号左边的变量会立即被赋值，后续语句能看到这个改变，和C语言赋值类似。</p>
+</li>
+<li><p><strong>语法示例</strong>：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog">a <span class="token operator">=</span> b <span class="token operator">+</span> c<span class="token punctuation">;</span>
+d <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 这里a已经是新值了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>常见用法</strong>：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    y <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>
+    z <span class="token operator">=</span> y <span class="token operator">|</span> c<span class="token punctuation">;</span> <span class="token comment">// 此时z用到的y，已经是上一句赋的新值</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<h4 id=""><a href="#" class="headerlink" title="&lt;= ：非阻塞赋值（Non-blocking Assignment）"></a><code>&lt;=</code> ：非阻塞赋值（Non-blocking Assignment）</h4><ul>
+<li><p><strong>英文名</strong>：Non-blocking Assignment</p>
+</li>
+<li><p><strong>使用场合</strong>：一般用于<strong>时序逻辑</strong>（如<code>always @(posedge clk)</code>块中）。</p>
+</li>
+<li><p><strong>执行方式</strong>：<strong>并行执行</strong>。所有<code>&lt;=</code>赋值的目标变量都会在本时钟周期的末尾<strong>同时</strong>更新，赋值语句不会阻塞后面的语句。</p>
+</li>
+<li><p><strong>语法示例</strong>：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    a <span class="token operator">&lt;=</span> b <span class="token operator">+</span> c<span class="token punctuation">;</span>
+    d <span class="token operator">&lt;=</span> a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 此时a还是旧值，d用到的是a的旧值</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>常见用法</strong>：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    q <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span> <span class="token comment">// 时钟沿到来时，所有q的赋值同时生效</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<h3 id="实际设计中的区别"><a href="#实际设计中的区别" class="headerlink" title="实际设计中的区别"></a>实际设计中的区别</h3><h4 id="组合逻辑建议用"><a href="#组合逻辑建议用" class="headerlink" title="组合逻辑建议用="></a>组合逻辑建议用<code>=</code></h4><ul>
+<li>组合逻辑（如<code>always @(*)</code>）建议使用<code>=</code>，因为赋值顺序很重要，且不需要时序更新。</li>
+</ul>
+<h4 id="时序逻辑建议用"><a href="#时序逻辑建议用" class="headerlink" title="时序逻辑建议用&lt;="></a>时序逻辑建议用<code>&lt;=</code></h4><ul>
+<li>时序逻辑（如<code>always @(posedge clk)</code>）<strong>必须</strong>使用<code>&lt;=</code>，这样才能模拟真实硬件中所有寄存器在同一时钟沿“同时”更新。</li>
+<li>用<code>=</code>写时序逻辑<strong>可能会导致仿真与综合不一致</strong>，引发难以发现的bug。</li>
+</ul>
+<hr>
+<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><h4 id="例1：阻塞赋值（-）在组合逻辑"><a href="#例1：阻塞赋值（-）在组合逻辑" class="headerlink" title="例1：阻塞赋值（=）在组合逻辑"></a>例1：阻塞赋值（<code>=</code>）在组合逻辑</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    a <span class="token operator">=</span> b<span class="token punctuation">;</span>
+    c <span class="token operator">=</span> a<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>这里<code>c</code>会等于<code>b</code>，因为<code>a</code>已经被赋值。</li>
+</ul>
+<h4 id="例2：非阻塞赋值（"><a href="#例2：非阻塞赋值（" class="headerlink" title="例2：非阻塞赋值（&lt;=）在时序逻辑"></a>例2：非阻塞赋值（<code>&lt;=</code>）在时序逻辑</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    a <span class="token operator">&lt;=</span> b<span class="token punctuation">;</span>
+    c <span class="token operator">&lt;=</span> a<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>这里<code>c</code>会等于<strong>前一个时钟周期的a</strong>（即a的旧值），因为所有赋值在同一时钟沿后一起生效。</li>
+</ul>
+<hr>
+<h3 id="总结口诀"><a href="#总结口诀" class="headerlink" title="总结口诀"></a>总结口诀</h3><ul>
+<li><strong>组合逻辑用<code>=</code>，时序逻辑用<code>&lt;=</code>。</strong></li>
+<li>阻塞赋值顺序执行，非阻塞赋值“同时”执行。</li>
+<li>时序逻辑用<code>=</code>会出错，组合逻辑用<code>&lt;=</code>容易误会。</li>
+</ul>
+<hr>
+<h3 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h3><ul>
+<li>在同一个<code>always</code>块中<strong>混用</strong><code>=</code>和<code>&lt;=</code>会导致代码难以理解，甚至出现bug，建议不要混用。</li>
+<li>仿真时，<code>=</code>和<code>&lt;=</code>的行为差别也会体现在信号波形上。</li>
+</ul>
+<hr>
+<h3 id="汇总表格"><a href="#汇总表格" class="headerlink" title="汇总表格"></a>汇总表格</h3><table>
+<thead>
+<tr>
+<th>赋值符号</th>
+<th>名称</th>
+<th>场景</th>
+<th>行为</th>
+<th>典型块</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x3D;</td>
+<td>阻塞赋值</td>
+<td>组合逻辑</td>
+<td>顺序执行</td>
+<td>always @(*)</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;</td>
+<td>非阻塞赋值</td>
+<td>时序逻辑</td>
+<td>并行（同时）执行</td>
+<td>always @(posedge clk)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="组合逻辑和时序逻辑谁是顺序执行？"><a href="#组合逻辑和时序逻辑谁是顺序执行？" class="headerlink" title="组合逻辑和时序逻辑谁是顺序执行？"></a>组合逻辑和时序逻辑谁是顺序执行？</h2><hr>
+<h3 id="组合逻辑和时序逻辑的执行方式"><a href="#组合逻辑和时序逻辑的执行方式" class="headerlink" title="组合逻辑和时序逻辑的执行方式"></a>组合逻辑和时序逻辑的执行方式</h3><h4 id="组合逻辑"><a href="#组合逻辑" class="headerlink" title="组合逻辑"></a>组合逻辑</h4><ul>
+<li><strong>本质</strong>：没有记忆功能，只有输入输出映射。</li>
+<li><strong>执行方式</strong>：<strong>并行（或同时）执行</strong>。组合逻辑的输出在输入发生变化后马上同步变化，没有“先后顺序”。</li>
+<li><strong>Verilog实现</strong>：常用<code>assign</code>或<code>always @(*)</code>，通常用<strong>阻塞赋值（&#x3D;）</strong>。<ul>
+<li>例：<code>assign y = a &amp; b;</code></li>
+</ul>
+</li>
+<li>在硬件中，组合逻辑电路的所有部分实际上是<strong>并行</strong>工作的。</li>
+</ul>
+<h4 id="时序逻辑"><a href="#时序逻辑" class="headerlink" title="时序逻辑"></a>时序逻辑</h4><ul>
+<li><strong>本质</strong>：有记忆功能，依赖时钟（clk）沿来驱动。</li>
+<li><strong>执行方式</strong>：<strong>按时钟节拍顺序执行</strong>，也就是“时序执行”。<ul>
+<li>只有在时钟的上升沿或下降沿时，电路的状态才会更新。</li>
+</ul>
+</li>
+<li><strong>Verilog实现</strong>：用<code>always @(posedge clk)</code>&#x2F;<code>always @(negedge clk)</code>，用<strong>非阻塞赋值（&lt;&#x3D;）</strong>。<ul>
+<li>例：<code>always @(posedge clk) q &lt;= d;</code></li>
+</ul>
+</li>
+<li>在硬件中，时序逻辑只有在时钟沿到来时才“执行一次”，更新寄存器&#x2F;触发器的内容。</li>
+</ul>
+<hr>
+<h3 id="顺序执行和时序执行"><a href="#顺序执行和时序执行" class="headerlink" title="顺序执行和时序执行"></a>顺序执行和时序执行</h3><ul>
+<li>如果你理解“顺序执行”为<strong>依次、按顺序执行</strong>，在Verilog中主要指阻塞赋值（&#x3D;）的<strong>语句顺序执行</strong>，这通常出现在组合逻辑的描述中。</li>
+<li>如果你理解“时序执行”为<strong>依赖时钟的节拍来同步执行</strong>，那就是时序逻辑的特征。</li>
+</ul>
+<hr>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ul>
+<li><strong>组合逻辑</strong>：在硬件上是<strong>并行执行</strong>，在Verilog代码块内部可以用<code>=</code>实现语句顺序执行，但这是代码描述方式，不代表硬件行为有先后顺序。</li>
+<li><strong>时序逻辑</strong>：是<strong>按时钟节拍（时序）执行</strong>，所有寄存器&#x2F;触发器在同一个时钟沿“同时”更新数据。</li>
+</ul>
+<hr>
+<h3 id="常见混淆"><a href="#常见混淆" class="headerlink" title="常见混淆"></a>常见混淆</h3><ul>
+<li>有些初学者容易把Verilog代码的语句“写的顺序”误认为硬件有先后，其实<strong>组合逻辑电路是并行的，所有输入一变输出就变，没有先后</strong>。</li>
+<li><strong>时序逻辑</strong>才会体现“时序性”，即每个时钟沿发生一次状态更新，这种“节拍”决定了时序逻辑的先后性。</li>
+</ul>
+<hr>
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>如果问：“谁是按时序（时钟）执行的？”——<strong>时序逻辑</strong>。</li>
+<li>如果问：“谁的代码是顺序执行的？”——组合逻辑常用阻塞赋值<code>=</code>，语句<strong>顺序执行</strong>，但硬件上还是并行逻辑。</li>
+<li>真正体现“时序、节拍”特征的是<strong>时序逻辑</strong>。</li>
+</ul>
+<hr>
+<h2 id="代码的顺序"><a href="#代码的顺序" class="headerlink" title="代码的顺序"></a>代码的顺序</h2><blockquote>
+<p>在Verilog中，哪些代码可以任意打乱撰写顺序（即代码的先后顺序不会影响最终硬件功能）？</p>
+</blockquote>
+<hr>
+<h3 id="组合逻辑代码的顺序"><a href="#组合逻辑代码的顺序" class="headerlink" title="组合逻辑代码的顺序"></a>组合逻辑代码的顺序</h3><p><strong>组合逻辑（通常用<code>assign</code>或<code>always @(*)</code>）</strong></p>
+<p><strong>核心点：</strong><br>在<code>assign</code>语句，以及<code>always @(*)</code>块中使用阻塞赋值（<code>=</code>）描述的组合逻辑，<strong>代码的先后顺序在硬件实现时是可以打乱的</strong>，因为它们最终描述的都是电路的连线关系，所有组合逻辑是<strong>并行</strong>实现的。</p>
+<h4 id="示例1：assign-语句"><a href="#示例1：assign-语句" class="headerlink" title="示例1：assign 语句"></a>示例1：assign 语句</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token keyword">assign</span> y <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>
+<span class="token keyword">assign</span> z <span class="token operator">=</span> y <span class="token operator">|</span> c<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>你可以写成：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token keyword">assign</span> z <span class="token operator">=</span> y <span class="token operator">|</span> c<span class="token punctuation">;</span>
+<span class="token keyword">assign</span> y <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><strong>无论顺序如何，综合出来的电路都是一样的</strong>。</p>
+<h4 id="示例2：always-块的组合逻辑"><a href="#示例2：always-块的组合逻辑" class="headerlink" title="示例2：always @(*) 块的组合逻辑"></a>示例2：always @(*) 块的组合逻辑</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    y <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>
+    z <span class="token operator">=</span> y <span class="token operator">|</span> c<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>你可以写成：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    z <span class="token operator">=</span> y <span class="token operator">|</span> c<span class="token punctuation">;</span>
+    y <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>对于功能来说，这样写<strong>是没问题的</strong>，但<strong>不推荐</strong>，因为如果z依赖y的赋值，顺序会影响仿真值（即y还没赋值时z就用它了），但不会影响最终综合后的硬件连线。</p>
+<hr>
+<h3 id="时序逻辑代码的顺序"><a href="#时序逻辑代码的顺序" class="headerlink" title="时序逻辑代码的顺序"></a>时序逻辑代码的顺序</h3><p><strong>时序逻辑（如<code>always @(posedge clk)</code>）</strong></p>
+<p>在<code>always @(posedge clk)</code>块中，<strong>所有用非阻塞赋值（<code>&lt;=</code>）的语句，其顺序可以任意打乱</strong>，<strong>不会影响硬件功能</strong>。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    a <span class="token operator">&lt;=</span> b<span class="token punctuation">;</span>
+    c <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+    e <span class="token operator">&lt;=</span> f<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>你可以写成：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token keyword">posedge</span> clk<span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    e <span class="token operator">&lt;=</span> f<span class="token punctuation">;</span>
+    c <span class="token operator">&lt;=</span> d<span class="token punctuation">;</span>
+    a <span class="token operator">&lt;=</span> b<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>结果完全一样</strong>，因为所有<code>&lt;=</code>赋值都是在时钟沿来时同时更新的。</p>
+<hr>
+<h3 id="特殊说明"><a href="#特殊说明" class="headerlink" title="特殊说明"></a>特殊说明</h3><ul>
+<li>在<strong>组合逻辑</strong>的<code>always @(*)</code>块内，如果你用<strong>阻塞赋值（&#x3D;）</strong>，<strong>变量有依赖关系时，顺序会影响仿真结果</strong>（但综合硬件最终是并行的，只要组合逻辑能穷举清楚）。<ul>
+<li><p>比如：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    a <span class="token operator">=</span> b<span class="token punctuation">;</span>
+    c <span class="token operator">=</span> a<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>和</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token important">always @</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    c <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    a <span class="token operator">=</span> b<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>仿真值会不一样</strong>，但硬件综合后，只要赋值关系唯一，结果一样。</p>
+</li>
+</ul>
+</li>
+<li>在<strong>时序逻辑</strong>的<code>always @(posedge clk)</code>块内，<strong>非阻塞赋值（&lt;&#x3D;）语句可以随意打乱顺序</strong>，但<strong>阻塞赋值（&#x3D;）不行</strong>，用阻塞赋值会导致仿真和综合都出错。</li>
+</ul>
+<hr>
+<h3 id="总结表格"><a href="#总结表格" class="headerlink" title="总结表格"></a>总结表格</h3><table>
+<thead>
+<tr>
+<th>代码类型</th>
+<th>赋值方式</th>
+<th>顺序能否任意打乱</th>
+<th>推荐写法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>assign</td>
+<td>assign</td>
+<td>可以</td>
+<td>任意</td>
+<td>纯组合逻辑，描述电路连接关系</td>
+</tr>
+<tr>
+<td>always @(*)</td>
+<td>&#x3D;</td>
+<td>基本可以（无依赖）</td>
+<td>有依赖时按依赖顺序</td>
+<td>顺序影响仿真，不影响最终硬件</td>
+</tr>
+<tr>
+<td>always @(posedge clk)</td>
+<td>&lt;&#x3D;</td>
+<td>可以</td>
+<td>任意</td>
+<td>全部在同一时钟沿“同时”赋值</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>assign语句</strong>、<strong>always块中用<code>&lt;=</code>的时序逻辑代码</strong>，其语句顺序可以任意打乱，不影响硬件功能和综合结果。</li>
+<li><strong>always @(*)中用<code>=</code>的组合逻辑代码</strong>如果变量有依赖，建议按逻辑顺序写，否则仿真结果会错，虽然综合硬件没问题。</li>
+<li>实际写代码时，<strong>养成规范化书写的习惯</strong>，便于阅读和维护。</li>
+</ul>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百二十八篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2025/04/27/00328-verilog-zu-he-luo-ji-he-shi-xu-luo-ji/">https://luyf-lemon-love.space/2025/04/27/00328-verilog-zu-he-luo-ji-he-shi-xu-luo-ji/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Verilog/">
+                                    <span class="chip bg-color">Verilog</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2025/04/27/00328-verilog-zu-he-luo-ji-he-shi-xu-luo-ji/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/028-%E6%95%96%E9%97%B0%E5%A7%91%E5%A7%91.jpg" class="responsive-img" alt="00328 Verilog 组合逻辑和时序逻辑">
+                        
+                        <span class="card-title">00328 Verilog 组合逻辑和时序逻辑</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Verilog/" class="post-category">
+                                    Verilog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Verilog/">
+                        <span class="chip bg-color">Verilog</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/04/27/00327-exec-tee-a-2-1-ming-ling/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/027-%E5%A5%B3%E5%AD%A9-%E7%9F%AD%E5%8F%91-%E5%85%BD%E8%80%B3-%E5%90%89%E4%BB%96-%E9%9F%B3%E4%B9%90.jpg" class="responsive-img" alt="00327 exec &gt; &gt;(tee -a ) 2&gt;&amp;1 命令">
+                        
+                        <span class="card-title">00327 exec &gt; &gt;(tee -a ) 2&gt;&amp;1 命令</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-04-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Linux/" class="post-category">
+                                    Linux
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Linux/">
+                        <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2025</span>
+            
+            <a href="/about" target="_blank">LuYF-Lemon-love</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "5";
+                        var startDate = "7";
+                        var startHour = "4";
+                        var startMinute = "53";
+                        var startSecond = "32";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+                <span id="icp"><img src="/medias/icp.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="https://beian.miit.gov.cn" target="_blank">冀ICP备2022012632号-1</a>
+            </span>
+            
+            <br>
+            
+                <span id="gongan"><img src="https://cos.luyf-lemon-love.space/images/备案图标.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011618" target="_blank">苏公网安备 32011502011618号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yanfeng98" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:luyanfeng_nlp@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
