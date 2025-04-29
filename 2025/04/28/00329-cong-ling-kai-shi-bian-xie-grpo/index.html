@@ -489,7 +489,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-04-28
+                    2025-04-29
                 </div>
                 
 
@@ -688,11 +688,11 @@ Respond in the following format:
 <li><strong><code>extract_answer_from_model_output</code>:</strong> 这个函数通过<answer>标签来拆分生成的文本，确保只提取最后一次出现的标签内的内容。如果标签缺失或答案无效（例如，是一个占位符”…”），函数将返回None。</li>
 <li><strong><code>extract_answer_from_dataset</code>：</strong> 由于GSM8K数据集使用分隔符（”####”）来分隔答案，这个函数通过在该分隔符上拆分文本来提取预期答案。</li>
 </ul>
-<h2 id="Part-3-Dataset-Preparation"><a href="#Part-3-Dataset-Preparation" class="headerlink" title="Part 3: Dataset Preparation"></a>Part 3: Dataset Preparation</h2><p>In this part we prepare the GSM8K dataset for training. GSM8K is a dataset of 8.5K high quality linguistically diverse grade school math word problems created by human problem writers. We will use the examples from this dataset to train our model in the reinforcement learning (RL) paradigm: the model will generate several sample probelem solutions, we will compare these solutions to the ground truth number from a GSM8K example and, if there’s a match, we will provide a high reward to the RL algorithm (GRPO) which will update the model’s weights so that the chance of getting the high reward next time is increased.</p>
-<p>We first load the dataset from Hugging Face and then format each example to include a system prompt and a user prompt. We also extract the expected answer from the dataset. Two helper functions are defined here:</p>
+<h2 id="数据集准备"><a href="#数据集准备" class="headerlink" title="数据集准备"></a>数据集准备</h2><p>在这一部分中，我们为训练准备GSM8K数据集。GSM8K是一个包含8.5K个高质量、语言多样化的小学数学文字问题的数据集，这些问题由人类问题作者创作。我们将使用这个数据集中的例子来训练我们的模型，采用强化学习（RL）范式：模型将生成多个样本问题解决方案，我们将这些解决方案与GSM8K示例中的正确答案进行比较，如果有匹配，我们将为强化学习算法（GRPO）提供高奖励，该算法将更新模型的权重，以增加下次获得高奖励的机会。</p>
+<p>我们首先从Hugging Face加载数据集，然后格式化每个示例，包括系统提示和用户提示。我们还从数据集中提取预期答案。这里定义了两个辅助函数：</p>
 <ol>
-<li><strong><code>prepare_dataset</code>:</strong> Loads and prepares the GSM8K dataset by creating a prompt that includes a system prompt (with the formatting instructions) and a user message (the question). It also extracts the answer from the dataset.</li>
-<li><strong><code>build_prompt</code>:</strong> Concatenates the list of message dictionaries into a single prompt string. This ensures consistency in how the prompt is constructed during both training and inference.</li>
+<li><strong><code>prepare_dataset</code>:</strong> 加载并准备GSM8K数据集，创建一个包含系统提示（带有格式化说明）和用户消息（问题）的提示。它还从数据集中提取答案。</li>
+<li><strong><code>build_prompt</code>:</strong> 将消息字典列表拼接成一个单一的提示字符串。这确保了在训练和推理过程中提示的构建方式保持一致。</li>
 </ol>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">prepare_dataset</span><span class="token punctuation">(</span>split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
    <span class="token triple-quoted-string string">"""
@@ -746,13 +746,13 @@ Respond in the following format:
    """</span>
    <span class="token keyword">return</span> <span class="token string">"\n"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>msg<span class="token punctuation">[</span><span class="token string">"content"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> msg <span class="token keyword">in</span> messages<span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="Part-4-Evaluation-Functions"><a href="#Part-4-Evaluation-Functions" class="headerlink" title="Part 4: Evaluation Functions"></a>Part 4: Evaluation Functions</h2><p>Evaluation is crucial to track the model’s progress. In this part, we define functions that allow us to evaluate the model on a set of examples. The evaluation functions perform the following tasks:</p>
+<h2 id="评估函数"><a href="#评估函数" class="headerlink" title="评估函数"></a>评估函数</h2><p>评估对于跟踪模型的进展至关重要。在这一部分中，我们定义了一些函数，使我们能够在一组示例上评估模型。评估函数执行以下任务：</p>
 <ul>
-<li><strong>Tokenize the prompt and generate a response:</strong> The model’s output is generated given the tokenized prompt.</li>
-<li><strong>Extract the predicted answer:</strong> The answer is extracted from the generated response.</li>
-<li><strong>Compare the predicted answer with the expected answer:</strong> This comparison is done using exact matching as well as numeric equivalence checks.</li>
+<li><strong>将提示词分词并生成响应：</strong> 模型根据分词后的提示词生成输出。</li>
+<li><strong>提取预测答案：</strong> 答案是从生成的响应中提取出来的。</li>
+<li><strong>比较预测答案和预期答案：</strong>这种比较使用了精确匹配和数值等效性检查。</li>
 </ul>
-<p>Two helper functions, <code>_extract_last_number</code> and <code>_extract_single_number</code>, are used to extract numbers from text. The main evaluation function, <code>evaluate_model</code>, uses these helpers to determine if the predicted answer is correct:</p>
+<p>两个辅助函数，<code>extract_last_number</code> 和 <code>extract_single_number</code>，用于从文本中提取数字。主要的评估函数，<code>evaluate_model</code>，使用这些辅助函数来判断预测的答案是否正确：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">extract_last_number</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
    <span class="token triple-quoted-string string">"""
    Extracts the last number appearing in the text.
@@ -896,23 +896,23 @@ Respond in the following format:
    model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
    <span class="token keyword">return</span> accuracy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>In the above code:</p>
+<p>在上述代码中：</p>
 <ul>
-<li><code>_extract_last_number</code> extracts the final numeric value from a text string, ensuring it is separated properly and free from extraneous symbols.</li>
-<li><code>_extract_single_number</code> attempts to extract a single numeric value from a string and returns it only if one number is found.</li>
-<li><code>evaluate_model</code>:  <ul>
-<li>Sets the model to evaluation mode.</li>
-<li>Iterates over each evaluation example, builds the prompt, tokenizes it, and generates a response.</li>
-<li>Extracts the predicted answer and compares it to the expected answer using exact matching and numeric equivalence (using the helper functions).</li>
-<li>Logs and prints detailed evaluation information for each example and computes the overall accuracy.</li>
+<li><code>extract_last_number</code> 从文本字符串中提取最后一个数字值，确保它被正确分离且不包含多余的符号。</li>
+<li><code>extract_single_number</code> 试图从字符串中提取一个单一的数字值，如果找到一个数字就返回它。</li>
+<li><code>evaluate_model</code>：<ul>
+<li>将模型设置为评估模式。</li>
+<li>遍历每个评估示例，构建提示，进行分词，并生成响应。</li>
+<li>提取预测答案，并使用精确匹配和数值等效性（使用辅助函数）将其与预期答案进行比较。</li>
+<li>记录并打印每个示例的详细评估信息，并计算总体准确率。</li>
 </ul>
 </li>
 </ul>
-<h2 id="Part-5-Reward-Functions"><a href="#Part-5-Reward-Functions" class="headerlink" title="Part 5: Reward Functions"></a>Part 5: Reward Functions</h2><p>In reinforcement learning, reward functions guide the training process by providing feedback on the model’s output. In our pipeline, we define two reward functions:</p>
+<h2 id="奖励函数"><a href="#奖励函数" class="headerlink" title="奖励函数"></a>奖励函数</h2><p>在强化学习中，奖励函数通过提供对模型输出的反馈来指导训练过程。在我们的流程中，我们定义了两个奖励函数：</p>
 <ol>
-<li><p><strong><code>correctness_reward</code>:</strong><br>This function assigns rewards based on whether the generated answer is correct. It compares the extracted answer from the model output with the expected answer, using both exact string matching and numeric equivalence checks. A exact match earns a higher reward (2.0), while a match based on numeric equivalence receives a smaller reward (1.5).</p>
+<li><p><strong><code>correctness_reward</code>:</strong><br>这个函数根据生成的答案是否正确来分配奖励。它比较从模型输出中提取的答案与预期答案，使用精确的字符串匹配和数值等效性检查。完全匹配会获得更高的奖励（2.0），而基于数值等效性的匹配则会获得较低的奖励（1.5）。</p>
 </li>
-<li><p><strong><code>format_reward</code>:</strong><br>This function encourages the model to adhere to the desired XML-like output format. It provides a small reward for the presence of the <code>&lt;reasoning&gt;</code>, <code>&lt;/reasoning&gt;</code>, <code>&lt;answer&gt;</code>, and <code>&lt;/answer&gt;</code> tags in the generated text. We use a relatively value of 0.05 for each of the four pieces because the model is already capable of using these tags from previous supervised finetuning step, so we give this small reward so that it doesn’t forget to do that because of the RL updates.</p>
+<li><p><strong><code>format_reward</code>:</strong><br>这个函数鼓励模型遵循所需的类似XML的输出格式。它为生成的文本中出现的<reasoning>、</reasoning>、<answer>和</answer>标记提供了一个小奖励。我们为这四个部分各使用了0.05的相对值，因为模型已经能够在之前的监督微调步骤中使用这些标记，所以我们给予这个小奖励，以确保它不会因为强化学习更新而忘记这样做。</p>
 </li>
 </ol>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">correctness_reward</span><span class="token punctuation">(</span>prompts<span class="token punctuation">,</span> completions<span class="token punctuation">,</span> answer<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1020,7 +1020,7 @@ Respond in the following format:
 
    <span class="token keyword">return</span> combined_rewards<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="Part-6-DataParallel-GRPO-From-Scratch"><a href="#Part-6-DataParallel-GRPO-From-Scratch" class="headerlink" title="Part 6: DataParallel GRPO From Scratch"></a>Part 6: DataParallel GRPO From Scratch</h2><p>In this section, we implement all the building blocks of the GRPO algorithm from scratch. The implementation assumes that the machine running the code has at least 2 GPUs. We use PyTorch’s <code>DataParallel</code> API to distribute the policy model across the GPU cores, one copy of the model per GPU core. The batch is split between the GPU cores.</p>
+<h2 id="从零开始构建数据并行GRPO"><a href="#从零开始构建数据并行GRPO" class="headerlink" title="从零开始构建数据并行GRPO"></a>从零开始构建数据并行GRPO</h2><p>In this section, we implement all the building blocks of the GRPO algorithm from scratch. The implementation assumes that the machine running the code has at least 2 GPUs. We use PyTorch’s <code>DataParallel</code> API to distribute the policy model across the GPU cores, one copy of the model per GPU core. The batch is split between the GPU cores.</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">selective_log_softmax</span><span class="token punctuation">(</span>logits<span class="token punctuation">,</span> input_ids<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""
     Computes log probabilities for specific tokens in the vocabulary.
