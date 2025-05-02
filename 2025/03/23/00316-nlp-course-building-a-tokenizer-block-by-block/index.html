@@ -492,7 +492,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-03-23
+                    2025-05-03
                 </div>
                 
 
@@ -526,12 +526,185 @@
 <li>通过模型运行输入（使用预分词的单词生成一系列标记）</li>
 <li>后处理（添加分词器的特殊标记，生成注意力掩码和标记类型 ID）</li>
 </ol>
+<p>提醒一下，这里是整个过程的另一个视角：</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20250502154849.png"></p>
+<p>🤗Tokenizers库已经为每个步骤提供了几个选项，您可以将它们混合和匹配在一起。在本节中，我们将看到如何从头开始构建tokenizer，而不是像第2节那样从旧tokenizer训练新tokenizer。然后，您将能够构建您能想到的任何类型的tokenizer！</p>
+<p>更准确地说，该库是围绕一个中央Tokenizer类构建的，其构建块在子模块中重新组合：</p>
+<ul>
+<li>normalizers包含您可以使用的所有可能类型的Normalizer（<a href="https://huggingface.co/docs/tokenizers/api/normalizers">此处</a>为完整列表）。</li>
+<li>pre_tokenizers包含您可以使用的所有可能类型的PreTokenizer（完整列表在<a href="https://huggingface.co/docs/tokenizers/api/pre-tokenizers">这里</a>）。</li>
+<li>models包含您可以使用的各种类型的Model，例如BPE、WordPiece和Unigram（<a href="https://huggingface.co/docs/tokenizers/api/models">此处</a>为完整列表）。</li>
+<li>trainers包含所有不同类型的Trainer，您可以使用它们在语料库上训练您的模型（每种类型的模型一个；完整列表在<a href="https://huggingface.co/docs/tokenizers/api/trainers">这里</a>）。</li>
+<li>post_processors包含您可以使用的各种类型的PostProcessor（完整列表在<a href="https://huggingface.co/docs/tokenizers/api/post-processors">这里</a>）。</li>
+<li>decoders包含可用于解码标记化输出的各种类型的Decoder（<a href="https://huggingface.co/docs/tokenizers/components#decoders">此处</a>为完整列表）。</li>
+</ul>
+<p>您可以在<a href="https://huggingface.co/docs/tokenizers/components">此处</a>找到构建块的完整列表。</p>
 <p>src link: <a href="https://huggingface.co/learn/nlp-course/chapter6/8">https://huggingface.co/learn/nlp-course/chapter6/8</a></p>
 <p>Operating System: Ubuntu 22.04.4 LTS</p>
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
 <li><a href="https://huggingface.co/learn/nlp-course/chapter6/8">NLP Course - Building a tokenizer, block by block</a></li>
 </ol>
-<h2 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百一十六篇博文写完，开心！！！！</p>
+<h2 id="获取语料库"><a href="#获取语料库" class="headerlink" title="获取语料库"></a>获取语料库</h2><p>为了训练我们的新tokenizer，我们将使用一个小的文本语料库（因此示例运行速度很快）。获取语料库的步骤与我们在本章开头所采取的步骤相似，但这次我们将使用<a href="https://huggingface.co/datasets/wikitext">WikiText-2</a>数据集：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+
+dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"wikitext"</span><span class="token punctuation">,</span> name<span class="token operator">=</span><span class="token string">"wikitext-2-raw-v1"</span><span class="token punctuation">,</span> split<span class="token operator">=</span><span class="token string">"train"</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">def</span> <span class="token function">get_training_corpus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>dataset<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">yield</span> dataset<span class="token punctuation">[</span>i <span class="token punctuation">:</span> i <span class="token operator">+</span> <span class="token number">1000</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>函数get_training_corpus()是一个生成器，它会生成1000个文本批次，我们将使用这些文本来训练分词器。</p>
+<p>🤗 Tokenizers也可以直接在文本文件上进行训练。下面是如何生成一个包含来自WikiText-2的所有文本&#x2F;输入的文本文件，以便在本地使用：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"wikitext-2.txt"</span><span class="token punctuation">,</span> <span class="token string">"w"</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">"utf-8"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>dataset<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>dataset<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"text"</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">"\n"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来我们将向您展示如何一步步构建自己的BERT、GPT-2和XLNet令牌化器。这将为我们提供三种主要令牌化算法的示例：WordPiece、BPE和Unigram。让我们从BERT开始吧！</p>
+<h2 id="从零开始构建-WordPiece-分词器"><a href="#从零开始构建-WordPiece-分词器" class="headerlink" title="从零开始构建 WordPiece 分词器"></a>从零开始构建 WordPiece 分词器</h2><p>要使用🤗 Tokenizers 库构建一个分词器，我们首先要实例化一个 Tokenizer 对象并为其指定一个模型，然后将其 normalizer、pre_tokenizer、post_processor 和 decoder 属性设置为我们想要的值。</p>
+<p>在这个例子中，我们将创建一个使用 WordPiece 模型的分词器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> tokenizers <span class="token keyword">import</span> <span class="token punctuation">(</span>
+    decoders<span class="token punctuation">,</span>
+    models<span class="token punctuation">,</span>
+    normalizers<span class="token punctuation">,</span>
+    pre_tokenizers<span class="token punctuation">,</span>
+    processors<span class="token punctuation">,</span>
+    trainers<span class="token punctuation">,</span>
+    Tokenizer<span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+tokenizer <span class="token operator">=</span> Tokenizer<span class="token punctuation">(</span>models<span class="token punctuation">.</span>WordPiece<span class="token punctuation">(</span>unk_token<span class="token operator">=</span><span class="token string">"[UNK]"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们必须指定unk_token，以便模型知道在遇到未见过的字符时应该返回什么。在这里我们可以设置的其他参数包括模型的词汇表（我们要训练模型，所以不需要设置这个）和max_input_chars_per_word，它指定了每个单词的最大长度（超过传入值的单词将被拆分）。</p>
+<p>令牌化的第一步是规范化，所以让我们从那里开始。由于BERT被广泛使用，有一个BertNormalizer，里面有我们可以为BERT设置的经典选项：小写和strip_accents，这些都是不言自明的；clean_text用于删除所有控制字符，并用一个重复的空格替换；以及handle_chinese_chars，它在中文字符周围添加空格。要复制bert-base-uncased令牌化器，我们只需要设置这个规范化器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>normalizer <span class="token operator">=</span> normalizers<span class="token punctuation">.</span>BertNormalizer<span class="token punctuation">(</span>lowercase<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然而，在构建新的分词器时，您可能无法使用🤗 Tokenizers库中已经实现的这种方便的规范化器——所以让我们来看看如何手动创建BERT规范化器。该库提供了一个小写规范化器和一个去除重音规范化器，您可以使用一个序列来组合多个规范化器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>normalizer <span class="token operator">=</span> normalizers<span class="token punctuation">.</span>Sequence<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>normalizers<span class="token punctuation">.</span>NFD<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> normalizers<span class="token punctuation">.</span>Lowercase<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> normalizers<span class="token punctuation">.</span>StripAccents<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>我们还使用了 NFD Unicode 规范化器，否则 StripAccents 规范化器就无法正确识别带重音的字符，因此也就无法将它们去除。</p>
+<p>正如我们之前看到的，我们可以使用归一化器的 normalize_str() 方法来检查它对给定文本的影响：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>tokenizer<span class="token punctuation">.</span>normalizer<span class="token punctuation">.</span>normalize_str<span class="token punctuation">(</span><span class="token string">"Héllò hôw are ü?"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hello how are u?<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>如果你在一个包含 Unicode 字符 u”\u0085”的字符串上测试之前的两个规范化器，你肯定会注意到这两个规范化器并不完全等效。为了不让规范化器序列过于复杂，我们没有包含 BertNormalizer 在 clean_text 参数设置为 True 时所需的正则表达式替换——这是默认行为。但不用担心：如果你在规范化器序列中添加两个 normalizers.Replace，就可以获得完全相同的规范化效果，而无需使用方便的 BertNormalizer。</p>
+</blockquote>
+<p>接下来是预分词步骤。同样，我们可以使用预先构建的BertPreTokenizer：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>pre_tokenizer <span class="token operator">=</span> pre_tokenizers<span class="token punctuation">.</span>BertPreTokenizer<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者我们可以从零开始建造它：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>pre_tokenizer <span class="token operator">=</span> pre_tokenizers<span class="token punctuation">.</span>Whitespace<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>请注意，Whitespace预分词器会根据空格以及所有不是字母、数字或下划线字符的字符进行分词，所以从技术上讲，它是根据空格和标点符号进行分词的。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>pre_tokenizer<span class="token punctuation">.</span>pre_tokenize_str<span class="token punctuation">(</span><span class="token string">"Let's test my pre-tokenizer."</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'Let'</span>, <span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">3</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">"'"</span>, <span class="token punctuation">(</span><span class="token number">3</span>, <span class="token number">4</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'s'</span>, <span class="token punctuation">(</span><span class="token number">4</span>, <span class="token number">5</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'test'</span>, <span class="token punctuation">(</span><span class="token number">6</span>, <span class="token number">10</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'my'</span>, <span class="token punctuation">(</span><span class="token number">11</span>, <span class="token number">13</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'pre'</span>, <span class="token punctuation">(</span><span class="token number">14</span>, <span class="token number">17</span><span class="token punctuation">))</span>,
+ <span class="token punctuation">(</span><span class="token string">'-'</span>, <span class="token punctuation">(</span><span class="token number">17</span>, <span class="token number">18</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'tokenizer'</span>, <span class="token punctuation">(</span><span class="token number">18</span>, <span class="token number">27</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'.'</span>, <span class="token punctuation">(</span><span class="token number">27</span>, <span class="token number">28</span><span class="token punctuation">))</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>如果你只想根据空格分词，应该使用 WhitespaceSplit 预分词器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pre_tokenizer <span class="token operator">=</span> pre_tokenizers<span class="token punctuation">.</span>WhitespaceSplit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+pre_tokenizer<span class="token punctuation">.</span>pre_tokenize_str<span class="token punctuation">(</span><span class="token string">"Let's test my pre-tokenizer."</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">"Let's"</span>, <span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">5</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'test'</span>, <span class="token punctuation">(</span><span class="token number">6</span>, <span class="token number">10</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'my'</span>, <span class="token punctuation">(</span><span class="token number">11</span>, <span class="token number">13</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'pre-tokenizer.'</span>, <span class="token punctuation">(</span><span class="token number">14</span>, <span class="token number">28</span><span class="token punctuation">))</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>就像使用规范化器一样，你可以使用一个序列来组合多个预分词器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">pre_tokenizer <span class="token operator">=</span> pre_tokenizers<span class="token punctuation">.</span>Sequence<span class="token punctuation">(</span>
+    <span class="token punctuation">[</span>pre_tokenizers<span class="token punctuation">.</span>WhitespaceSplit<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pre_tokenizers<span class="token punctuation">.</span>Punctuation<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span>
+pre_tokenizer<span class="token punctuation">.</span>pre_tokenize_str<span class="token punctuation">(</span><span class="token string">"Let's test my pre-tokenizer."</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'Let'</span>, <span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">3</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">"'"</span>, <span class="token punctuation">(</span><span class="token number">3</span>, <span class="token number">4</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'s'</span>, <span class="token punctuation">(</span><span class="token number">4</span>, <span class="token number">5</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'test'</span>, <span class="token punctuation">(</span><span class="token number">6</span>, <span class="token number">10</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'my'</span>, <span class="token punctuation">(</span><span class="token number">11</span>, <span class="token number">13</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'pre'</span>, <span class="token punctuation">(</span><span class="token number">14</span>, <span class="token number">17</span><span class="token punctuation">))</span>,
+ <span class="token punctuation">(</span><span class="token string">'-'</span>, <span class="token punctuation">(</span><span class="token number">17</span>, <span class="token number">18</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'tokenizer'</span>, <span class="token punctuation">(</span><span class="token number">18</span>, <span class="token number">27</span><span class="token punctuation">))</span>, <span class="token punctuation">(</span><span class="token string">'.'</span>, <span class="token punctuation">(</span><span class="token number">27</span>, <span class="token number">28</span><span class="token punctuation">))</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>令牌化管道的下一步是将输入通过模型运行。我们已经在初始化中指定了我们的模型，但我们仍然需要训练它，这需要一个WordPieceTrainer。在🤗 Tokenizers中实例化一个训练器时，需要记住的主要事情是，你需要传递所有你打算使用的特殊令牌——否则它不会将它们添加到词汇表中，因为它们不在训练语料库中：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">special_tokens <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"[UNK]"</span><span class="token punctuation">,</span> <span class="token string">"[PAD]"</span><span class="token punctuation">,</span> <span class="token string">"[CLS]"</span><span class="token punctuation">,</span> <span class="token string">"[SEP]"</span><span class="token punctuation">,</span> <span class="token string">"[MASK]"</span><span class="token punctuation">]</span>
+trainer <span class="token operator">=</span> trainers<span class="token punctuation">.</span>WordPieceTrainer<span class="token punctuation">(</span>vocab_size<span class="token operator">=</span><span class="token number">25000</span><span class="token punctuation">,</span> special_tokens<span class="token operator">=</span>special_tokens<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>除了指定vocab_size和special_tokens外，我们还可以设置min_frequency（一个词必须出现的次数才能被纳入词汇）或更改continuing_subword_prefix（如果我们想使用##以外的其他内容）。</p>
+<p>要使用我们之前定义的迭代器来训练我们的模型，我们只需要执行这个命令：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>train_from_iterator<span class="token punctuation">(</span>get_training_corpus<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> trainer<span class="token operator">=</span>trainer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>我们也可以使用文本文件来训练我们的分词器，具体操作如下（我们事先用一个空的 WordPiece 重新初始化模型）：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>model <span class="token operator">=</span> models<span class="token punctuation">.</span>WordPiece<span class="token punctuation">(</span>unk_token<span class="token operator">=</span><span class="token string">"[UNK]"</span><span class="token punctuation">)</span>
+tokenizer<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"wikitext-2.txt"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> trainer<span class="token operator">=</span>trainer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>在这两种情况下，我们都可以通过调用 encode() 方法来测试分词器对文本的处理：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"Let's test this tokenizer."</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>tokens<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token string">'let'</span>, <span class="token string">"'"</span>, <span class="token string">'s'</span>, <span class="token string">'test'</span>, <span class="token string">'this'</span>, <span class="token string">'tok'</span>, <span class="token string">'##eni'</span>, <span class="token string">'##zer'</span>, <span class="token string">'.'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>获得的编码是一个 Encoding，它在其各种属性中包含了令牌化器的所有必要输出：ids、type_ids、tokens、offsets、attention_mask、special_tokens_mask 和 overflowing。</p>
+<p>令牌化流程的最后一步是后处理。我们需要在开头添加[CLS]令牌，在结尾添加[SEP]令牌（或者如果我们有一对句子的话，就在每句话之后添加）。我们将使用一个模板处理器来完成这项工作，但首先我们需要知道词典中[CLS]和[SEP]令牌的ID：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">cls_token_id <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>token_to_id<span class="token punctuation">(</span><span class="token string">"[CLS]"</span><span class="token punctuation">)</span>
+sep_token_id <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>token_to_id<span class="token punctuation">(</span><span class="token string">"[SEP]"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>cls_token_id<span class="token punctuation">,</span> sep_token_id<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">(</span><span class="token number">2</span>, <span class="token number">3</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>为了为模板处理器编写模板，我们必须指定如何处理单个句子和一对句子。对于这两种情况，我们都要写下我们想要使用的特殊标记；第一个（或单个）句子用 $A 表示，而第二个句子（如果编码一对）用 $B 表示。对于这些（特殊标记和句子），我们还要在冒号后指定相应的标记类型 ID。</p>
+<p>因此，经典的BERT模板定义如下：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>post_processor <span class="token operator">=</span> processors<span class="token punctuation">.</span>TemplateProcessing<span class="token punctuation">(</span>
+    single<span class="token operator">=</span><span class="token string-interpolation"><span class="token string">f"[CLS]:0 $A:0 [SEP]:0"</span></span><span class="token punctuation">,</span>
+    pair<span class="token operator">=</span><span class="token string-interpolation"><span class="token string">f"[CLS]:0 $A:0 [SEP]:0 $B:1 [SEP]:1"</span></span><span class="token punctuation">,</span>
+    special_tokens<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">"[CLS]"</span><span class="token punctuation">,</span> cls_token_id<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">"[SEP]"</span><span class="token punctuation">,</span> sep_token_id<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>请注意，我们需要传递特殊标记的 ID，以便标记器可以正确地将它们转换为它们的 ID。</p>
+<p>一旦添加了这个，回到我们之前的例子就会得到：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"Let's test this tokenizer."</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>tokens<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token string">'[CLS]'</span>, <span class="token string">'let'</span>, <span class="token string">"'"</span>, <span class="token string">'s'</span>, <span class="token string">'test'</span>, <span class="token string">'this'</span>, <span class="token string">'tok'</span>, <span class="token string">'##eni'</span>, <span class="token string">'##zer'</span>, <span class="token string">'.'</span>, <span class="token string">'[SEP]'</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在一对句子中，我们得到了正确的结果：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encoding <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">"Let's test this tokenizer..."</span><span class="token punctuation">,</span> <span class="token string">"on a pair of sentences."</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>tokens<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>type_ids<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token string">'[CLS]'</span>, <span class="token string">'let'</span>, <span class="token string">"'"</span>, <span class="token string">'s'</span>, <span class="token string">'test'</span>, <span class="token string">'this'</span>, <span class="token string">'tok'</span>, <span class="token string">'##eni'</span>, <span class="token string">'##zer'</span>, <span class="token string">'...'</span>, <span class="token string">'[SEP]'</span>, <span class="token string">'on'</span>, <span class="token string">'a'</span>, <span class="token string">'pair'</span>, <span class="token string">'of'</span>, <span class="token string">'sentences'</span>, <span class="token string">'.'</span>, <span class="token string">'[SEP]'</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">1</span>, <span class="token number">1</span>, <span class="token number">1</span>, <span class="token number">1</span>, <span class="token number">1</span>, <span class="token number">1</span>, <span class="token number">1</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>我们几乎已经从零开始完成了这个分词器的构建——最后一步是加入一个解码器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>decoder <span class="token operator">=</span> decoders<span class="token punctuation">.</span>WordPiece<span class="token punctuation">(</span>prefix<span class="token operator">=</span><span class="token string">"##"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>让我们在之前的编码上测试一下：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>encoding<span class="token punctuation">.</span>ids<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token string">"let's test this tokenizer... on a pair of sentences."</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>太棒了！我们可以这样将我们的分词器保存到一个单独的 JSON 文件中：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenizer<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"tokenizer.json"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后我们可以使用 from_file() 方法将该文件重新加载到一个 Tokenizer 对象中：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">new_tokenizer <span class="token operator">=</span> Tokenizer<span class="token punctuation">.</span>from_file<span class="token punctuation">(</span><span class="token string">"tokenizer.json"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在🤗 Transformers 中使用这个令牌化器，我们必须将它封装在一个 PreTrainedTokenizerFast 中。我们可以使用通用类，或者，如果我们的令牌化器对应于现有的模型，就可以使用那个类（在这里是 BertTokenizerFast）。如果你应用这个教程来构建一个全新的令牌化器，你就必须使用第一个选项。</p>
+<p>为了将令牌化器封装在PreTrainedTokenizerFast中，我们可以将自己构建的令牌化器作为tokenizer_object传入，或者将保存的令牌化器文件作为tokenizer_file传入。需要记住的关键是，我们必须手动设置所有特殊令牌，因为该类无法从令牌化器对象中推断出哪个令牌是掩码令牌、[CLS]令牌等。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> PreTrainedTokenizerFast
+
+wrapped_tokenizer <span class="token operator">=</span> PreTrainedTokenizerFast<span class="token punctuation">(</span>
+    tokenizer_object<span class="token operator">=</span>tokenizer<span class="token punctuation">,</span>
+    <span class="token comment"># tokenizer_file="tokenizer.json", # You can load from the tokenizer file, alternatively</span>
+    unk_token<span class="token operator">=</span><span class="token string">"[UNK]"</span><span class="token punctuation">,</span>
+    pad_token<span class="token operator">=</span><span class="token string">"[PAD]"</span><span class="token punctuation">,</span>
+    cls_token<span class="token operator">=</span><span class="token string">"[CLS]"</span><span class="token punctuation">,</span>
+    sep_token<span class="token operator">=</span><span class="token string">"[SEP]"</span><span class="token punctuation">,</span>
+    mask_token<span class="token operator">=</span><span class="token string">"[MASK]"</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如果你使用的是特定的令牌化器类（如BertTokenizerFast），你只需要指定与默认令牌不同的特殊令牌（这里没有）：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> BertTokenizerFast
+
+wrapped_tokenizer <span class="token operator">=</span> BertTokenizerFast<span class="token punctuation">(</span>tokenizer_object<span class="token operator">=</span>tokenizer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>然后你可以像使用其他Transformers令牌器一样使用这个令牌器。你可以使用save_pretrained()方法保存它，或者使用push_to_hub()方法将它上传到Hub。</p>
+<p>现在我们已经了解了如何构建一个 WordPiece 分词器，让我们来做一个 BPE 分词器。我们会加快一些速度，因为你已经知道所有步骤了，只需要强调一下不同之处。</p>
+<h2 id="从零开始构建-BPE-分词器"><a href="#从零开始构建-BPE-分词器" class="headerlink" title="从零开始构建 BPE 分词器"></a>从零开始构建 BPE 分词器</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百一十六篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
