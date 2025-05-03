@@ -526,6 +526,12 @@ Masked language modeling ">
 <li>Causal language modeling pretraining (like GPT-2)</li>
 <li>Question answering</li>
 </ul>
+<p>这些基本任务构成了大型语言模型（LLMs）的工作基础，理解它们对于有效使用当今最先进的语言模型至关重要。</p>
+<p>要做到这一点，你需要充分利用你在第3章中学习到的Trainer API和🤗Accelerate库，在第5章中学习到的🤗Datasets库，以及在第6章中学习到的🤗Tokenizers库。我们还将像在第4章中那样，将我们的结果上传到Model Hub，所以这真的是所有内容汇集在一起的章节！</p>
+<p>每个部分都可以独立阅读，并向您展示如何使用 Trainer API 或自己的训练循环来训练模型，使用🤗 Accelerate。您可以自由跳过任一部分，专注于最感兴趣的部分：Trainer API 非常适合微调或训练模型，而无需担心幕后发生的情况，而使用 Accelerate 的训练循环将让您更轻松地自定义任何想要的部分。</p>
+<blockquote>
+<p>如果你按照顺序阅读这些章节，你会注意到它们有很多共同的代码和文字。这种重复是有意为之的，目的是让你可以随时查看（或以后再查看）任何你感兴趣的任务，并找到一个完整的可运行示例。</p>
+</blockquote>
 <p>src link: <a href="https://huggingface.co/learn/llm-course/chapter7/1">https://huggingface.co/learn/llm-course/chapter7/1</a></p>
 <p>Operating System: Ubuntu 22.04.4 LTS</p>
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
@@ -685,17 +691,16 @@ Masked language modeling ">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2025/05/03/00331-nlp-course-introduction/">
+                <a href="/2025/05/03/00332-nlp-course-summarization/">
                     <div class="card-image">
                         
-                        <img src="https://cos.luyf-lemon-love.space/images/031-meinv.webp" class="responsive-img" alt="00331 NLP Course - Introduction">
+                        <img src="https://cos.luyf-lemon-love.space/images/032-meinv.webp" class="responsive-img" alt="00332 NLP Course - Summarization">
                         
-                        <span class="card-title">00331 NLP Course - Introduction</span>
+                        <span class="card-title">00332 NLP Course - Summarization</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -705,9 +710,9 @@ Masked language modeling ">
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-05-03
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-05-03
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -720,7 +725,6 @@ Masked language modeling ">
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
