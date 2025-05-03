@@ -487,7 +487,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-03
+                    2025-05-04
                 </div>
                 
 
@@ -524,7 +524,132 @@
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
 <li><a href="https://huggingface.co/learn/llm-course/chapter7/5">NLP Course - Summarization</a></li>
 </ol>
-<h2 id="准备多语言语料库"><a href="#准备多语言语料库" class="headerlink" title="准备多语言语料库"></a>准备多语言语料库</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百三十二篇博文写完，开心！！！！</p>
+<h2 id="准备多语言语料库"><a href="#准备多语言语料库" class="headerlink" title="准备多语言语料库"></a>准备多语言语料库</h2><p>我们将使用<a href="https://huggingface.co/datasets/amazon_reviews_multi">多语言亚马逊评论语料库</a>来创建我们的双语摘要器。这个语料库包含六种语言的亚马逊产品评论，通常用于多语言分类器的基准测试。然而，由于每条评论都附有一个简短的标题，我们可以将这些标题作为我们模型要学习的目标摘要！要开始使用，让我们从Hugging Face Hub下载英语和西班牙语的子集：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> load_dataset
+
+spanish_dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"amazon_reviews_multi"</span><span class="token punctuation">,</span> <span class="token string">"es"</span><span class="token punctuation">)</span>
+english_dataset <span class="token operator">=</span> load_dataset<span class="token punctuation">(</span><span class="token string">"amazon_reviews_multi"</span><span class="token punctuation">,</span> <span class="token string">"en"</span><span class="token punctuation">)</span>
+english_dataset<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">DatasetDict<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    train: Dataset<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        features: <span class="token punctuation">[</span><span class="token string">'review_id'</span>, <span class="token string">'product_id'</span>, <span class="token string">'reviewer_id'</span>, <span class="token string">'stars'</span>, <span class="token string">'review_body'</span>, <span class="token string">'review_title'</span>, <span class="token string">'language'</span>, <span class="token string">'product_category'</span><span class="token punctuation">]</span>,
+        num_rows: <span class="token number">200000</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    validation: Dataset<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        features: <span class="token punctuation">[</span><span class="token string">'review_id'</span>, <span class="token string">'product_id'</span>, <span class="token string">'reviewer_id'</span>, <span class="token string">'stars'</span>, <span class="token string">'review_body'</span>, <span class="token string">'review_title'</span>, <span class="token string">'language'</span>, <span class="token string">'product_category'</span><span class="token punctuation">]</span>,
+        num_rows: <span class="token number">5000</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    test: Dataset<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        features: <span class="token punctuation">[</span><span class="token string">'review_id'</span>, <span class="token string">'product_id'</span>, <span class="token string">'reviewer_id'</span>, <span class="token string">'stars'</span>, <span class="token string">'review_body'</span>, <span class="token string">'review_title'</span>, <span class="token string">'language'</span>, <span class="token string">'product_category'</span><span class="token punctuation">]</span>,
+        num_rows: <span class="token number">5000</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如你所见，对于每种语言，训练集有200,000条评论，验证集和测试集各有5,000条评论。我们感兴趣的评论信息包含在review_body和review_title列中。让我们通过创建一个简单的函数来查看一些示例，该函数从训练集中随机抽取样本，使用我们在第5章中学到的技术：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">show_samples</span><span class="token punctuation">(</span>dataset<span class="token punctuation">,</span> num_samples<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> seed<span class="token operator">=</span><span class="token number">42</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sample <span class="token operator">=</span> dataset<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>seed<span class="token operator">=</span>seed<span class="token punctuation">)</span><span class="token punctuation">.</span>select<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>num_samples<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> example <span class="token keyword">in</span> sample<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"\n'>> Title: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>example<span class="token punctuation">[</span><span class="token string">'review_title'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span></span><span class="token string">'"</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"'>> Review: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>example<span class="token punctuation">[</span><span class="token string">'review_body'</span><span class="token punctuation">]</span><span class="token punctuation">&#125;</span></span><span class="token string">'"</span></span><span class="token punctuation">)</span>
+
+
+show_samples<span class="token punctuation">(</span>english_dataset<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token string">'>> Title: Worked in front position, not rear'</span>
+<span class="token string">'>> Review: 3 stars because these are not rear brakes as stated in the item description. At least the mount adapter only worked on the front fork of the bike that I got it for.'</span>
+
+<span class="token string">'>> Title: meh'</span>
+<span class="token string">'>> Review: Does it’s job and it’s gorgeous but mine is falling apart, I had to basically put it together again with hot glue'</span>
+
+<span class="token string">'>> Title: Can\'</span>t beat these <span class="token keyword">for</span> the money<span class="token string">'
+'</span><span class="token operator">>></span> Review: Bought this <span class="token keyword">for</span> handling miscellaneous aircraft parts and hanger <span class="token string">"stuff"</span> that I needed to organize<span class="token punctuation">;</span> it really fit the bill. The unit arrived quickly, was well packaged and arrived intact <span class="token punctuation">(</span>always a good sign<span class="token punctuation">)</span>. There are five wall mounts-- three on the <span class="token function">top</span> and two on the bottom. I wanted to <span class="token function">mount</span> it on the wall, so all I had to <span class="token keyword">do</span> was to remove the <span class="token function">top</span> two layers of plastic drawers, as well as the bottom corner drawers, place it when I wanted and mark it<span class="token punctuation">;</span> I <span class="token keyword">then</span> used some of the new plastic screw <span class="token keyword">in</span> wall anchors <span class="token punctuation">(</span>the <span class="token number">50</span> pound variety<span class="token punctuation">)</span> and it easily mounted to the wall. Some have remarked that they wanted dividers <span class="token keyword">for</span> the drawers, and that they made those. Good idea. My application was that I needed something that I can see the contents at about eye level, so I wanted the fuller-sized drawers. I also like that these are the new plastic that doesn<span class="token punctuation">\</span>'t get brittle and <span class="token function">split</span> like my older plastic drawers did. I like the all-plastic construction. It<span class="token punctuation">\</span>'s heavy duty enough to hold metal parts, but being made of plastic it<span class="token punctuation">\</span>'s not as heavy as a metal frame, so you can easily <span class="token function">mount</span> it to the wall and still load it up with heavy stuff, or light stuff. No problem there. For the money, you can<span class="token punctuation">\</span>'t beat it. Best one of these I<span class="token punctuation">\</span>'ve bought to date-- and I<span class="token punctuation">\</span>'ve been using some version of these <span class="token keyword">for</span> over forty years.'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>✏️ 试试看！在 Dataset.shuffle() 命令中更改随机种子，以探索语料库中的其他评论。如果你是西班牙语使用者，不妨看看 spanish_dataset 中的评论，看看标题是否也像是合理的摘要。</p>
+</blockquote>
+<p>这个样本展示了网上常见的评论的多样性，从正面到负面（以及介于两者之间的各种评论！）。虽然“meh”标题的示例不太有用，但其他标题看起来像是对评论本身的不错的概括。在单个GPU上训练所有40万条评论的摘要模型需要花费太长时间，因此我们将专注于生成单个产品领域的摘要。为了了解我们可以选择哪些领域，让我们将english_dataset转换为pandas.DataFrame并计算每个产品类别的评论数量：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">english_dataset<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token string">"pandas"</span><span class="token punctuation">)</span>
+english_df <span class="token operator">=</span> english_dataset<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token comment"># Show counts for top 20 products</span>
+english_df<span class="token punctuation">[</span><span class="token string">"product_category"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value_counts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">20</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">home                      <span class="token number">17679</span>
+apparel                   <span class="token number">15951</span>
+wireless                  <span class="token number">15717</span>
+other                     <span class="token number">13418</span>
+beauty                    <span class="token number">12091</span>
+drugstore                 <span class="token number">11730</span>
+kitchen                   <span class="token number">10382</span>
+toy                        <span class="token number">8745</span>
+sports                     <span class="token number">8277</span>
+automotive                 <span class="token number">7506</span>
+lawn_and_garden            <span class="token number">7327</span>
+home_improvement           <span class="token number">7136</span>
+pet_products               <span class="token number">7082</span>
+digital_ebook_purchase     <span class="token number">6749</span>
+pc                         <span class="token number">6401</span>
+electronics                <span class="token number">6186</span>
+office_product             <span class="token number">5521</span>
+shoes                      <span class="token number">5197</span>
+grocery                    <span class="token number">4730</span>
+book                       <span class="token number">3756</span>
+Name: product_category, dtype: int64<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>英语数据集中最受欢迎的产品是家居用品、服装和无线电子产品。不过，为了紧扣亚马逊的主题，让我们专注于总结书评——毕竟，这才是该公司成立的初衷！我们可以看到两个符合条件的产品类别（书籍和数字电子书购买），所以让我们过滤这两种语言的数据集，只保留这些产品。正如我们在第5章中看到的，Dataset.filter()函数允许我们非常高效地对数据集进行切片，所以我们可以定义一个简单的函数来完成这个任务：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">filter_books</span><span class="token punctuation">(</span>example<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+        example<span class="token punctuation">[</span><span class="token string">"product_category"</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">"book"</span>
+        <span class="token keyword">or</span> example<span class="token punctuation">[</span><span class="token string">"product_category"</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">"digital_ebook_purchase"</span>
+    <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>现在，当我们将这个函数应用到 english_dataset 和 spanish_dataset 时，结果将只包含那些涉及图书类别的行。在应用过滤器之前，让我们将 english_dataset 的格式从 “pandas” 改回 “arrow”：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">english_dataset<span class="token punctuation">.</span>reset_format<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后我们可以应用过滤器功能，作为一个安全检查，让我们检查一下评论的样本，看看它们是否确实是关于书籍的：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">spanish_books <span class="token operator">=</span> spanish_dataset<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>filter_books<span class="token punctuation">)</span>
+english_books <span class="token operator">=</span> english_dataset<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>filter_books<span class="token punctuation">)</span>
+show_samples<span class="token punctuation">(</span>english_books<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token string">'>> Title: I\'</span>m dissapointed.<span class="token string">'
+'</span><span class="token operator">>></span> Review: I guess I had higher expectations <span class="token keyword">for</span> this book from the reviews. I really thought I<span class="token punctuation">\</span>'d at least like it. The plot idea was great. I loved Ash but, it just didnt go anywhere. Most of the book was about their radio show and talking to callers. I wanted the author to <span class="token function">dig</span> deeper so we could really get to know the characters. All we know about Grace is that she is attractive looking, Latino and is kind of a brat. I<span class="token punctuation">\</span>'m dissapointed.<span class="token string">'
+
+'</span><span class="token operator">>></span> Title: Good art, good price, poor design<span class="token string">'
+'</span><span class="token operator">>></span> Review: I had gotten the DC Vintage calendar the past two years, but it was on backorder forever this year and I saw they had shrunk the dimensions <span class="token keyword">for</span> no good reason. This one has good art choices but the design has the <span class="token function">fold</span> going through the picture, so it<span class="token punctuation">\</span>'s <span class="token function">less</span> aesthetically pleasing, especially <span class="token keyword">if</span> you want to keep a picture to hang. For the price, a good calendar<span class="token string">'
+
+'</span><span class="token operator">>></span> Title: Helpful<span class="token string">'
+'</span><span class="token operator">>></span> Review: Nearly all the tips useful and. I consider myself an intermediate to advanced user of OneNote. I would highly recommend.'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>好的，我们可以看到这些评论并非严格关于书籍，可能涉及日历和 OneNote 等电子应用程序。尽管如此，这个领域似乎适合训练一个摘要模型。在我们查看适合这项任务的各种模型之前，我们还需要做最后一点数据准备：将英语和西班牙语的评论合并为一个单一的 DatasetDict 对象。🤗 Datasets 提供了一个方便的 concatenate_datasets() 函数，顾名思义，它将两个 Dataset 对象堆叠在一起。因此，为了创建我们的双语数据集，我们将遍历每个分割，拼接该分割的数据集，并对结果进行洗牌，以确保我们的模型不会过度适应单一语言：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> datasets <span class="token keyword">import</span> concatenate_datasets<span class="token punctuation">,</span> DatasetDict
+
+books_dataset <span class="token operator">=</span> DatasetDict<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> split <span class="token keyword">in</span> english_books<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    books_dataset<span class="token punctuation">[</span>split<span class="token punctuation">]</span> <span class="token operator">=</span> concatenate_datasets<span class="token punctuation">(</span>
+        <span class="token punctuation">[</span>english_books<span class="token punctuation">[</span>split<span class="token punctuation">]</span><span class="token punctuation">,</span> spanish_books<span class="token punctuation">[</span>split<span class="token punctuation">]</span><span class="token punctuation">]</span>
+    <span class="token punctuation">)</span>
+    books_dataset<span class="token punctuation">[</span>split<span class="token punctuation">]</span> <span class="token operator">=</span> books_dataset<span class="token punctuation">[</span>split<span class="token punctuation">]</span><span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>seed<span class="token operator">=</span><span class="token number">42</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Peek at a few examples</span>
+show_samples<span class="token punctuation">(</span>books_dataset<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token string">'>> Title: Easy to follow!!!!'</span>
+<span class="token string">'>> Review: I loved The dash diet weight loss Solution. Never hungry. I would recommend this diet. Also the menus are well rounded. Try it. Has lots of the information need thanks.'</span>
+
+<span class="token string">'>> Title: PARCIALMENTE DAÑADO'</span>
+<span class="token string">'>> Review: Me llegó el día que tocaba, junto a otros libros que pedí, pero la caja llegó en mal estado lo cual dañó las esquinas de los libros porque venían sin protección (forro).'</span>
+
+<span class="token string">'>> Title: no lo he podido descargar'</span>
+<span class="token string">'>> Review: igual que el anterior'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这看起来确实是英语和西班牙语评论的混合！现在我们有了训练语料库，最后要检查的是评论及其标题中词语的分布情况。这对于摘要任务尤为重要，因为数据中的短参考摘要可能会使模型在生成的摘要中只输出一两个词。下面的图表显示了词语分布情况，我们可以看到标题明显倾向于只使用1-2个词：</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20250504015720.png"></p>
+<p>为了解决这个问题，我们将过滤掉那些标题非常短的示例，以便我们的模型能够生成更有趣的摘要。由于我们处理的是英语和西班牙语文本，我们可以使用一个粗略的启发式方法在空格处拆分标题，然后使用我们可靠的Dataset.filter()方法，如下所示：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">books_dataset <span class="token operator">=</span> books_dataset<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> <span class="token builtin">len</span><span class="token punctuation">(</span>x<span class="token punctuation">[</span><span class="token string">"review_title"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>现在我们已经准备好了我们的语料库，让我们来看看一些可能在上面进行微调的Transformer模型吧！</p>
+<h2 id="文本摘要的模型"><a href="#文本摘要的模型" class="headerlink" title="文本摘要的模型"></a>文本摘要的模型</h2><h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百三十二篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
