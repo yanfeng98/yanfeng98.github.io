@@ -967,6 +967,215 @@ trainer <span class="token operator">=</span> Seq2SeqTrainer<span class="token p
 <h3 id="为训练做好一切准备"><a href="#为训练做好一切准备" class="headerlink" title="为训练做好一切准备"></a>为训练做好一切准备</h3><p>我们需要做的第一件事是为每个分割创建一个数据加载器。由于PyTorch数据加载器期望的是批次的张量，我们需要在我们的数据集中将格式设置为”torch”：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">tokenized_datasets<span class="token punctuation">.</span>set_format<span class="token punctuation">(</span><span class="token string">"torch"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
+<p>现在我们已经有了只包含张量的数据集，下一步就是再次实例化DataCollatorForSeq2Seq。为此，我们需要提供一个新的模型版本，所以让我们再次从缓存中加载它：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">model <span class="token operator">=</span> AutoModelForSeq2SeqLM<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>model_checkpoint<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后，我们可以实例化数据收集器并使用它来定义我们的数据加载器：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> DataLoader
+
+batch_size <span class="token operator">=</span> <span class="token number">8</span>
+train_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>
+    tokenized_datasets<span class="token punctuation">[</span><span class="token string">"train"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    shuffle<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+    collate_fn<span class="token operator">=</span>data_collator<span class="token punctuation">,</span>
+    batch_size<span class="token operator">=</span>batch_size<span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+eval_dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>
+    tokenized_datasets<span class="token punctuation">[</span><span class="token string">"validation"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> collate_fn<span class="token operator">=</span>data_collator<span class="token punctuation">,</span> batch_size<span class="token operator">=</span>batch_size
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来要做的是定义我们想要使用的优化器。和我们之前的例子一样，我们将使用AdamW，它对大多数问题都表现不错：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> torch<span class="token punctuation">.</span>optim <span class="token keyword">import</span> AdamW
+
+optimizer <span class="token operator">=</span> AdamW<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">2e-5</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>最后，我们将我们的模型、优化器和数据加载器传递给加速器的 prepare() 方法：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> accelerate <span class="token keyword">import</span> Accelerator
+
+accelerator <span class="token operator">=</span> Accelerator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+model<span class="token punctuation">,</span> optimizer<span class="token punctuation">,</span> train_dataloader<span class="token punctuation">,</span> eval_dataloader <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>prepare<span class="token punctuation">(</span>
+    model<span class="token punctuation">,</span> optimizer<span class="token punctuation">,</span> train_dataloader<span class="token punctuation">,</span> eval_dataloader
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>🚨 如果你在使用 TPU 进行训练，你需要将上面的所有代码移动到一个专门的训练函数中。更多细节请查看<a href="https://huggingface.co/course/chapter3">第 3 章</a>。</p>
+</blockquote>
+<p>现在我们已经准备好了所需的对象，接下来还有三件事情需要完成：</p>
+<ol>
+<li>定义学习率调度（schedule）。</li>
+<li>实现一个函数，用于对摘要进行后处理，以便评估模型效果。</li>
+<li>在 Hugging Face Hub 上创建一个仓库，以便我们可以将模型上传上去。</li>
+</ol>
+<p>对于学习率调度，我们将采用之前章节中使用的标准线性调度方式：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> get_scheduler
+
+num_train_epochs <span class="token operator">=</span> <span class="token number">10</span>
+num_update_steps_per_epoch <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span>
+num_training_steps <span class="token operator">=</span> num_train_epochs <span class="token operator">*</span> num_update_steps_per_epoch
+
+lr_scheduler <span class="token operator">=</span> get_scheduler<span class="token punctuation">(</span>
+    <span class="token string">"linear"</span><span class="token punctuation">,</span>
+    optimizer<span class="token operator">=</span>optimizer<span class="token punctuation">,</span>
+    num_warmup_steps<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>
+    num_training_steps<span class="token operator">=</span>num_training_steps<span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>对于后处理，我们需要一个函数，将生成的摘要分成由换行符分隔的句子。这是ROUGE指标所期望的格式，我们可以使用以下代码片段来实现：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">postprocess_text</span><span class="token punctuation">(</span>preds<span class="token punctuation">,</span> labels<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    preds <span class="token operator">=</span> <span class="token punctuation">[</span>pred<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> pred <span class="token keyword">in</span> preds<span class="token punctuation">]</span>
+    labels <span class="token operator">=</span> <span class="token punctuation">[</span>label<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> label <span class="token keyword">in</span> labels<span class="token punctuation">]</span>
+
+    <span class="token comment"># ROUGE expects a newline after each sentence</span>
+    preds <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"\n"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>nltk<span class="token punctuation">.</span>sent_tokenize<span class="token punctuation">(</span>pred<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> pred <span class="token keyword">in</span> preds<span class="token punctuation">]</span>
+    labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"\n"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>nltk<span class="token punctuation">.</span>sent_tokenize<span class="token punctuation">(</span>label<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> label <span class="token keyword">in</span> labels<span class="token punctuation">]</span>
+
+    <span class="token keyword">return</span> preds<span class="token punctuation">,</span> labels<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如果你还记得我们是如何定义 Seq2SeqTrainer 的 compute_metrics() 函数的，那么这应该看起来很熟悉。</p>
+<p>最后，我们需要在Hugging Face Hub上创建一个模型仓库。为此，我们可以使用名副其实的🤗 Hub库。我们只需要为我们的仓库定义一个名称，库中有一个实用函数可以将仓库ID与用户配置文件结合起来：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> huggingface_hub <span class="token keyword">import</span> get_full_repo_name
+
+model_name <span class="token operator">=</span> <span class="token string">"test-bert-finetuned-squad-accelerate"</span>
+repo_name <span class="token operator">=</span> get_full_repo_name<span class="token punctuation">(</span>model_name<span class="token punctuation">)</span>
+repo_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token string">'lewtun/mt5-finetuned-amazon-en-es-accelerate'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>现在我们可以使用这个仓库名称来克隆一个本地版本到我们的结果目录中，该目录将存储训练成果：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> huggingface_hub <span class="token keyword">import</span> Repository
+
+output_dir <span class="token operator">=</span> <span class="token string">"results-mt5-finetuned-squad-accelerate"</span>
+repo <span class="token operator">=</span> Repository<span class="token punctuation">(</span>output_dir<span class="token punctuation">,</span> clone_from<span class="token operator">=</span>repo_name<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这将使我们能够在训练过程中通过调用 repo.push_to_hub() 方法将工件推送回 Hub！现在让我们通过编写训练循环来结束我们的分析。</p>
+<h3 id="训练循环"><a href="#训练循环" class="headerlink" title="训练循环"></a>训练循环</h3><p>用于摘要任务的训练循环与我们之前遇到的其他 🤗 Accelerate 示例非常相似，大致可以分为四个主要步骤：</p>
+<ol>
+<li><strong>训练模型</strong>：在每个训练周期（epoch）中遍历 <code>train_dataloader</code> 中的所有样本，对模型进行训练。</li>
+<li><strong>生成摘要</strong>：在每个 epoch 结束时生成模型的摘要结果。首先生成预测的 token，然后将这些 token（以及参考摘要）解码为文本形式。</li>
+<li><strong>计算 ROUGE 分数</strong>：使用我们之前学到的技术来计算生成摘要与参考摘要之间的 ROUGE 指标，以评估模型性能。</li>
+<li><strong>保存检查点并上传到 Hub</strong>：保存模型的检查点，并将所有内容推送到 Hugging Face Hub。这里我们巧妙地使用了 <code>Repository</code> 对象中的 <code>blocking=False</code> 参数，使得我们可以异步地按每个 epoch 上传检查点。这样即使上传一个大小为 GB 级别的模型时较慢，我们也可以继续进行下一轮的训练而不必等待上传完成！</li>
+</ol>
+<p>以下代码块中展示了这些步骤的具体实现：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> tqdm<span class="token punctuation">.</span>auto <span class="token keyword">import</span> tqdm
+<span class="token keyword">import</span> torch
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+progress_bar <span class="token operator">=</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>num_training_steps<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>num_train_epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># Training</span>
+    model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> step<span class="token punctuation">,</span> batch <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>train_dataloader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        outputs <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>batch<span class="token punctuation">)</span>
+        loss <span class="token operator">=</span> outputs<span class="token punctuation">.</span>loss
+        accelerator<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>loss<span class="token punctuation">)</span>
+
+        optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        lr_scheduler<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        progress_bar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># Evaluation</span>
+    model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> step<span class="token punctuation">,</span> batch <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>eval_dataloader<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            generated_tokens <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>unwrap_model<span class="token punctuation">(</span>model<span class="token punctuation">)</span><span class="token punctuation">.</span>generate<span class="token punctuation">(</span>
+                batch<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                attention_mask<span class="token operator">=</span>batch<span class="token punctuation">[</span><span class="token string">"attention_mask"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token punctuation">)</span>
+
+            generated_tokens <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>pad_across_processes<span class="token punctuation">(</span>
+                generated_tokens<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> pad_index<span class="token operator">=</span>tokenizer<span class="token punctuation">.</span>pad_token_id
+            <span class="token punctuation">)</span>
+            labels <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token string">"labels"</span><span class="token punctuation">]</span>
+
+            <span class="token comment"># If we did not pad to max length, we need to pad the labels too</span>
+            labels <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>pad_across_processes<span class="token punctuation">(</span>
+                batch<span class="token punctuation">[</span><span class="token string">"labels"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> pad_index<span class="token operator">=</span>tokenizer<span class="token punctuation">.</span>pad_token_id
+            <span class="token punctuation">)</span>
+
+            generated_tokens <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>generated_tokens<span class="token punctuation">)</span><span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            labels <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>labels<span class="token punctuation">)</span><span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            <span class="token comment"># Replace -100 in the labels as we can't decode them</span>
+            labels <span class="token operator">=</span> np<span class="token punctuation">.</span>where<span class="token punctuation">(</span>labels <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span> labels<span class="token punctuation">,</span> tokenizer<span class="token punctuation">.</span>pad_token_id<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>generated_tokens<span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                generated_tokens <span class="token operator">=</span> generated_tokens<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            decoded_preds <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>batch_decode<span class="token punctuation">(</span>
+                generated_tokens<span class="token punctuation">,</span> skip_special_tokens<span class="token operator">=</span><span class="token boolean">True</span>
+            <span class="token punctuation">)</span>
+            decoded_labels <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>batch_decode<span class="token punctuation">(</span>labels<span class="token punctuation">,</span> skip_special_tokens<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+            decoded_preds<span class="token punctuation">,</span> decoded_labels <span class="token operator">=</span> postprocess_text<span class="token punctuation">(</span>
+                decoded_preds<span class="token punctuation">,</span> decoded_labels
+            <span class="token punctuation">)</span>
+
+            rouge_score<span class="token punctuation">.</span>add_batch<span class="token punctuation">(</span>predictions<span class="token operator">=</span>decoded_preds<span class="token punctuation">,</span> references<span class="token operator">=</span>decoded_labels<span class="token punctuation">)</span>
+
+    <span class="token comment"># Compute metrics</span>
+    result <span class="token operator">=</span> rouge_score<span class="token punctuation">.</span>compute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment"># Extract the median ROUGE scores</span>
+    result <span class="token operator">=</span> <span class="token punctuation">&#123;</span>key<span class="token punctuation">:</span> value<span class="token punctuation">.</span>mid<span class="token punctuation">.</span>fmeasure <span class="token operator">*</span> <span class="token number">100</span> <span class="token keyword">for</span> key<span class="token punctuation">,</span> value <span class="token keyword">in</span> result<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+    result <span class="token operator">=</span> <span class="token punctuation">&#123;</span>k<span class="token punctuation">:</span> <span class="token builtin">round</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> result<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>epoch<span class="token punctuation">&#125;</span></span><span class="token string">:"</span></span><span class="token punctuation">,</span> result<span class="token punctuation">)</span>
+
+    <span class="token comment"># Save and upload</span>
+    accelerator<span class="token punctuation">.</span>wait_for_everyone<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    unwrapped_model <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>unwrap_model<span class="token punctuation">(</span>model<span class="token punctuation">)</span>
+    unwrapped_model<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>output_dir<span class="token punctuation">,</span> save_function<span class="token operator">=</span>accelerator<span class="token punctuation">.</span>save<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+        tokenizer<span class="token punctuation">.</span>save_pretrained<span class="token punctuation">(</span>output_dir<span class="token punctuation">)</span>
+        repo<span class="token punctuation">.</span>push_to_hub<span class="token punctuation">(</span>
+            commit_message<span class="token operator">=</span><span class="token string-interpolation"><span class="token string">f"Training in progress epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>epoch<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span> blocking<span class="token operator">=</span><span class="token boolean">False</span>
+        <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Epoch <span class="token number">0</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">5.6351</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">1.1625</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">5.4866</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">5.5005</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">1</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">9.8646</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">3.4106</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">9.9439</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">9.9306</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">2</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">11.0872</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">3.3273</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">11.0508</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">10.9468</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">3</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">11.8587</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">4.8167</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">11.7986</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">11.7518</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">4</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">12.9842</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">5.5887</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">12.7546</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">12.7029</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">5</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">13.4628</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">6.4598</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">13.312</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">13.2913</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">6</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">12.9131</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">5.8914</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">12.6896</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">12.5701</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">7</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">13.3079</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">6.2994</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">13.1536</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">13.1194</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">8</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">13.96</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">6.5998</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">13.9123</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">13.7744</span><span class="token punctuation">&#125;</span>
+Epoch <span class="token number">9</span>: <span class="token punctuation">&#123;</span><span class="token string">'rouge1'</span><span class="token builtin class-name">:</span> <span class="token number">14.1192</span>, <span class="token string">'rouge2'</span><span class="token builtin class-name">:</span> <span class="token number">7.0059</span>, <span class="token string">'rougeL'</span><span class="token builtin class-name">:</span> <span class="token number">14.1172</span>, <span class="token string">'rougeLsum'</span><span class="token builtin class-name">:</span> <span class="token number">13.9509</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>就这样了！一旦你运行这个，你就会得到一个模型和结果，跟我们用Trainer得到的结果非常相似。</p>
+<h2 id="使用您的微调模型"><a href="#使用您的微调模型" class="headerlink" title="使用您的微调模型"></a>使用您的微调模型</h2><p>一旦你将模型推送到 Hub，你可以通过推理小部件或管道对象来使用它，具体步骤如下：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> pipeline
+
+hub_model_id <span class="token operator">=</span> <span class="token string">"huggingface-course/mt5-small-finetuned-amazon-en-es"</span>
+summarizer <span class="token operator">=</span> pipeline<span class="token punctuation">(</span><span class="token string">"summarization"</span><span class="token punctuation">,</span> model<span class="token operator">=</span>hub_model_id<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以将测试集（模型尚未见过的数据）的一些示例输入到我们的管道中，以了解摘要的质量。首先，让我们实现一个简单的函数，显示评论、标题和生成的摘要：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">print_summary</span><span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    review <span class="token operator">=</span> books_dataset<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"review_body"</span><span class="token punctuation">]</span>
+    title <span class="token operator">=</span> books_dataset<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"review_title"</span><span class="token punctuation">]</span>
+    summary <span class="token operator">=</span> summarizer<span class="token punctuation">(</span>books_dataset<span class="token punctuation">[</span><span class="token string">"test"</span><span class="token punctuation">]</span><span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"review_body"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"summary_text"</span><span class="token punctuation">]</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"'>>> Review: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>review<span class="token punctuation">&#125;</span></span><span class="token string">'"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"\n'>>> Title: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>title<span class="token punctuation">&#125;</span></span><span class="token string">'"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"\n'>>> Summary: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>summary<span class="token punctuation">&#125;</span></span><span class="token string">'"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>让我们来看看我们收到的其中一个英语例子：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">print_summary<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token string">'>>> Review: Nothing special at all about this product... the book is too small and stiff and hard to write in. The huge sticker on the back doesn’t come off and looks super tacky. I would not purchase this again. I could have just bought a journal from the dollar store and it would be basically the same thing. It’s also really expensive for what it is.'</span>
+
+<span class="token string">'>>> Title: Not impressed at all... buy something else'</span>
+
+<span class="token string">'>>> Summary: Nothing special at all about this product'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这还不错！我们可以看到，我们的模型通过用新词扩充评论的部分内容，实际上已经能够进行抽象式摘要了。也许我们模型最酷的方面是它是双语的，所以我们也可以生成西班牙语评论的摘要：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">print_summary<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token string">'>>> Review: Es una trilogia que se hace muy facil de leer. Me ha gustado, no me esperaba el final para nada'</span>
+
+<span class="token string">'>>> Title: Buena literatura para adolescentes'</span>
+
+<span class="token string">'>>> Summary: Muy facil de leer'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>总结在英语中翻译为“非常容易阅读”，我们可以看到在这个例子中是直接从评论中提取出来的。尽管如此，这展示了mT5模型的多功能性，让你体验了一下处理多语言语料库的感觉！</p>
+<p>接下来，我们将把注意力转向一个稍微复杂一些的任务：从零开始训练一个语言模型。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百三十二篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
@@ -1121,17 +1330,16 @@ trainer <span class="token operator">=</span> Seq2SeqTrainer<span class="token p
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2025/05/03/00332-nlp-course-summarization/">
+                <a href="/2025/05/05/00333-nlp-course-training-a-causal-language-model-from-scratch/">
                     <div class="card-image">
                         
-                        <img src="https://cos.luyf-lemon-love.space/images/032-meinv.webp" class="responsive-img" alt="00332 NLP Course - Summarization">
+                        <img src="https://cos.luyf-lemon-love.space/images/033-meinv.webp" class="responsive-img" alt="00333 NLP Course - Training a causal language model from scratch">
                         
-                        <span class="card-title">00332 NLP Course - Summarization</span>
+                        <span class="card-title">00333 NLP Course - Training a causal language model from scratch</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1141,9 +1349,9 @@ trainer <span class="token operator">=</span> Seq2SeqTrainer<span class="token p
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-05-03
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2025-05-05
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1156,7 +1364,6 @@ trainer <span class="token operator">=</span> Seq2SeqTrainer<span class="token p
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
