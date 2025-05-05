@@ -1,0 +1,1687 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="00334 accelerator.gather和accelerator.wait_for_everyone, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="前言介绍accelerator.gather函数和accelerator.wait_for_everyone函数
+Operating System: Ubuntu 22.04.4 LTS
+accelerator.gatheraccelera">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>00334 accelerator.gather和accelerator.wait_for_everyone | LuYF-Lemon-love の Blog</title>
+    <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
+    
+    <style>
+        body{
+            background-image: url(https://cos.luyf-lemon-love.space/images/016-%E6%8A%A5%E7%BA%B8%E5%A2%99%E9%BA%BB%E8%A1%A3%E5%AD%A6%E5%A7%90.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">LuYF-Lemon-love の Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>List</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Image</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/verse">
+          
+          <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Verse</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/bilibili">
+          
+          <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Bilibili</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">LuYF-Lemon-love の Blog</div>
+        <div class="logo-desc">
+            
+            天之道，损有余而补不足，人之道则不然，损不足以奉有余。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			List
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Image</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/verse " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Verse</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/bilibili " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Bilibili</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yanfeng98/paper-is-all-you-need" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yanfeng98/paper-is-all-you-need" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/034-meinv.webp')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00334 accelerator.gather和accelerator.wait_for_everyone</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">深度学习</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">大语言模型</span>
+                            </a>
+                        
+                            <a href="/tags/huggingface/">
+                                <span class="chip bg-color">huggingface</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
+                                大语言模型
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2025-05-05
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2025-05-05
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>介绍accelerator.gather函数和accelerator.wait_for_everyone函数</p>
+<p>Operating System: Ubuntu 22.04.4 LTS</p>
+<h2 id="accelerator-gather"><a href="#accelerator-gather" class="headerlink" title="accelerator.gather"></a>accelerator.gather</h2><p><code>accelerator.gather</code> 是 Hugging Face 的 <code>Accelerate</code> 库中的一个实用函数，主要用于在分布式训练（如多 GPU 或多节点训练）中将张量（tensor）从所有进程收集到主进程中。这对于在训练过程中汇总结果、进行评估或记录日志非常有用。</p>
+<hr>
+<h3 id="📌-简介"><a href="#📌-简介" class="headerlink" title="📌 简介"></a>📌 简介</h3><p>在使用 <code>Accelerator</code> 进行分布式训练时，每个设备（比如每个 GPU）都会有自己的数据副本。当你想将这些分散在不同设备上的张量统一收集到一个地方（通常是主进程），就可以使用 <code>accelerator.gather()</code>。</p>
+<hr>
+<h3 id="🧠-作用"><a href="#🧠-作用" class="headerlink" title="🧠 作用"></a>🧠 作用</h3><ul>
+<li>将多个设备上的张量合并成一个完整的张量。</li>
+<li>支持自动处理不同设备上的张量（如 GPU 0, GPU 1 等）。</li>
+<li>常用于：<ul>
+<li>收集模型预测结果</li>
+<li>汇总 loss、accuracy 等指标</li>
+<li>日志记录和可视化</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="✅-使用示例"><a href="#✅-使用示例" class="headerlink" title="✅ 使用示例"></a>✅ 使用示例</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> accelerate <span class="token keyword">import</span> Accelerator
+
+accelerator <span class="token operator">=</span> Accelerator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 假设这是某个模型的输出，在每个设备上都有一个局部 batch</span>
+local_tensor <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>accelerator<span class="token punctuation">.</span>device<span class="token punctuation">)</span>
+
+<span class="token comment"># 收集所有设备上的 tensor 到主进程</span>
+gathered_tensor <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>local_tensor<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Gathered tensor:"</span><span class="token punctuation">,</span> gathered_tensor<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="输出示例（假设两个-GPU）："><a href="#输出示例（假设两个-GPU）：" class="headerlink" title="输出示例（假设两个 GPU）："></a>输出示例（假设两个 GPU）：</h4><pre class="line-numbers language-none"><code class="language-none">Gathered tensor: tensor([1, 2, 3, 1, 2, 3])<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h3 id="🔍-参数说明"><a href="#🔍-参数说明" class="headerlink" title="🔍 参数说明"></a>🔍 参数说明</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>tensor<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tensor</code></td>
+<td><code>torch.Tensor</code></td>
+<td>要收集的本地张量</td>
+</tr>
+<tr>
+<td><code>axis</code></td>
+<td><code>int</code></td>
+<td>在哪个维度上拼接，默认是 <code>0</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="⚠️-注意事项"><a href="#⚠️-注意事项" class="headerlink" title="⚠️ 注意事项"></a>⚠️ 注意事项</h3><ul>
+<li><code>gather</code> 不会自动平均或者减少（reduce），它只是把所有张量按 <code>axis</code> 维度拼接在一起。</li>
+<li>如果你想做的是<strong>求平均</strong>或<strong>求和</strong>，可以考虑使用 <code>accelerator.reduce()</code>。</li>
+<li>只有主进程 (<code>is_main_process</code>) 需要处理最终结果，避免重复计算或输出。</li>
+</ul>
+<hr>
+<h3 id="🧩-和其他方法的区别"><a href="#🧩-和其他方法的区别" class="headerlink" title="🧩 和其他方法的区别"></a>🧩 和其他方法的区别</h3><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gather</code></td>
+<td>把所有进程的张量收集到主进程</td>
+</tr>
+<tr>
+<td><code>reduce</code></td>
+<td>对所有进程的张量执行 reduce 操作（如 sum, mean）</td>
+</tr>
+<tr>
+<td><code>pad_across_processes</code></td>
+<td>补齐不同进程的数据长度以便 gather</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="📘-示例：结合-Dataloader-使用"><a href="#📘-示例：结合-Dataloader-使用" class="headerlink" title="📘 示例：结合 Dataloader 使用"></a>📘 示例：结合 Dataloader 使用</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> DataLoader<span class="token punctuation">,</span> TensorDataset
+<span class="token keyword">import</span> torch
+
+<span class="token comment"># 创建 dummy 数据</span>
+dataset <span class="token operator">=</span> TensorDataset<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>dataset<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 使用 Accelerator 包装 dataloader</span>
+accelerator <span class="token operator">=</span> Accelerator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+dataloader <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>prepare<span class="token punctuation">(</span>dataloader<span class="token punctuation">)</span>
+
+all_preds <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> batch <span class="token keyword">in</span> dataloader<span class="token punctuation">:</span>
+    <span class="token comment"># 假设模型前向传播的结果是一个 tensor</span>
+    preds <span class="token operator">=</span> batch<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">2</span>  <span class="token comment"># 模拟预测</span>
+    all_preds<span class="token punctuation">.</span>append<span class="token punctuation">(</span>accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>preds<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+    full_preds <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>all_preds<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Full predictions:"</span><span class="token punctuation">,</span> full_preds<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="📚-相关文档"><a href="#📚-相关文档" class="headerlink" title="📚 相关文档"></a>📚 相关文档</h3><ul>
+<li><a href="https://huggingface.co/docs/accelerate/">Hugging Face Accelerate Documentation</a></li>
+<li><a href="https://huggingface.co/docs/accelerate/package_reference/accelerator#accelerate.Accelerator.gather"><code>gather</code> API 文档</a></li>
+</ul>
+<hr>
+<h2 id="accelerator-wait-for-everyone"><a href="#accelerator-wait-for-everyone" class="headerlink" title="accelerator.wait_for_everyone"></a>accelerator.wait_for_everyone</h2><p><code>accelerator.wait_for_everyone()</code> 是 Hugging Face 的 <a href="https://huggingface.co/docs/accelerate/"><code>Accelerate</code></a> 库中的一个实用函数，用于<strong>在分布式训练中同步所有进程</strong>。它确保所有设备（如多个 GPU 或多个节点）都执行到某个点后才继续运行后续代码。</p>
+<hr>
+<h3 id="🎯-作用"><a href="#🎯-作用" class="headerlink" title="🎯 作用"></a>🎯 作用</h3><p>在分布式训练中，不同进程可能因为各种原因（比如计算速度不一致、数据加载时间差异等）导致进度不同步。<br>使用 <code>wait_for_everyone()</code> 可以让所有进程在此处等待彼此，防止出现“某些进程已经进入下一步而其他进程还没完成”的问题。</p>
+<h4 id="✅-简单来说："><a href="#✅-简单来说：" class="headerlink" title="✅ 简单来说："></a>✅ 简单来说：</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">accelerator<span class="token punctuation">.</span>wait_for_everyone<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这行代码会阻塞当前进程，直到所有其他参与训练的进程也执行到这里。</p>
+<hr>
+<h3 id="🧠-使用场景"><a href="#🧠-使用场景" class="headerlink" title="🧠 使用场景"></a>🧠 使用场景</h3><ol>
+<li><strong>模型保存前检查或预处理</strong><ul>
+<li>某些操作需要所有进程先完成自己的任务。</li>
+</ul>
+</li>
+<li><strong>日志记录、评估阶段</strong><ul>
+<li>防止主进程提前进行汇总或写入日志。</li>
+</ul>
+</li>
+<li><strong>多进程数据处理</strong><ul>
+<li>在分片处理数据时，保证每个进程都完成了自己的部分。</li>
+</ul>
+</li>
+<li><strong>调试时查看中间结果</strong><ul>
+<li>避免因进程异步导致输出混乱。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="✅-示例代码"><a href="#✅-示例代码" class="headerlink" title="✅ 示例代码"></a>✅ 示例代码</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> accelerate <span class="token keyword">import</span> Accelerator
+<span class="token keyword">import</span> torch
+<span class="token keyword">import</span> time
+
+accelerator <span class="token operator">=</span> Accelerator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Main process starting..."</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 模拟各进程工作时间不同</span>
+rank <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>process_index
+time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span>rank<span class="token punctuation">)</span>  <span class="token comment"># rank=0 主进程最快，rank=1次之...</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Process </span><span class="token interpolation"><span class="token punctuation">&#123;</span>rank<span class="token punctuation">&#125;</span></span><span class="token string"> is working..."</span></span><span class="token punctuation">)</span>
+
+<span class="token comment"># 同步所有进程</span>
+accelerator<span class="token punctuation">.</span>wait_for_everyone<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Process </span><span class="token interpolation"><span class="token punctuation">&#123;</span>rank<span class="token punctuation">&#125;</span></span><span class="token string"> continues after wait_for_everyone()."</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="输出示例（2个进程）："><a href="#输出示例（2个进程）：" class="headerlink" title="输出示例（2个进程）："></a>输出示例（2个进程）：</h4><pre class="line-numbers language-none"><code class="language-none">Main process starting...
+Process 0 is working...
+Process 1 is working...
+Process 0 continues after wait_for_everyone().
+Process 1 continues after wait_for_everyone().<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到，尽管进程 0 更快完成前面的任务，但它会在 <code>wait_for_everyone()</code> 处等待进程 1 完成。</p>
+<hr>
+<h3 id="🔍-内部原理简要说明"><a href="#🔍-内部原理简要说明" class="headerlink" title="🔍 内部原理简要说明"></a>🔍 内部原理简要说明</h3><p>该方法底层调用了 PyTorch 分布式通信的 <code>torch.distributed.barrier()</code> 函数，这是一个标准的同步机制，用于协调所有分布式进程的执行顺序。</p>
+<hr>
+<h3 id="⚠️-注意事项-1"><a href="#⚠️-注意事项-1" class="headerlink" title="⚠️ 注意事项"></a>⚠️ 注意事项</h3><ul>
+<li>一定要在所有进程中都调用这个函数，否则程序会卡住。</li>
+<li>不要在条件语句中只对主进程调用它，例如下面这种写法是错误的：</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+    accelerator<span class="token punctuation">.</span>wait_for_everyone<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># ❌ 错误！其他进程不会执行，程序会卡死</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="📚-相关方法"><a href="#📚-相关方法" class="headerlink" title="📚 相关方法"></a>📚 相关方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>accelerator.wait_for_everyone()</code></td>
+<td>所有进程在此处同步</td>
+</tr>
+<tr>
+<td><code>accelerator.gather()</code></td>
+<td>收集张量到主进程</td>
+</tr>
+<tr>
+<td><code>accelerator.reduce()</code></td>
+<td>对张量做跨进程归约（如求和、平均）</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="📝-总结"><a href="#📝-总结" class="headerlink" title="📝 总结"></a>📝 总结</h3><p><code>accelerator.wait_for_everyone()</code> 是一个非常有用的同步工具，在分布式训练中可以确保各个进程之间保持一致的执行状态。合理使用它可以避免很多由于异步执行带来的问题，特别是在数据处理、模型评估、日志记录等阶段。</p>
+<p>如果你正在编写一个复杂的分布式训练流程，建议在关键步骤加入此函数以确保稳定性。</p>
+<h2 id="完整的分布式训练-同步的-demo"><a href="#完整的分布式训练-同步的-demo" class="headerlink" title="完整的分布式训练+同步的 demo"></a>完整的分布式训练+同步的 demo</h2><p>下面是一个 <strong>使用 Hugging Face <code>Accelerate</code> 的完整分布式训练 + 同步操作的示例</strong>。这个例子包含：</p>
+<ul>
+<li>多 GPU 分布式训练（支持单机多卡）</li>
+<li>使用 <code>accelerator.gather()</code> 收集预测结果</li>
+<li>使用 <code>accelerator.wait_for_everyone()</code> 进行同步</li>
+<li>使用 <code>accelerator.prepare()</code> 自动处理模型和数据加载器</li>
+</ul>
+<hr>
+<h3 id="🧪-环境准备"><a href="#🧪-环境准备" class="headerlink" title="🧪 环境准备"></a>🧪 环境准备</h3><p>确保你已安装以下库：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> accelerate torch transformers<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后你可以用如下命令启动分布式训练（例如：2 个 GPU）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">accelerate launch <span class="token parameter variable">--num_processes</span><span class="token operator">=</span><span class="token number">2</span> train_demo.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h3 id="📄-示例代码：train-demo-py"><a href="#📄-示例代码：train-demo-py" class="headerlink" title="📄 示例代码：train_demo.py"></a>📄 示例代码：<code>train_demo.py</code></h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data <span class="token keyword">import</span> Dataset<span class="token punctuation">,</span> DataLoader
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>nn <span class="token keyword">import</span> CrossEntropyLoss
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>optim <span class="token keyword">import</span> AdamW
+<span class="token keyword">from</span> accelerate <span class="token keyword">import</span> Accelerator
+<span class="token keyword">from</span> tqdm <span class="token keyword">import</span> tqdm
+
+<span class="token comment"># =============================</span>
+<span class="token comment"># 1. 定义一个简单的 Dataset</span>
+<span class="token comment"># =============================</span>
+<span class="token keyword">class</span> <span class="token class-name">DummyDataset</span><span class="token punctuation">(</span>Dataset<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num_samples<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> num_classes<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>inputs <span class="token operator">=</span> torch<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>num_samples<span class="token punctuation">,</span> dim<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>labels <span class="token operator">=</span> torch<span class="token punctuation">.</span>randint<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> num_classes<span class="token punctuation">,</span> <span class="token punctuation">(</span>num_samples<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__len__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>inputs<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__getitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> idx<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>inputs<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>labels<span class="token punctuation">[</span>idx<span class="token punctuation">]</span>
+
+<span class="token comment"># =============================</span>
+<span class="token comment"># 2. 定义一个简单模型</span>
+<span class="token comment"># =============================</span>
+<span class="token keyword">class</span> <span class="token class-name">SimpleModel</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> input_dim<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> hidden_dim<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">,</span> output_dim<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>net <span class="token operator">=</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>Sequential<span class="token punctuation">(</span>
+            torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span>input_dim<span class="token punctuation">,</span> hidden_dim<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>ReLU<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span>hidden_dim<span class="token punctuation">,</span> output_dim<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>net<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+
+<span class="token comment"># =============================</span>
+<span class="token comment"># 3. 主训练函数</span>
+<span class="token comment"># =============================</span>
+<span class="token keyword">def</span> <span class="token function">train</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 初始化 Accelerator 实例</span>
+    accelerator <span class="token operator">=</span> Accelerator<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 创建 dataset 和 dataloader</span>
+    dataset <span class="token operator">=</span> DummyDataset<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    dataloader <span class="token operator">=</span> DataLoader<span class="token punctuation">(</span>dataset<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 模型、优化器、dataloader 会自动适配分布式设置</span>
+    model <span class="token operator">=</span> SimpleModel<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    optimizer <span class="token operator">=</span> AdamW<span class="token punctuation">(</span>model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">3e-4</span><span class="token punctuation">)</span>
+    model<span class="token punctuation">,</span> optimizer<span class="token punctuation">,</span> dataloader <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>prepare<span class="token punctuation">(</span>model<span class="token punctuation">,</span> optimizer<span class="token punctuation">,</span> dataloader<span class="token punctuation">)</span>
+
+    <span class="token comment"># 开始训练</span>
+    model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> epoch <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>  <span class="token comment"># 训练 3 轮</span>
+        all_preds <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        all_labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        progress_bar <span class="token operator">=</span> tqdm<span class="token punctuation">(</span>dataloader<span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string-interpolation"><span class="token string">f"Epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>epoch<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span> disable<span class="token operator">=</span><span class="token keyword">not</span> accelerator<span class="token punctuation">.</span>is_local_main_process<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> inputs<span class="token punctuation">,</span> labels <span class="token keyword">in</span> progress_bar<span class="token punctuation">:</span>
+            outputs <span class="token operator">=</span> model<span class="token punctuation">(</span>inputs<span class="token punctuation">)</span>
+            loss <span class="token operator">=</span> CrossEntropyLoss<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span>outputs<span class="token punctuation">,</span> labels<span class="token punctuation">)</span>
+
+            <span class="token comment"># 反向传播</span>
+            accelerator<span class="token punctuation">.</span>backward<span class="token punctuation">(</span>loss<span class="token punctuation">)</span>
+            optimizer<span class="token punctuation">.</span>step<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+            <span class="token comment"># 收集每个 batch 的预测结果</span>
+            preds <span class="token operator">=</span> torch<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>outputs<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+            gathered_preds <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>preds<span class="token punctuation">)</span>
+            gathered_labels <span class="token operator">=</span> accelerator<span class="token punctuation">.</span>gather<span class="token punctuation">(</span>labels<span class="token punctuation">)</span>
+
+            <span class="token comment"># 保存到主进程中用于后续计算指标</span>
+            <span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+                all_preds<span class="token punctuation">.</span>append<span class="token punctuation">(</span>gathered_preds<span class="token punctuation">)</span>
+                all_labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>gathered_labels<span class="token punctuation">)</span>
+
+            <span class="token comment"># 更新进度条</span>
+            progress_bar<span class="token punctuation">.</span>set_postfix<span class="token punctuation">(</span>loss<span class="token operator">=</span>loss<span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 所有进程同步，防止主进程提前进入下一轮或退出</span>
+        accelerator<span class="token punctuation">.</span>wait_for_everyone<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># 主进程进行评估/打印</span>
+        <span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+            full_preds <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>all_preds<span class="token punctuation">)</span>
+            full_labels <span class="token operator">=</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span>all_labels<span class="token punctuation">)</span>
+            accuracy <span class="token operator">=</span> <span class="token punctuation">(</span>full_preds <span class="token operator">==</span> full_labels<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Epoch </span><span class="token interpolation"><span class="token punctuation">&#123;</span>epoch<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">&#125;</span></span><span class="token string"> - Accuracy: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>accuracy<span class="token punctuation">:</span><span class="token format-spec">.4f</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 主进程保存模型</span>
+    <span class="token keyword">if</span> accelerator<span class="token punctuation">.</span>is_main_process<span class="token punctuation">:</span>
+        accelerator<span class="token punctuation">.</span>save_state<span class="token punctuation">(</span>output_dir<span class="token operator">=</span><span class="token string">"./trained_model"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># =============================</span>
+<span class="token comment"># 4. 启动训练</span>
+<span class="token comment"># =============================</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    train<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="📝-说明与解释"><a href="#📝-说明与解释" class="headerlink" title="📝 说明与解释"></a>📝 说明与解释</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>accelerator.prepare()</code></td>
+<td>自动包装模型、优化器、数据加载器以支持分布式训练</td>
+</tr>
+<tr>
+<td><code>accelerator.backward(loss)</code></td>
+<td>替代 <code>loss.backward()</code>，兼容梯度同步</td>
+</tr>
+<tr>
+<td><code>accelerator.gather()</code></td>
+<td>收集各个设备上的张量到主进程</td>
+</tr>
+<tr>
+<td><code>accelerator.wait_for_everyone()</code></td>
+<td>所有进程在此处等待彼此完成当前任务，再继续</td>
+</tr>
+<tr>
+<td><code>accelerator.is_main_process</code></td>
+<td>判断是否是主进程，避免重复输出或保存模型</td>
+</tr>
+<tr>
+<td><code>accelerator.save_state()</code></td>
+<td>保存完整的训练状态（模型、优化器等）</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="🚀-如何运行？"><a href="#🚀-如何运行？" class="headerlink" title="🚀 如何运行？"></a>🚀 如何运行？</h3><h4 id="单机多卡（比如-2-个-GPU）："><a href="#单机多卡（比如-2-个-GPU）：" class="headerlink" title="单机多卡（比如 2 个 GPU）："></a>单机多卡（比如 2 个 GPU）：</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">accelerate launch <span class="token parameter variable">--num_processes</span><span class="token operator">=</span><span class="token number">2</span> train_demo.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果你只有一张 GPU，也可以运行它，会自动退化为单卡模式。</p>
+<hr>
+<h3 id="✅-输出示例（主进程）："><a href="#✅-输出示例（主进程）：" class="headerlink" title="✅ 输出示例（主进程）："></a>✅ 输出示例（主进程）：</h3><pre class="line-numbers language-none"><code class="language-none">Epoch 1 - Accuracy: 0.5469
+Epoch 2 - Accuracy: 0.6250
+Epoch 3 - Accuracy: 0.7188<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h3 id="📌-小结"><a href="#📌-小结" class="headerlink" title="📌 小结"></a>📌 小结</h3><p>这个 Demo 展示了如何在 Hugging Face <code>Accelerate</code> 下进行：</p>
+<ul>
+<li>分布式训练</li>
+<li>张量收集（<code>gather</code>）</li>
+<li>进程同步（<code>wait_for_everyone</code>）</li>
+<li>主进程控制输出与保存模型</li>
+</ul>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百三十四篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2025/05/05/00334-accelerator-gather-he-accelerator-wait-for-everyone/">https://luyf-lemon-love.space/2025/05/05/00334-accelerator-gather-he-accelerator-wait-for-everyone/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">深度学习</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">大语言模型</span>
+                                </a>
+                            
+                                <a href="/tags/huggingface/">
+                                    <span class="chip bg-color">huggingface</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2025/05/05/00334-accelerator-gather-he-accelerator-wait-for-everyone/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/034-meinv.webp" class="responsive-img" alt="00334 accelerator.gather和accelerator.wait_for_everyone">
+                        
+                        <span class="card-title">00334 accelerator.gather和accelerator.wait_for_everyone</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-05-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
+                                    大语言模型
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                    <a href="/tags/huggingface/">
+                        <span class="chip bg-color">huggingface</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/05/05/00333-nlp-course-training-a-causal-language-model-from-scratch/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/033-meinv.webp" class="responsive-img" alt="00333 NLP Course - Training a causal language model from scratch">
+                        
+                        <span class="card-title">00333 NLP Course - Training a causal language model from scratch</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-05-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
+                                    大语言模型
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                    <a href="/tags/huggingface/">
+                        <span class="chip bg-color">huggingface</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2025</span>
+            
+            <a href="/about" target="_blank">LuYF-Lemon-love</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "5";
+                        var startDate = "7";
+                        var startHour = "4";
+                        var startMinute = "53";
+                        var startSecond = "32";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+                <span id="icp"><img src="/medias/icp.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="https://beian.miit.gov.cn" target="_blank">冀ICP备2022012632号-1</a>
+            </span>
+            
+            <br>
+            
+                <span id="gongan"><img src="https://cos.luyf-lemon-love.space/images/备案图标.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011618" target="_blank">苏公网安备 32011502011618号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yanfeng98" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:luyanfeng_nlp@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
