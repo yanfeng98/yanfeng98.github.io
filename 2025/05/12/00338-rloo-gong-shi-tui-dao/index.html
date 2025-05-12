@@ -514,17 +514,22 @@
 <h2 id="✅-推导过程："><a href="#✅-推导过程：" class="headerlink" title="✅ 推导过程："></a>✅ 推导过程：</h2><hr>
 <h3 id="原始公式"><a href="#原始公式" class="headerlink" title="原始公式"></a>原始公式</h3><p>$$<br>\frac{G}{G-1} \cdot \tilde{A}_{i,t} &#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}<em>i) - \frac{G}{G-1} \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <hr>
-<h3 id="第一步：展开-tilde-A-i-t"><a href="#第一步：展开-tilde-A-i-t" class="headerlink" title="第一步：展开 $\tilde{A}_{i,t}$"></a>第一步：展开 $\tilde{A}_{i,t}$</h3><p>假设<br>$$<br>\tilde{A}_{i,t} &#x3D; R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}<em>j)<br>$$<br>即 $\tilde{A}</em>{i,t}$ 是当前样本的reward减去所有样本reward的平均。</p>
+<h3 id="第一步：展开-tilde-A-i-t"><a href="#第一步：展开-tilde-A-i-t" class="headerlink" title="第一步：展开 $\tilde{A}_{i,t}$"></a>第一步：展开 $\tilde{A}_{i,t}$</h3><p>假设<br>$$<br>\tilde{A}_{i,t} &#x3D; R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
+<p>即 $\tilde{A}_{i,t}$ 是当前样本的reward减去所有样本reward的平均。</p>
 <hr>
-<h3 id="第二步：将-tilde-A-i-t-带入"><a href="#第二步：将-tilde-A-i-t-带入" class="headerlink" title="第二步：将 $\tilde{A}_{i,t}$ 带入"></a>第二步：将 $\tilde{A}_{i,t}$ 带入</h3><p>$$<br>\frac{G}{G-1} \cdot \tilde{A}_{i,t} &#x3D; \frac{G}{G-1} \left[ R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j) \right]<br>$$<br>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}<em>i) - \frac{G}{G-1} \cdot \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
+<h3 id="第二步：将-tilde-A-i-t-带入"><a href="#第二步：将-tilde-A-i-t-带入" class="headerlink" title="第二步：将 $\tilde{A}_{i,t}$ 带入"></a>第二步：将 $\tilde{A}_{i,t}$ 带入</h3><p>$$<br>\frac{G}{G-1} \cdot \tilde{A}_{i,t} &#x3D; \frac{G}{G-1} \left[ R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j) \right]<br>$$</p>
+<p>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}<em>i) - \frac{G}{G-1} \cdot \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <hr>
-<h3 id="第三步：化简第二项"><a href="#第三步：化简第二项" class="headerlink" title="第三步：化简第二项"></a>第三步：化简第二项</h3><p>$$<br>\frac{G}{G-1} \cdot \frac{1}{G} &#x3D; \frac{1}{G-1}<br>$$<br>所以：<br>$$<br>\frac{G}{G-1} \cdot \frac{1}{G} \sum_{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}<em>j) &#x3D; \frac{1}{G-1} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
+<h3 id="第三步：化简第二项"><a href="#第三步：化简第二项" class="headerlink" title="第三步：化简第二项"></a>第三步：化简第二项</h3><p>$$<br>\frac{G}{G-1} \cdot \frac{1}{G} &#x3D; \frac{1}{G-1}<br>$$</p>
+<p>所以：</p>
+<p>$$<br>\frac{G}{G-1} \cdot \frac{1}{G} \sum_{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}<em>j) &#x3D; \frac{1}{G-1} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <hr>
 <h3 id="第四步：合并"><a href="#第四步：合并" class="headerlink" title="第四步：合并"></a>第四步：合并</h3><p>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G-1} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <hr>
 <h3 id="第五步：将-sum-j-1-G-拆开"><a href="#第五步：将-sum-j-1-G-拆开" class="headerlink" title="第五步：将 $\sum_{j&#x3D;1}^G$ 拆开"></a>第五步：将 $\sum_{j&#x3D;1}^G$ 拆开</h3><p>$$<br>\sum_{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j) &#x3D; R(\mathbf{q}, \mathbf{o}<em>i) + \sum</em>{j&#x3D;1, j\neq i}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <p>带入上式：</p>
-<p>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}_i) - \frac{1}{G-1} \left[ R(\mathbf{q}, \mathbf{o}<em>i) + \sum</em>{j&#x3D;1, j\neq i}^G R(\mathbf{q}, \mathbf{o}_j) \right]<br>$$<br>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}_i) - \frac{1}{G-1} R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G-1} \sum</em>{j&#x3D;1, j\neq i}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
+<p>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}_i) - \frac{1}{G-1} \left[ R(\mathbf{q}, \mathbf{o}<em>i) + \sum</em>{j&#x3D;1, j\neq i}^G R(\mathbf{q}, \mathbf{o}_j) \right]<br>$$</p>
+<p>$$<br>&#x3D; \frac{G}{G-1} R(\mathbf{q}, \mathbf{o}_i) - \frac{1}{G-1} R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G-1} \sum</em>{j&#x3D;1, j\neq i}^G R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <hr>
 <h3 id="第六步：合并-R-mathbf-q-mathbf-o-i-的系数"><a href="#第六步：合并-R-mathbf-q-mathbf-o-i-的系数" class="headerlink" title="第六步：合并 $R(\mathbf{q}, \mathbf{o}_i)$ 的系数"></a>第六步：合并 $R(\mathbf{q}, \mathbf{o}_i)$ 的系数</h3><p>$$<br>\frac{G}{G-1} - \frac{1}{G-1} &#x3D; \frac{G - 1}{G-1} &#x3D; 1<br>$$</p>
 <p>所以：</p>
@@ -540,7 +545,8 @@
 <li>得到 leave-one-out 形式的 advantage。</li>
 </ol>
 <hr>
-<p><strong>简要总结：</strong><br>$$<br>\frac{G}{G-1} \cdot \left(R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j) \right) &#x3D; R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G-1} \sum</em>{j\neq i} R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
+<p><strong>简要总结：</strong></p>
+<p>$$<br>\frac{G}{G-1} \cdot \left(R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G} \sum</em>{j&#x3D;1}^G R(\mathbf{q}, \mathbf{o}_j) \right) &#x3D; R(\mathbf{q}, \mathbf{o}<em>i) - \frac{1}{G-1} \sum</em>{j\neq i} R(\mathbf{q}, \mathbf{o}_j)<br>$$</p>
 <hr>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百三十八篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
