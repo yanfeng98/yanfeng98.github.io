@@ -4,15 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="00120 Python 日期和时间, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
-    <meta name="description" content="前言Python 日期和时间。
-操作系统：Windows 11 家庭中文版
-参考文档
-日期和时间
-strftime() 和 strptime() 格式码
+    <meta name="keywords" content="00357 🧪 Python `unittest` 单元测试框架教程, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="前言下面是一个关于 Python 的 unittest 单元测试框架的 详细教程，适合初学者逐步入门，也包含了一些进阶用法，帮助你在项目中高效使用 unittest。
 
-示例
-datetime 模块提供了以简单和复杂的方式操作日期和时间的类。虽然支持日期">
+📝 目录
+什么是单元测试？
+为什么使用 unittest？
+基本使用">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -24,7 +22,7 @@ datetime 模块提供了以简单和复杂的方式操作日期和时间的类�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>00120 Python 日期和时间 | LuYF-Lemon-love の Blog</title>
+    <title>00357 🧪 Python `unittest` 单元测试框架教程 | LuYF-Lemon-love の Blog</title>
     <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
     
     <style>
@@ -425,12 +423,12 @@ datetime 模块提供了以简单和复杂的方式操作日期和时间的类�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/043-%E5%8F%A4%E9%A3%8E%E7%BE%8E%E5%A5%B3-%E8%A1%97%E9%81%93.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/057-%E9%87%91%E5%85%8B%E4%B8%9D-%E8%93%9D%E8%89%B2%E8%BE%AB%E5%AD%90-%E9%A2%86%E5%B8%A6-%E4%B9%A6%E6%9C%AC.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">00120 Python 日期和时间</h1>
+                    <h1 class="description center-align post-title">00357 🧪 Python `unittest` 单元测试框架教程</h1>
                 </div>
             </div>
         </div>
@@ -479,14 +477,14 @@ datetime 模块提供了以简单和复杂的方式操作日期和时间的类�
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2024-06-01
+                    2025-08-07
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-28
+                    2025-08-07
                 </div>
                 
 
@@ -513,228 +511,238 @@ datetime 模块提供了以简单和复杂的方式操作日期和时间的类�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Python 日期和时间。</p>
-<p>操作系统：Windows 11 家庭中文版</p>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
-<li><a href="https://docs.python.org/zh-cn/3/tutorial/stdlib.html#dates-and-times">日期和时间</a></li>
-<li><a href="https://docs.python.org/zh-cn/3/library/datetime.html#strftime-and-strptime-format-codes">strftime() 和 strptime() 格式码</a></li>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>下面是一个关于 Python 的 <code>unittest</code> 单元测试框架的 <strong>详细教程</strong>，适合初学者逐步入门，也包含了一些进阶用法，帮助你在项目中高效使用 <code>unittest</code>。</p>
+<hr>
+<h2 id="📝-目录"><a href="#📝-目录" class="headerlink" title="📝 目录"></a>📝 目录</h2><ol>
+<li>什么是单元测试？</li>
+<li>为什么使用 <code>unittest</code>？</li>
+<li>基本使用方式</li>
+<li>断言方法</li>
+<li>测试用例组织</li>
+<li>测试夹具：<code>setUp()</code> 和 <code>tearDown()</code></li>
+<li>测试套件与运行方式</li>
+<li>Mock 模拟对象（高级）</li>
+<li>实战示例</li>
+<li>小结</li>
 </ol>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><blockquote>
-<p><a href="https://docs.python.org/zh-cn/3/library/datetime.html">datetime</a> 模块提供了以简单和复杂的方式操作日期和时间的类。虽然支持日期和时间算法，但实现的重点是有效的成员提取以进行输出格式化和操作。该模块还支持可感知时区的对象。</p>
-</blockquote>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token comment"># dates are easily constructed and formatted</span>
-<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> datetime <span class="token keyword">import</span> date
-<span class="token operator">>></span><span class="token operator">></span> now <span class="token operator">=</span> date<span class="token punctuation">.</span>today<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> now
-datetime<span class="token punctuation">.</span>date<span class="token punctuation">(</span><span class="token number">2003</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> now<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">"%m-%d-%y. %d %b %Y is a %A on the %d day of %B."</span><span class="token punctuation">)</span>
-<span class="token string">'12-02-03. 02 Dec 2003 is a Tuesday on the 02 day of December.'</span>
+<hr>
+<h2 id="1️⃣-什么是单元测试？"><a href="#1️⃣-什么是单元测试？" class="headerlink" title="1️⃣ 什么是单元测试？"></a>1️⃣ 什么是单元测试？</h2><p><strong>单元测试（Unit Test）</strong> 是指对软件中的最小可测试单元进行验证的测试活动。通常指的是函数或类的方法。</p>
+<hr>
+<h2 id="2️⃣-为什么使用-unittest？"><a href="#2️⃣-为什么使用-unittest？" class="headerlink" title="2️⃣ 为什么使用 unittest？"></a>2️⃣ 为什么使用 <code>unittest</code>？</h2><p>Python 的 <code>unittest</code> 是标准库内置的测试框架，具有以下优点：</p>
+<ul>
+<li>类似于 Java 的 JUnit，功能全面</li>
+<li>无需额外安装</li>
+<li>支持测试夹具、测试套件、断言等</li>
+<li>可以集成到 CI&#x2F;CD 工具中</li>
+</ul>
+<hr>
+<h2 id="3️⃣-基本使用方式"><a href="#3️⃣-基本使用方式" class="headerlink" title="3️⃣ 基本使用方式"></a>3️⃣ 基本使用方式</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># calculator.py</span>
+<span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> x <span class="token operator">+</span> y
 
-<span class="token operator">>></span><span class="token operator">></span> <span class="token comment"># dates support calendar arithmetic</span>
-<span class="token operator">>></span><span class="token operator">></span> birthday <span class="token operator">=</span> date<span class="token punctuation">(</span><span class="token number">1964</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">31</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> age <span class="token operator">=</span> now <span class="token operator">-</span> birthday
-<span class="token operator">>></span><span class="token operator">></span> age<span class="token punctuation">.</span>days
-<span class="token number">14368</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">def</span> <span class="token function">divide</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> x <span class="token operator">/</span> y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="strftime-和-strptime-格式码"><a href="#strftime-和-strptime-格式码" class="headerlink" title="strftime() 和 strptime() 格式码"></a>strftime() 和 strptime() 格式码</h2><p>这些方法接受可被用于解析和格式化日期的格式代码:</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> datetime<span class="token punctuation">.</span>strptime<span class="token punctuation">(</span><span class="token string">'31/01/22 23:59:59.999999'</span><span class="token punctuation">,</span>
-<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                   <span class="token string">'%d/%m/%y %H:%M:%S.%f'</span><span class="token punctuation">)</span>
-datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">(</span><span class="token number">2022</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">31</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">59</span><span class="token punctuation">,</span> <span class="token number">59</span><span class="token punctuation">,</span> <span class="token number">999999</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> _<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%a %d %b %Y, %I:%M%p'</span><span class="token punctuation">)</span>
-<span class="token string">'Mon 31 Jan 2022, 11:59PM'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># test_calculator.py</span>
+<span class="token keyword">import</span> unittest
+<span class="token keyword">from</span> calculator <span class="token keyword">import</span> add<span class="token punctuation">,</span> divide
 
-<p>以下列表显示了 1989 版 C 标准所要求的全部格式代码，它们在带有标准 C 实现的所有平台上均可用。</p>
-<table>
+<span class="token keyword">class</span> <span class="token class-name">TestCalculator</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_add</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>add<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>add<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_divide</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>divide<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+        <span class="token keyword">with</span> self<span class="token punctuation">.</span>assertRaises<span class="token punctuation">(</span>ZeroDivisionError<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            divide<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    unittest<span class="token punctuation">.</span>main<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>🟡 运行方法：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python test_calculator.py<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输出：</p>
+<pre class="line-numbers language-none"><code class="language-none">..
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="4️⃣-常用断言方法"><a href="#4️⃣-常用断言方法" class="headerlink" title="4️⃣ 常用断言方法"></a>4️⃣ 常用断言方法</h2><table>
 <thead>
 <tr>
-<th align="center">指令</th>
-<th align="center">含意</th>
-<th align="center">示例</th>
-<th align="center">常用</th>
+<th>方法</th>
+<th>用途</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center"><code>%a</code></td>
-<td align="center"><code>当地工作日的缩写。</code></td>
-<td align="center"><code>Sun, Mon, ..., Sat (en_US); So, Mo, ..., Sa (de_DE)</code></td>
-<td align="center"></td>
+<td><code>assertEqual(a, b)</code></td>
+<td>断言 a &#x3D;&#x3D; b</td>
 </tr>
 <tr>
-<td align="center"><code>%A</code></td>
-<td align="center"><code>本地化的星期中每日的完整名称。</code></td>
-<td align="center"><code>Sunday, Monday, ..., Saturday (en_US); Sonntag, Montag, ..., Samstag (de_DE)</code></td>
-<td align="center"></td>
+<td><code>assertNotEqual(a, b)</code></td>
+<td>断言 a !&#x3D; b</td>
 </tr>
 <tr>
-<td align="center"><code>%w</code></td>
-<td align="center"><code>以十进制数显示的工作日，其中0表示星期日，6表示星期六。</code></td>
-<td align="center"><code>0, 1, ..., 6</code></td>
-<td align="center"></td>
+<td><code>assertTrue(x)</code></td>
+<td>断言 x 为 True</td>
 </tr>
 <tr>
-<td align="center"><code>%d</code></td>
-<td align="center"><code>补零后，以十进制数显示的月份中的一天。</code></td>
-<td align="center"><code>01, 02, ..., 31</code></td>
-<td align="center">True</td>
+<td><code>assertFalse(x)</code></td>
+<td>断言 x 为 False</td>
 </tr>
 <tr>
-<td align="center"><code>%b</code></td>
-<td align="center"><code>当地月份的缩写。</code></td>
-<td align="center"><code>Jan, Feb, ..., Dec (en_US); Jan, Feb, ..., Dez (de_DE)</code></td>
-<td align="center">True</td>
+<td><code>assertIs(a, b)</code></td>
+<td>断言 a is b</td>
 </tr>
 <tr>
-<td align="center"><code>%B</code></td>
-<td align="center"><code>本地化的月份全名。</code></td>
-<td align="center"><code>January, February, ..., December (en_US); Januar, Februar, ..., Dezember (de_DE)</code></td>
-<td align="center"></td>
+<td><code>assertIsNone(x)</code></td>
+<td>断言 x is None</td>
 </tr>
 <tr>
-<td align="center"><code>%m</code></td>
-<td align="center"><code>补零后，以十进制数显示的月份。</code></td>
-<td align="center"><code>01, 02, ..., 12</code></td>
-<td align="center">True</td>
+<td><code>assertIn(a, b)</code></td>
+<td>断言 a in b</td>
 </tr>
 <tr>
-<td align="center"><code>%y</code></td>
-<td align="center"><code>补零后，以十进制数表示的，不带世纪的年份。</code></td>
-<td align="center"><code>00, 01, ..., 99</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%Y</code></td>
-<td align="center"><code>十进制数表示的带世纪的年份。</code></td>
-<td align="center"><code>0001, 0002, ..., 2013, 2014, ..., 9998, 9999</code></td>
-<td align="center">True</td>
-</tr>
-<tr>
-<td align="center"><code>%H</code></td>
-<td align="center"><code>以补零后的十进制数表示的小时（24 小时制）。</code></td>
-<td align="center"><code>00, 01, ..., 23</code></td>
-<td align="center">True</td>
-</tr>
-<tr>
-<td align="center"><code>%I</code></td>
-<td align="center"><code>以补零后的十进制数表示的小时（12 小时制）。</code></td>
-<td align="center"><code>01, 02, ..., 12</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%p</code></td>
-<td align="center"><code>本地化的 AM 或 PM 。</code></td>
-<td align="center"><code>AM, PM (en_US); am, pm (de_DE)</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%M</code></td>
-<td align="center"><code>补零后，以十进制数显示的分钟。</code></td>
-<td align="center"><code>00, 01, ..., 59</code></td>
-<td align="center">True</td>
-</tr>
-<tr>
-<td align="center"><code>%S</code></td>
-<td align="center"><code>补零后，以十进制数显示的秒。</code></td>
-<td align="center"><code>00, 01, ..., 59</code></td>
-<td align="center">True</td>
-</tr>
-<tr>
-<td align="center"><code>%f</code></td>
-<td align="center"><code>微秒作为一个十进制数，零填充到 6 位。</code></td>
-<td align="center"><code>000000, 000001, ..., 999999</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%z</code></td>
-<td align="center"><code>UTC 偏移量，格式为 ±HHMM[SS[.ffffff]] （如果是简单型对象则为空字符串）。</code></td>
-<td align="center"><code>(空), +0000, -0400, +1030, +063415, -030712.345216</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%Z</code></td>
-<td align="center"><code>时区名称（如果对象为简单型则为空字符串）。</code></td>
-<td align="center"><code>(空), UTC, GMT</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%j</code></td>
-<td align="center"><code>以补零后的十进制数表示的一年中的日序号。</code></td>
-<td align="center"><code>001, 002, ..., 366</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%U</code></td>
-<td align="center"><code>以补零后的十进制数表示的一年中的周序号（星期日作为每周的第一天）。 在新的一年中第一个星期日之前的所有日子都被视为是在第 0 周。</code></td>
-<td align="center"><code>00, 01, ..., 53</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%W</code></td>
-<td align="center"><code>以补零后的十进制数表示的一年中的周序号（星期一作为每周的第一天）。 在新的一年中第一个星期一之前的所有日子都被视为是在第 0 周。</code></td>
-<td align="center"><code>00, 01, ..., 53</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%c</code></td>
-<td align="center"><code>本地化的适当日期和时间表示。</code></td>
-<td align="center"><code>Tue Aug 16 21:30:00 1988 (en_US); Di 16 Aug 21:30:00 1988 (de_DE)</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%x</code></td>
-<td align="center"><code>本地化的适当日期表示。</code></td>
-<td align="center"><code>08/16/88 (None); 08/16/1988 (en_US); 16.08.1988 (de_DE)</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%X</code></td>
-<td align="center"><code>本地化的适当时间表示。</code></td>
-<td align="center"><code>21:30:00 (en_US); 21:30:00 (de_DE)</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center"><code>%%</code></td>
-<td align="center"><code>字面的 &#39;%&#39; 字符。</code></td>
-<td align="center"><code>%</code></td>
-<td align="center"></td>
+<td><code>assertRaises(Exception)</code></td>
+<td>断言抛出异常</td>
 </tr>
 </tbody></table>
-<p>为了方便起见，还包括了C89标准不需要的其他一些指示符。 这些参数都对应于 ISO 8601 日期值。</p>
-<table>
+<hr>
+<h2 id="5️⃣-测试用例组织结构"><a href="#5️⃣-测试用例组织结构" class="headerlink" title="5️⃣ 测试用例组织结构"></a>5️⃣ 测试用例组织结构</h2><p>建议使用以下结构组织测试文件：</p>
+<pre class="line-numbers language-none"><code class="language-none">project&#x2F;
+├── calculator.py
+└── tests&#x2F;
+    └── test_calculator.py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以批量运行：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python <span class="token parameter variable">-m</span> unittest discover <span class="token parameter variable">-s</span> tests<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h2 id="6️⃣-测试夹具（Fixtures）"><a href="#6️⃣-测试夹具（Fixtures）" class="headerlink" title="6️⃣ 测试夹具（Fixtures）"></a>6️⃣ 测试夹具（Fixtures）</h2><p><code>setUp()</code> 和 <code>tearDown()</code> 是在每个测试方法前后自动执行的：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TestWithSetup</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    
+    <span class="token keyword">def</span> <span class="token function">setUp</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"准备环境"</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">tearDown</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"清理环境"</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_example</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>运行结果：</p>
+<pre class="line-numbers language-none"><code class="language-none">准备环境
+清理环境
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>还可以使用：</p>
+<ul>
+<li><code>setUpClass(cls)</code>：整个类运行前运行（类方法）</li>
+<li><code>tearDownClass(cls)</code>：整个类运行后运行</li>
+</ul>
+<hr>
+<h2 id="7️⃣-测试套件（Test-Suite）"><a href="#7️⃣-测试套件（Test-Suite）" class="headerlink" title="7️⃣ 测试套件（Test Suite）"></a>7️⃣ 测试套件（Test Suite）</h2><p>你可以将多个测试类组合成套件一起运行：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">suite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    suite <span class="token operator">=</span> unittest<span class="token punctuation">.</span>TestSuite<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    suite<span class="token punctuation">.</span>addTest<span class="token punctuation">(</span>TestCalculator<span class="token punctuation">(</span><span class="token string">'test_add'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    suite<span class="token punctuation">.</span>addTest<span class="token punctuation">(</span>TestCalculator<span class="token punctuation">(</span><span class="token string">'test_divide'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> suite
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    runner <span class="token operator">=</span> unittest<span class="token punctuation">.</span>TextTestRunner<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    runner<span class="token punctuation">.</span>run<span class="token punctuation">(</span>suite<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="8️⃣-Mock（模拟对象）"><a href="#8️⃣-Mock（模拟对象）" class="headerlink" title="8️⃣ Mock（模拟对象）"></a>8️⃣ Mock（模拟对象）</h2><p>有时候你不希望真的调用外部依赖（比如数据库、API），就可以使用 <code>unittest.mock</code>：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> unittest<span class="token punctuation">.</span>mock <span class="token keyword">import</span> Mock
+
+<span class="token keyword">def</span> <span class="token function">get_price</span><span class="token punctuation">(</span>api_client<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> api_client<span class="token punctuation">.</span>get_price<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">test_get_price</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    mock_api <span class="token operator">=</span> Mock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    mock_api<span class="token punctuation">.</span>get_price<span class="token punctuation">.</span>return_value <span class="token operator">=</span> <span class="token number">100</span>
+    <span class="token keyword">assert</span> get_price<span class="token punctuation">(</span>mock_api<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">100</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="9️⃣-实战示例：测试一个类"><a href="#9️⃣-实战示例：测试一个类" class="headerlink" title="9️⃣ 实战示例：测试一个类"></a>9️⃣ 实战示例：测试一个类</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># bank.py</span>
+<span class="token keyword">class</span> <span class="token class-name">BankAccount</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> balance<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>balance <span class="token operator">=</span> balance
+
+    <span class="token keyword">def</span> <span class="token function">deposit</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>balance <span class="token operator">+=</span> amount
+
+    <span class="token keyword">def</span> <span class="token function">withdraw</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> amount <span class="token operator">></span> self<span class="token punctuation">.</span>balance<span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">"Insufficient funds"</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>balance <span class="token operator">-=</span> amount<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># test_bank.py</span>
+<span class="token keyword">import</span> unittest
+<span class="token keyword">from</span> bank <span class="token keyword">import</span> BankAccount
+
+<span class="token keyword">class</span> <span class="token class-name">TestBankAccount</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+    <span class="token keyword">def</span> <span class="token function">setUp</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>acc <span class="token operator">=</span> BankAccount<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_deposit</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>acc<span class="token punctuation">.</span>deposit<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>self<span class="token punctuation">.</span>acc<span class="token punctuation">.</span>balance<span class="token punctuation">,</span> <span class="token number">150</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_withdraw_valid</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>acc<span class="token punctuation">.</span>withdraw<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>self<span class="token punctuation">.</span>acc<span class="token punctuation">.</span>balance<span class="token punctuation">,</span> <span class="token number">70</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_withdraw_insufficient</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">with</span> self<span class="token punctuation">.</span>assertRaises<span class="token punctuation">(</span>ValueError<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>acc<span class="token punctuation">.</span>withdraw<span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="🔟-小结"><a href="#🔟-小结" class="headerlink" title="🔟 小结"></a>🔟 小结</h2><table>
 <thead>
 <tr>
-<th align="center">指令</th>
-<th align="center">含意</th>
-<th align="center">示例</th>
+<th>内容</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center"><code>%G</code></td>
-<td align="center"><code>带有世纪的 ISO 8601 年份，表示包含大部分 ISO 星期 (%V) 的年份。</code></td>
-<td align="center"><code>0001, 0002, ..., 2013, 2014, ..., 9998, 9999</code></td>
+<td>基本结构</td>
+<td>创建类继承自 <code>unittest.TestCase</code></td>
 </tr>
 <tr>
-<td align="center"><code>%u</code></td>
-<td align="center"><code>以十进制数显示的 ISO 8601 星期中的日序号，其中 1 表示星期一。</code></td>
-<td align="center"><code>1, 2, ..., 7</code></td>
+<td>运行测试</td>
+<td>直接运行 <code>.py</code> 文件或使用 <code>unittest discover</code></td>
 </tr>
 <tr>
-<td align="center"><code>%V</code></td>
-<td align="center"><code>以十进制数显示的 ISO 8601 星期，以星期一作为每周的第一天。</code></td>
-<td align="center"><code>01, 02, ..., 53</code></td>
+<td>常用断言</td>
+<td><code>assertEqual</code>, <code>assertRaises</code> 等</td>
 </tr>
 <tr>
-<td align="center"><code>%:z</code></td>
-<td align="center"><code>±HH:MM[:SS[.ffffff]] 形式的 UTC 偏移量（如果是简单型对象则为空字符串）。</code></td>
-<td align="center"><code>(空), +00:00, -04:00, +10:30, +06:34:15, -03:07:12.345216</code></td>
+<td>夹具方法</td>
+<td><code>setUp</code>, <code>tearDown</code></td>
+</tr>
+<tr>
+<td>模拟对象</td>
+<td>使用 <code>unittest.mock</code> 模拟外部依赖</td>
+</tr>
+<tr>
+<td>高级功能</td>
+<td>测试套件、跳过测试、参数化</td>
 </tr>
 </tbody></table>
-<p>这些代码可能不是在所有平台上都可与 strftime() 方法配合使用。 ISO 8601 年份和 ISO 8601 星期指示符并不能与上面的年份和星期序号指示符相互替代。 调用 strptime() 时传入不完整或有歧义的 ISO 8601 指示符将引发 <code>ValueError</code>。</p>
-<p>对完整格式代码集的支持在不同平台上有所差异，因为 Python 要调用所在平台的 C 库的 strftime() 函数，而不同平台的差异是很常见的。 要查看你所用平台所支持的完整格式代码集，请参阅 <a href="https://manpages.debian.org/strftime(3)">strftime(3)</a> 文档。 不同的平台在处理不支持的格式说明符方面也有差异。</p>
-<blockquote>
-<p>Added in version 3.6: 增加了 <code>%G</code>, <code>%u</code> 和 <code>%V</code>。</p>
-<p>Added in version 3.12: 增加了 <code>%:z</code>。</p>
-</blockquote>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第一百二十篇博文写完，开心！！！！</p>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百五十八篇博文写完，开心！！！！</p>
 <p>今天，也是充满希望的一天。</p>
 
                 
@@ -762,7 +770,7 @@ datetime<span class="token punctuation">.</span>datetime<span class="token punct
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://luyf-lemon-love.space/2024/06/01/00120-python-ri-qi-he-shi-jian/">https://luyf-lemon-love.space/2024/06/01/00120-python-ri-qi-he-shi-jian/</a>
+                    <a href="https://luyf-lemon-love.space/2025/08/07/00357-unittest-dan-yuan-ce-shi-kuang-jia-jiao-cheng/">https://luyf-lemon-love.space/2025/08/07/00357-unittest-dan-yuan-ce-shi-kuang-jia-jiao-cheng/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -880,16 +888,17 @@ datetime<span class="token punctuation">.</span>datetime<span class="token punct
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2024/06/01/00121-xue-xi-bi-ji-mu-lu/">
+                <a href="/2025/08/07/00357-unittest-dan-yuan-ce-shi-kuang-jia-jiao-cheng/">
                     <div class="card-image">
                         
-                        <img src="https://cos.luyf-lemon-love.space/images/040-%E9%87%91%E5%85%8B%E4%B8%9D%E5%94%AF%E7%BE%8E%E6%8A%A5%E7%BA%B8%E5%A2%99.jpg" class="responsive-img" alt="00121 学习笔记目录">
+                        <img src="https://cos.luyf-lemon-love.space/images/057-%E9%87%91%E5%85%8B%E4%B8%9D-%E8%93%9D%E8%89%B2%E8%BE%AB%E5%AD%90-%E9%A2%86%E5%B8%A6-%E4%B9%A6%E6%9C%AC.jpg" class="responsive-img" alt="00357 🧪 Python `unittest` 单元测试框架教程">
                         
-                        <span class="card-title">00121 学习笔记目录</span>
+                        <span class="card-title">00357 🧪 Python `unittest` 单元测试框架教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -899,62 +908,27 @@ datetime<span class="token punctuation">.</span>datetime<span class="token punct
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-06-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-08-07
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" class="post-category">
-                                    大语言模型
+                            <a href="/categories/Python/" class="post-category">
+                                    Python
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Git/">
-                        <span class="chip bg-color">Git</span>
-                    </a>
-                    
-                    <a href="/tags/VSCode/">
-                        <span class="chip bg-color">VSCode</span>
-                    </a>
-                    
-                    <a href="/tags/Markdown/">
-                        <span class="chip bg-color">Markdown</span>
-                    </a>
-                    
-                    <a href="/tags/Linux/">
-                        <span class="chip bg-color">Linux</span>
-                    </a>
-                    
-                    <a href="/tags/C/">
-                        <span class="chip bg-color">C++</span>
-                    </a>
-                    
                     <a href="/tags/Python/">
                         <span class="chip bg-color">Python</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
-                        <span class="chip bg-color">大语言模型</span>
-                    </a>
-                    
-                    <a href="/tags/huggingface/">
-                        <span class="chip bg-color">huggingface</span>
-                    </a>
-                    
-                    <a href="/tags/LaTeX/">
-                        <span class="chip bg-color">LaTeX</span>
-                    </a>
-                    
-                    <a href="/tags/Verilog/">
-                        <span class="chip bg-color">Verilog</span>
                     </a>
                     
                 </div>
@@ -968,12 +942,12 @@ datetime<span class="token punctuation">.</span>datetime<span class="token punct
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/06/01/00119-chang-yong-de-github-workflows/">
+                <a href="/2025/08/05/00356-models-open-r1-openr1-distill-7b/">
                     <div class="card-image">
                         
-                        <img src="https://cos.luyf-lemon-love.space/images/082-nahida.jpg" class="responsive-img" alt="00119 常用的 GitHub Workflows">
+                        <img src="https://cos.luyf-lemon-love.space/images/056-%E3%80%8A%E4%B8%83%E6%97%A5%E4%B8%96%E7%95%8C%20Once%20Human%E3%80%8B.jpg" class="responsive-img" alt="00356 models - open-r1/OpenR1-Distill-7B">
                         
-                        <span class="card-title">00119 常用的 GitHub Workflows</span>
+                        <span class="card-title">00356 models - open-r1/OpenR1-Distill-7B</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -984,14 +958,14 @@ datetime<span class="token punctuation">.</span>datetime<span class="token punct
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-08-05
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    计算机基础
+                            <a href="/categories/models/" class="post-category">
+                                    models
                                 </a>
                             
                             
@@ -1001,8 +975,12 @@ datetime<span class="token punctuation">.</span>datetime<span class="token punct
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Git/">
-                        <span class="chip bg-color">Git</span>
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                    <a href="/tags/models/">
+                        <span class="chip bg-color">models</span>
                     </a>
                     
                 </div>
