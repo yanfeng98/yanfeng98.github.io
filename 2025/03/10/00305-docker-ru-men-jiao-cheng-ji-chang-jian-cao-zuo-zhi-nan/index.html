@@ -485,7 +485,7 @@ Do">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-03-10
+                    2025-08-07
                 </div>
                 
 
@@ -527,56 +527,83 @@ Do">
 <li><a href="https://docs.docker.com/engine/install/">Install Docker Engine</a></li>
 <li><a href="https://docs.docker.com/engine/install/ubuntu/">Install Docker Engine on Ubuntu</a></li>
 </ol>
-<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><h3 id="镜像管理"><a href="#镜像管理" class="headerlink" title="镜像管理"></a>镜像管理</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 拉取镜像</span>
+<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><h3 id="镜像管理"><a href="#镜像管理" class="headerlink" title="镜像管理"></a>镜像管理</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># ✅ 搜索镜像</span>
+<span class="token function">docker</span> search ubuntu
+
+<span class="token comment"># ✅ 拉取镜像</span>
 <span class="token function">docker</span> pull nginx:latest
 
-<span class="token comment"># 查看本地镜像</span>
+<span class="token comment"># ✅ 查看本地镜像</span>
 <span class="token function">docker</span> images
 
-<span class="token comment"># 删除镜像</span>
+<span class="token comment"># ✅ 删除镜像</span>
 <span class="token function">docker</span> rmi <span class="token operator">&lt;</span>image_id<span class="token operator">></span>
 
-<span class="token comment"># 构建镜像（需Dockerfile）</span>
-<span class="token function">docker</span> build <span class="token parameter variable">-t</span> my-image:1.0 <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># ✅ 构建镜像（需Dockerfile）</span>
+<span class="token function">docker</span> build <span class="token parameter variable">-t</span> my-image:1.0 <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 运行容器（前台模式）</span>
+<h3 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># ✅ 给容器指定名字</span>
+<span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">--name</span> myubuntu ubuntu
+
+<span class="token comment"># ✅ 运行容器（前台模式）</span>
 <span class="token function">docker</span> run <span class="token parameter variable">-it</span> ubuntu /bin/bash
 
-<span class="token comment"># 运行容器（后台模式）</span>
-<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">80</span>:80 <span class="token parameter variable">--name</span> my-nginx nginx
+<span class="token comment"># ✅ 运行容器（后台模式），访问：http://localhost:8080</span>
+<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">8080</span>:80 <span class="token parameter variable">--name</span> my-nginx nginx
 
-<span class="token comment"># 查看运行中的容器</span>
+<span class="token comment"># ✅ 查看运行中的容器</span>
 <span class="token function">docker</span> <span class="token function">ps</span>
 
-<span class="token comment"># 查看所有容器</span>
+<span class="token comment"># ✅ 查看所有容器</span>
 <span class="token function">docker</span> <span class="token function">ps</span> <span class="token parameter variable">-a</span>
 
-<span class="token comment"># 停止容器</span>
+<span class="token comment"># ✅ 停止容器</span>
 <span class="token function">docker</span> stop <span class="token operator">&lt;</span>container_id<span class="token operator">></span>
 
-<span class="token comment"># 启动已停止的容器</span>
+<span class="token comment"># ✅ 启动已停止的容器</span>
 <span class="token function">docker</span> start <span class="token operator">&lt;</span>container_id<span class="token operator">></span>
 
-<span class="token comment"># 进入运行中的容器</span>
+<span class="token comment"># ✅ 进入运行中的容器</span>
 <span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span> /bin/bash
 
-<span class="token comment"># 删除容器</span>
-<span class="token function">docker</span> <span class="token function">rm</span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># ✅ 删除容器</span>
+<span class="token function">docker</span> <span class="token function">rm</span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建自定义网络</span>
-<span class="token function">docker</span> network create my-network
+<h3 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># ✅ 查看网络：</span>
+<span class="token function">docker</span> network <span class="token function">ls</span>
 
-<span class="token comment"># 使用自定义网络运行容器</span>
-<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--network</span> my-network <span class="token parameter variable">--name</span> app1 my-app<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># ✅ 创建网络：</span>
+<span class="token function">docker</span> network create mynetwork
 
-<h3 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建数据卷</span>
+<span class="token comment"># ✅ 在同一网络下启动多个容器：</span>
+<span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">--network</span><span class="token operator">=</span>mynetwork <span class="token parameter variable">--name</span><span class="token operator">=</span>container1 ubuntu
+<span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">--network</span><span class="token operator">=</span>mynetwork <span class="token parameter variable">--name</span><span class="token operator">=</span>container2 ubuntu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后你可以在 container1 里 ping container2。</p>
+<h3 id="📂-挂载本地目录（持久化数据）"><a href="#📂-挂载本地目录（持久化数据）" class="headerlink" title="📂 挂载本地目录（持久化数据）"></a>📂 挂载本地目录（持久化数据）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建数据卷</span>
 <span class="token function">docker</span> volume create my-vol
 
 <span class="token comment"># 使用数据卷</span>
 <span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> my-vol:/data <span class="token parameter variable">--name</span> db mysql
 
 <span class="token comment"># 绑定主机目录</span>
-<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> /host/path:/container/path nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-v</span> /host/path:/container/path nginx
+
+<span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">-v</span> /本地路径:/容器内路径 ubuntu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>📌 示例：挂载当前目录到容器的 &#x2F;data</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">-v</span> <span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">pwd</span><span class="token variable">)</span></span>:/data ubuntu<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="🔄-构建自定义镜像（Dockerfile）"><a href="#🔄-构建自定义镜像（Dockerfile）" class="headerlink" title="🔄 构建自定义镜像（Dockerfile）"></a>🔄 构建自定义镜像（Dockerfile）</h2><p>创建一个名为 Dockerfile 的文件，内容如下：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">FROM ubuntu
+RUN <span class="token function">apt</span> update <span class="token operator">&amp;&amp;</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> <span class="token function">curl</span>
+CMD <span class="token punctuation">[</span><span class="token string">"bash"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>构建镜像：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> build <span class="token parameter variable">-t</span> myubuntu <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>然后运行：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-it</span> myubuntu<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="Dockerfile示例"><a href="#Dockerfile示例" class="headerlink" title="Dockerfile示例"></a>Dockerfile示例</h2><pre class="line-numbers language-docker" data-language="docker"><code class="language-docker"><span class="token instruction"><span class="token keyword">FROM</span> python:3.9-slim</span>
 <span class="token instruction"><span class="token keyword">WORKDIR</span> /app</span>
@@ -585,6 +612,35 @@ Do">
 <span class="token instruction"><span class="token keyword">COPY</span> . .</span>
 <span class="token instruction"><span class="token keyword">EXPOSE</span> 8000</span>
 <span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"python"</span>, <span class="token string">"app.py"</span>]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="🧹-容器清理（释放空间）"><a href="#🧹-容器清理（释放空间）" class="headerlink" title="🧹 容器清理（释放空间）"></a>🧹 容器清理（释放空间）</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 停止所有容器</span>
+<span class="token function">docker</span> stop <span class="token variable"><span class="token variable">$(</span><span class="token function">docker</span> <span class="token function">ps</span> <span class="token parameter variable">-q</span><span class="token variable">)</span></span>
+
+<span class="token comment"># 删除所有容器</span>
+<span class="token function">docker</span> <span class="token function">rm</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">docker</span> <span class="token function">ps</span> <span class="token parameter variable">-aq</span><span class="token variable">)</span></span>
+
+<span class="token comment"># 删除所有未使用镜像</span>
+<span class="token function">docker</span> image prune <span class="token parameter variable">-a</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="📦-保存和加载镜像（备份用途）"><a href="#📦-保存和加载镜像（备份用途）" class="headerlink" title="📦 保存和加载镜像（备份用途）"></a>📦 保存和加载镜像（备份用途）</h2><h3 id="✅-保存镜像为-tar-文件："><a href="#✅-保存镜像为-tar-文件：" class="headerlink" title="✅ 保存镜像为 tar 文件："></a>✅ 保存镜像为 tar 文件：</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> save <span class="token parameter variable">-o</span> myimage.tar myubuntu<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="✅-从-tar-文件加载镜像："><a href="#✅-从-tar-文件加载镜像：" class="headerlink" title="✅ 从 tar 文件加载镜像："></a>✅ 从 tar 文件加载镜像：</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> load <span class="token parameter variable">-i</span> myimage.tar<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="🔍-查看容器日志"><a href="#🔍-查看容器日志" class="headerlink" title="🔍 查看容器日志"></a>🔍 查看容器日志</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> logs 容器ID或名称<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>可以加上 -f 实时查看：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> logs <span class="token parameter variable">-f</span> 容器ID<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="🔧-进入已经运行的容器"><a href="#🔧-进入已经运行的容器" class="headerlink" title="🔧 进入已经运行的容器"></a>🔧 进入已经运行的容器</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> 容器ID <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者有的容器是 sh：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> 容器ID <span class="token function">sh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="📄-导出和导入容器（容器备份）"><a href="#📄-导出和导入容器（容器备份）" class="headerlink" title="📄 导出和导入容器（容器备份）"></a>📄 导出和导入容器（容器备份）</h2><p>✅ 导出容器为文件：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">export</span> 容器ID <span class="token operator">></span> container.tar<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>✅ 导入为新镜像：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> container.tar <span class="token operator">|</span> <span class="token function">docker</span> <span class="token function">import</span> - mycontainerimage<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h2><ol>
 <li><p>清理无用资源：</p>
@@ -600,6 +656,43 @@ Do">
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> save <span class="token parameter variable">-o</span> my-image.tar my-image:1.0
 <span class="token function">docker</span> load <span class="token parameter variable">-i</span> my-image.tar<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 </ol>
+<h2 id="🔙-如何退出容器"><a href="#🔙-如何退出容器" class="headerlink" title="🔙 如何退出容器"></a>🔙 如何退出容器</h2><h3 id="✅-退出但保持容器运行（推荐学习用）"><a href="#✅-退出但保持容器运行（推荐学习用）" class="headerlink" title="✅ 退出但保持容器运行（推荐学习用）"></a>✅ 退出但保持容器运行（推荐学习用）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Ctrl + P + Q<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样你就退出了容器的终端，但容器依然在后台运行。</p>
+<p>你可以用以下命令查看正在运行的容器：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token function">ps</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="⛔️-退出并终止容器"><a href="#⛔️-退出并终止容器" class="headerlink" title="⛔️ 退出并终止容器"></a>⛔️ 退出并终止容器</h3><p>在容器中直接输入：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">exit</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或按下：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Ctrl + D<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这样容器会直接停止并退出。</p>
+<h2 id="🔄-重新进入已经运行的容器"><a href="#🔄-重新进入已经运行的容器" class="headerlink" title="🔄 重新进入已经运行的容器"></a>🔄 重新进入已经运行的容器</h2><p>如果你用 Ctrl + P + Q 退出了一个正在运行的容器，可以用以下命令重新进入：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> attach 容器ID或容器名<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者使用更推荐的方式（不会干扰容器主终端）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> 容器ID <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="✅-总结：建议记住的几个命令"><a href="#✅-总结：建议记住的几个命令" class="headerlink" title="✅ 总结：建议记住的几个命令"></a>✅ 总结：建议记住的几个命令</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 常用容器启动方式（带交互、命名、挂载）</span>
+<span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">--name</span> <span class="token builtin class-name">test</span> <span class="token parameter variable">-v</span> <span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">pwd</span><span class="token variable">)</span></span>:/data ubuntu
+
+<span class="token comment"># 后台运行 + 映射端口</span>
+<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">8080</span>:80 <span class="token parameter variable">--name</span> web nginx
+
+<span class="token comment"># 查看运行容器</span>
+<span class="token function">docker</span> <span class="token function">ps</span>
+
+<span class="token comment"># 停止 + 删除容器</span>
+<span class="token function">docker</span> stop 容器ID <span class="token operator">&amp;&amp;</span> <span class="token function">docker</span> <span class="token function">rm</span> 容器ID
+
+<span class="token comment"># 进入容器</span>
+<span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> 容器ID <span class="token function">bash</span>
+
+<span class="token comment"># 清理无用资源</span>
+<span class="token function">docker</span> system prune <span class="token parameter variable">-a</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><ol>
 <li>权限问题：确保用户属于docker组</li>
 <li>端口冲突：检查-p参数设置的端口是否被占用</li>
