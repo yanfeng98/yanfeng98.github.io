@@ -4,8 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="归档: 2023/5, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
-    <meta name="description" content="天之道，损有余而补不足，人之道则不然，损不足以奉有余。">
+    <meta name="keywords" content="00371 如何用 Skills 与 MCP（Model Context Protocol）扩展 Claude 的能力, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="
+官方文章 · 发布日期：2025年12月19日src: https://claude.com/blog/extending-claude-capabilities-with-skills-mcp-servers
+
+导语Anthropic ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +20,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>归档: 2023/5 | LuYF-Lemon-love の Blog</title>
+    <title>00371 如何用 Skills 与 MCP（Model Context Protocol）扩展 Claude 的能力 | LuYF-Lemon-love の Blog</title>
     <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
     
     <style>
@@ -401,365 +404,609 @@
 
 </header>
 
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/071-%E6%8A%A5%E7%BA%B8%E5%A2%99-%E5%8D%A1%E8%8E%8E.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00371 如何用 Skills 与 MCP（Model Context Protocol）扩展 Claude 的能力</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
     <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                LuYF-Lemon-love の Blog
-                
-            </div>
-
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="/libs/typed/typed.js"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: [ 
-                            
-                                "已识乾坤大，犹怜草木青。",
-                            
-                                "菩提本无树，明镜亦非台。本来无一物，何处惹尘埃。",
-                            
-                                "世界上只有一种真正的英雄主义，那就是在认清生活的真相后依然热爱生活。",
-                            
-                                "牢骚太甚者，其后必多抑塞。盖无故而怨天，则天必不许，无故而尤人，则人必不服，感应之理然也。",
-                            
-                        ],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script>
-    // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-</script>
-<script>
-    
-      // 每天切换 banner 图.  Switch banner image every day.
-      var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    
-    $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
-
-</script>
-
-
-    </div>
-</div>
-
-<main class="content">
-
-    
-    <div class="container archive-calendar">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
     <div class="card">
-        <div id="post-calendar" class="card-content"></div>
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">大语言模型</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Blog/" class="post-category">
+                                Blog
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-01-17
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2026-01-17
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p><em>官方文章 · 发布日期：2025年12月19日</em><br>src: <a href="https://claude.com/blog/extending-claude-capabilities-with-skills-mcp-servers">https://claude.com/blog/extending-claude-capabilities-with-skills-mcp-servers</a></p>
+</blockquote>
+<h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>Anthropic 在官方博客《Extending Claude’s capabilities with skills and MCP servers》中，系统介绍了 <strong>Skills（技能）</strong> 与 <strong>MCP（Model Context Protocol）服务器</strong> 的设计理念与协同方式。文章的核心目标，是回答一个实际问题：<strong>如何把大模型从“会聊天”变成“能稳定、可重复地完成真实工作”的智能代理</strong>。本文是对该文章的完整总结与梳理，作为个人阅读记录。</p>
+<hr>
+<h2 id="核心概念：Skills-与-MCP-各自负责什么？"><a href="#核心概念：Skills-与-MCP-各自负责什么？" class="headerlink" title="核心概念：Skills 与 MCP 各自负责什么？"></a>核心概念：Skills 与 MCP 各自负责什么？</h2><p>Anthropic 将“扩展模型能力”拆成了两个清晰的层次：</p>
+<ul>
+<li><p><strong>MCP（Model Context Protocol）</strong><br>MCP 的职责是 <em>连接</em>。它为 Claude 提供一种标准、安全的方式，去访问外部世界中的系统和数据，例如：</p>
+<ul>
+<li>文档系统（Notion、Google Docs）</li>
+<li>代码与项目管理工具（GitHub、Jira）</li>
+<li>数据库、内部 API、第三方数据源</li>
+</ul>
+<p>MCP 解决的是：<strong>模型“能不能接触到这些东西”</strong>。</p>
+</li>
+<li><p><strong>Skills（技能）</strong><br>Skills 的职责是 <em>流程与方法</em>。一个 Skill 会明确告诉 Claude：</p>
+<ul>
+<li>任务要分几步完成  </li>
+<li>每一步该调用哪些工具  </li>
+<li>如何判断结果是否合格  </li>
+<li>最终输出的结构和格式</li>
+</ul>
+<p>Skills 解决的是：<strong>模型“应该如何完成一类任务”</strong>。</p>
+</li>
+</ul>
+<p>一句话总结就是：  </p>
+<blockquote>
+<p><strong>MCP 提供能力边界，Skills 定义工作方式。</strong></p>
+</blockquote>
+<hr>
+<h2 id="为什么要把-Skills-和-MCP-分开设计？"><a href="#为什么要把-Skills-和-MCP-分开设计？" class="headerlink" title="为什么要把 Skills 和 MCP 分开设计？"></a>为什么要把 Skills 和 MCP 分开设计？</h2><p>文章强调，将“连接能力”和“业务流程”解耦，会带来几个关键好处：</p>
+<ol>
+<li><p><strong>可组合性（Composability）</strong>  </p>
+<ul>
+<li>同一个 MCP 连接（例如 Notion）可以被多个 Skills 复用  </li>
+<li>同一个 Skill 也可以在不同 MCP 之上运行</li>
+</ul>
+</li>
+<li><p><strong>更好的可维护性</strong>  </p>
+<ul>
+<li>新增一个外部系统 → 只需实现 MCP  </li>
+<li>优化业务流程 → 只需更新 Skill<br>两者互不影响，降低维护成本。</li>
+</ul>
+</li>
+<li><p><strong>减少模型的不确定性</strong><br>如果没有 Skill，模型每次都要“猜”流程怎么走；<br>Skill 把隐性的经验显式化，让输出更稳定、更一致。</p>
+</li>
+</ol>
+<hr>
+<h2 id="文章中的两个代表性案例"><a href="#文章中的两个代表性案例" class="headerlink" title="文章中的两个代表性案例"></a>文章中的两个代表性案例</h2><h3 id="案例一：金融分析中的公司估值自动化"><a href="#案例一：金融分析中的公司估值自动化" class="headerlink" title="案例一：金融分析中的公司估值自动化"></a>案例一：金融分析中的公司估值自动化</h3><p>在金融分析场景中，分析师往往需要：</p>
+<ul>
+<li>从多个数据源获取公司财务数据</li>
+<li>使用一致的方法进行估值计算</li>
+<li>输出符合合规要求的分析报告</li>
+</ul>
+<p>在文章的设计中：</p>
+<ul>
+<li><strong>MCP</strong> 负责连接 S&amp;P Capital IQ、Daloopa、Morningstar 等数据源  </li>
+<li><strong>Skill</strong> 负责定义：<ul>
+<li>先取哪些数据</li>
+<li>如何进行估值计算</li>
+<li>如何校验结果</li>
+<li>报告的最终结构</li>
+</ul>
+</li>
+</ul>
+<p>最终效果是：  </p>
+<blockquote>
+<p>把原本重复、耗时、容易出错的人工流程，变成稳定、可复用的自动化分析。</p>
+</blockquote>
+<hr>
+<h3 id="案例二：Notion-的会议准备-Skill"><a href="#案例二：Notion-的会议准备-Skill" class="headerlink" title="案例二：Notion 的会议准备 Skill"></a>案例二：Notion 的会议准备 Skill</h3><p>Notion 内部构建了一个用于会议准备的 Skill，用于自动生成会前材料。</p>
+<ul>
+<li><strong>MCP</strong>：提供对 Notion 工作区的搜索、读取、写入能力  </li>
+<li><strong>Skill</strong>：定义会议准备流程：<ol>
+<li>查找项目相关文档</li>
+<li>汇总历史会议纪要</li>
+<li>整理相关人员与背景</li>
+<li>生成内部与外部版本的会议文档，并写回 Notion</li>
+</ol>
+</li>
+</ul>
+<p>这个案例展示了 Skills 如何把“团队的隐性工作习惯”编码成可执行流程。</p>
+<hr>
+<h2 id="什么时候该用-Skill？什么时候该用-MCP？"><a href="#什么时候该用-Skill？什么时候该用-MCP？" class="headerlink" title="什么时候该用 Skill？什么时候该用 MCP？"></a>什么时候该用 Skill？什么时候该用 MCP？</h2><p>文章给出了一个非常实用的判断标准：</p>
+<ul>
+<li><p><strong>使用 Skill 的场景</strong></p>
+<ul>
+<li>多步骤、结构化的任务</li>
+<li>对一致性要求高（如合规、审计、报告）</li>
+<li>希望把团队经验固化下来反复使用</li>
+</ul>
+</li>
+<li><p><strong>使用 MCP 的场景</strong></p>
+<ul>
+<li>需要访问实时或外部数据</li>
+<li>需要在外部系统中执行动作</li>
+<li>原生模型无法直接访问的工具或系统</li>
+</ul>
+</li>
+</ul>
+<p>简单判断法则是：</p>
+<blockquote>
+<p><strong>“怎么做”用 Skill，“去哪里拿 &#x2F; 去哪里改”用 MCP。</strong></p>
+</blockquote>
+<hr>
+<h2 id="实际设计中的工程建议"><a href="#实际设计中的工程建议" class="headerlink" title="实际设计中的工程建议"></a>实际设计中的工程建议</h2><p>文章中也给出了若干实践层面的建议：</p>
+<ul>
+<li><p><strong>职责边界要清晰</strong>  </p>
+<ul>
+<li>MCP 专注数据与动作  </li>
+<li>Skill 负责流程、逻辑与输出格式</li>
+</ul>
+</li>
+<li><p><strong>避免指令冲突</strong><br>如果 MCP 和 Skill 同时对输出形式提出要求，可能会让模型无所适从，设计时应明确优先级。</p>
+</li>
+<li><p><strong>渐进式加载上下文</strong><br>Skill 不必一次性加载所有数据，而是按步骤逐步引入上下文，提升效率与质量。</p>
+</li>
+<li><p><strong>重视组合测试</strong><br>不同 MCP + 同一个 Skill 的组合，应通过集成测试来验证行为一致性。</p>
+</li>
+</ul>
+<hr>
+<h2 id="风险与注意事项"><a href="#风险与注意事项" class="headerlink" title="风险与注意事项"></a>风险与注意事项</h2><p>文章也坦诚指出了一些潜在问题：</p>
+<ul>
+<li><strong>指令冲突风险</strong>：职责不清会降低模型表现  </li>
+<li><strong>权限与安全问题</strong>：MCP 涉及真实系统访问，必须做好权限控制与审计  </li>
+<li><strong>合规与可追溯性</strong>：在金融、法律等场景，Skill 应内置校验与审计逻辑</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章传达了一个非常清晰的思想：</p>
+<blockquote>
+<p><strong>真正可用的 AI Agent，不只是模型能力强，而是结构设计合理。</strong></p>
+</blockquote>
+<p>通过将 <strong>MCP（连接世界）</strong> 与 <strong>Skills（定义做事方式）</strong> 解耦，Anthropic 提供了一种可扩展、可维护、可审计的 Agent 架构思路。这对于希望把大模型真正引入业务流程、而不仅仅是做“聊天工具”的团队来说，具有非常高的参考价值。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百七十一篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2026/01/17/00371-ru-he-yong-skills-yu-mcp-model-context-protocol-kuo-zhan-claude-de-neng-li/">https://luyf-lemon-love.space/2026/01/17/00371-ru-he-yong-skills-yu-mcp-model-context-protocol-kuo-zhan-claude-de-neng-li/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">大语言模型</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<script type="text/javascript" src="/libs/echarts/echarts.min.js"></script>
-<script type="text/javascript">
-    let myChart = echarts.init(document.getElementById('post-calendar'));
-
-    
-
-    let option = {
-        title: {
-            top: 0,
-            text: '文章日历',
-            left: 'center',
-            textStyle: {
-                color: '#3C4858'
-            }
-        },
-        tooltip: {
-            padding: 10,
-            backgroundColor: '#555',
-            borderColor: '#777',
-            borderWidth: 1,
-            formatter: function (obj) {
-                var value = obj.value;
-                return '<div style="font-size: 14px;">' + value[0] + '：' + value[1] + '</div>';
-            }
-        },
-        visualMap: {
-            show: true,
-            showLabel: true,
-            categories: [0, 1, 2, 3, 4],
-            calculable: true,
-            inRange: {
-                symbol: 'rect',
-                color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
-            },
-            itemWidth: 12,
-            itemHeight: 12,
-            orient: 'horizontal',
-            left: 'center',
-            bottom: 0
-        },
-        calendar: [{
-            left: 'center',
-            range: ["2025-01-17", "2026-01-17"],
-            cellSize: [13, 13],
-            splitLine: {
-                show: false
-            },
-            itemStyle: {
-                color: '#196127',
-                borderColor: '#fff',
-                borderWidth: 2
-            },
-            yearLabel: {
-                show: false
-            },
-            monthLabel: {
-                nameMap: 'cn',
-                fontSize: 11
-            },
-            dayLabel: {
-                formatter: '{start}  1st',
-                nameMap: 'cn',
-                fontSize: 11
-            }
-        }],
-        series: [{
-            type: 'heatmap',
-            coordinateSystem: 'calendar',
-            calendarIndex: 0,
-            data: [["2025-01-17", 0], ["2025-01-18", 2], ["2025-01-19", 1], ["2025-01-20", 2], ["2025-01-21", 1], ["2025-01-22", 0], ["2025-01-23", 0], ["2025-01-24", 1], ["2025-01-25", 0], ["2025-01-26", 0], ["2025-01-27", 0], ["2025-01-28", 1], ["2025-01-29", 0], ["2025-01-30", 2], ["2025-01-31", 0], ["2025-02-01", 0], ["2025-02-02", 0], ["2025-02-03", 0], ["2025-02-04", 1], ["2025-02-05", 0], ["2025-02-06", 1], ["2025-02-07", 0], ["2025-02-08", 0], ["2025-02-09", 0], ["2025-02-10", 1], ["2025-02-11", 0], ["2025-02-12", 0], ["2025-02-13", 1], ["2025-02-14", 0], ["2025-02-15", 0], ["2025-02-16", 0], ["2025-02-17", 1], ["2025-02-18", 1], ["2025-02-19", 0], ["2025-02-20", 0], ["2025-02-21", 0], ["2025-02-22", 0], ["2025-02-23", 3], ["2025-02-24", 3], ["2025-02-25", 2], ["2025-02-26", 2], ["2025-02-27", 0], ["2025-02-28", 0], ["2025-03-01", 0], ["2025-03-02", 2], ["2025-03-03", 0], ["2025-03-04", 0], ["2025-03-05", 3], ["2025-03-06", 2], ["2025-03-07", 0], ["2025-03-08", 1], ["2025-03-09", 1], ["2025-03-10", 2], ["2025-03-11", 4], ["2025-03-12", 2], ["2025-03-13", 0], ["2025-03-14", 0], ["2025-03-15", 0], ["2025-03-16", 0], ["2025-03-17", 0], ["2025-03-18", 0], ["2025-03-19", 1], ["2025-03-20", 0], ["2025-03-21", 0], ["2025-03-22", 2], ["2025-03-23", 1], ["2025-03-24", 0], ["2025-03-25", 0], ["2025-03-26", 1], ["2025-03-27", 0], ["2025-03-28", 0], ["2025-03-29", 0], ["2025-03-30", 0], ["2025-03-31", 0], ["2025-04-01", 0], ["2025-04-02", 0], ["2025-04-03", 0], ["2025-04-04", 1], ["2025-04-05", 0], ["2025-04-06", 0], ["2025-04-07", 1], ["2025-04-08", 0], ["2025-04-09", 0], ["2025-04-10", 0], ["2025-04-11", 0], ["2025-04-12", 0], ["2025-04-13", 1], ["2025-04-14", 0], ["2025-04-15", 0], ["2025-04-16", 0], ["2025-04-17", 0], ["2025-04-18", 0], ["2025-04-19", 2], ["2025-04-20", 1], ["2025-04-21", 2], ["2025-04-22", 0], ["2025-04-23", 0], ["2025-04-24", 0], ["2025-04-25", 0], ["2025-04-26", 0], ["2025-04-27", 3], ["2025-04-28", 1], ["2025-04-29", 0], ["2025-04-30", 0], ["2025-05-01", 0], ["2025-05-02", 0], ["2025-05-03", 3], ["2025-05-04", 0], ["2025-05-05", 3], ["2025-05-06", 1], ["2025-05-07", 0], ["2025-05-08", 0], ["2025-05-09", 0], ["2025-05-10", 1], ["2025-05-11", 0], ["2025-05-12", 1], ["2025-05-13", 0], ["2025-05-14", 0], ["2025-05-15", 0], ["2025-05-16", 0], ["2025-05-17", 0], ["2025-05-18", 0], ["2025-05-19", 0], ["2025-05-20", 0], ["2025-05-21", 0], ["2025-05-22", 0], ["2025-05-23", 0], ["2025-05-24", 0], ["2025-05-25", 0], ["2025-05-26", 0], ["2025-05-27", 0], ["2025-05-28", 0], ["2025-05-29", 0], ["2025-05-30", 0], ["2025-05-31", 2], ["2025-06-01", 2], ["2025-06-02", 0], ["2025-06-03", 0], ["2025-06-04", 0], ["2025-06-05", 1], ["2025-06-06", 0], ["2025-06-07", 0], ["2025-06-08", 2], ["2025-06-09", 0], ["2025-06-10", 0], ["2025-06-11", 0], ["2025-06-12", 0], ["2025-06-13", 0], ["2025-06-14", 0], ["2025-06-15", 0], ["2025-06-16", 0], ["2025-06-17", 0], ["2025-06-18", 0], ["2025-06-19", 0], ["2025-06-20", 0], ["2025-06-21", 0], ["2025-06-22", 0], ["2025-06-23", 0], ["2025-06-24", 1], ["2025-06-25", 0], ["2025-06-26", 0], ["2025-06-27", 0], ["2025-06-28", 0], ["2025-06-29", 1], ["2025-06-30", 0], ["2025-07-01", 0], ["2025-07-02", 0], ["2025-07-03", 0], ["2025-07-04", 0], ["2025-07-05", 0], ["2025-07-06", 2], ["2025-07-07", 1], ["2025-07-08", 0], ["2025-07-09", 0], ["2025-07-10", 0], ["2025-07-11", 0], ["2025-07-12", 0], ["2025-07-13", 0], ["2025-07-14", 0], ["2025-07-15", 0], ["2025-07-16", 0], ["2025-07-17", 0], ["2025-07-18", 0], ["2025-07-19", 0], ["2025-07-20", 0], ["2025-07-21", 0], ["2025-07-22", 0], ["2025-07-23", 0], ["2025-07-24", 0], ["2025-07-25", 0], ["2025-07-26", 0], ["2025-07-27", 1], ["2025-07-28", 0], ["2025-07-29", 0], ["2025-07-30", 1], ["2025-07-31", 0], ["2025-08-01", 0], ["2025-08-02", 0], ["2025-08-03", 1], ["2025-08-04", 2], ["2025-08-05", 1], ["2025-08-06", 0], ["2025-08-07", 1], ["2025-08-08", 0], ["2025-08-09", 1], ["2025-08-10", 0], ["2025-08-11", 0], ["2025-08-12", 0], ["2025-08-13", 0], ["2025-08-14", 0], ["2025-08-15", 0], ["2025-08-16", 0], ["2025-08-17", 2], ["2025-08-18", 0], ["2025-08-19", 0], ["2025-08-20", 0], ["2025-08-21", 1], ["2025-08-22", 0], ["2025-08-23", 0], ["2025-08-24", 0], ["2025-08-25", 0], ["2025-08-26", 0], ["2025-08-27", 0], ["2025-08-28", 0], ["2025-08-29", 0], ["2025-08-30", 2], ["2025-08-31", 0], ["2025-09-01", 0], ["2025-09-02", 0], ["2025-09-03", 0], ["2025-09-04", 0], ["2025-09-05", 0], ["2025-09-06", 0], ["2025-09-07", 0], ["2025-09-08", 0], ["2025-09-09", 0], ["2025-09-10", 0], ["2025-09-11", 0], ["2025-09-12", 0], ["2025-09-13", 0], ["2025-09-14", 0], ["2025-09-15", 0], ["2025-09-16", 0], ["2025-09-17", 0], ["2025-09-18", 0], ["2025-09-19", 0], ["2025-09-20", 0], ["2025-09-21", 0], ["2025-09-22", 1], ["2025-09-23", 0], ["2025-09-24", 0], ["2025-09-25", 0], ["2025-09-26", 0], ["2025-09-27", 0], ["2025-09-28", 0], ["2025-09-29", 0], ["2025-09-30", 0], ["2025-10-01", 1], ["2025-10-02", 0], ["2025-10-03", 0], ["2025-10-04", 0], ["2025-10-05", 0], ["2025-10-06", 0], ["2025-10-07", 0], ["2025-10-08", 0], ["2025-10-09", 0], ["2025-10-10", 0], ["2025-10-11", 0], ["2025-10-12", 0], ["2025-10-13", 0], ["2025-10-14", 0], ["2025-10-15", 0], ["2025-10-16", 0], ["2025-10-17", 0], ["2025-10-18", 0], ["2025-10-19", 0], ["2025-10-20", 1], ["2025-10-21", 0], ["2025-10-22", 0], ["2025-10-23", 0], ["2025-10-24", 0], ["2025-10-25", 0], ["2025-10-26", 0], ["2025-10-27", 0], ["2025-10-28", 0], ["2025-10-29", 0], ["2025-10-30", 0], ["2025-10-31", 0], ["2025-11-01", 0], ["2025-11-02", 0], ["2025-11-03", 0], ["2025-11-04", 0], ["2025-11-05", 0], ["2025-11-06", 0], ["2025-11-07", 0], ["2025-11-08", 0], ["2025-11-09", 0], ["2025-11-10", 0], ["2025-11-11", 0], ["2025-11-12", 0], ["2025-11-13", 0], ["2025-11-14", 0], ["2025-11-15", 0], ["2025-11-16", 0], ["2025-11-17", 0], ["2025-11-18", 0], ["2025-11-19", 0], ["2025-11-20", 0], ["2025-11-21", 0], ["2025-11-22", 0], ["2025-11-23", 0], ["2025-11-24", 0], ["2025-11-25", 0], ["2025-11-26", 0], ["2025-11-27", 0], ["2025-11-28", 0], ["2025-11-29", 0], ["2025-11-30", 0], ["2025-12-01", 0], ["2025-12-02", 0], ["2025-12-03", 0], ["2025-12-04", 0], ["2025-12-05", 0], ["2025-12-06", 0], ["2025-12-07", 0], ["2025-12-08", 0], ["2025-12-09", 0], ["2025-12-10", 0], ["2025-12-11", 0], ["2025-12-12", 0], ["2025-12-13", 1], ["2025-12-14", 1], ["2025-12-15", 1], ["2025-12-16", 0], ["2025-12-17", 0], ["2025-12-18", 0], ["2025-12-19", 0], ["2025-12-20", 0], ["2025-12-21", 0], ["2025-12-22", 0], ["2025-12-23", 0], ["2025-12-24", 0], ["2025-12-25", 0], ["2025-12-26", 0], ["2025-12-27", 0], ["2025-12-28", 0], ["2025-12-29", 0], ["2025-12-30", 0], ["2025-12-31", 0], ["2026-01-01", 0], ["2026-01-02", 0], ["2026-01-03", 0], ["2026-01-04", 0], ["2026-01-05", 0], ["2026-01-06", 0], ["2026-01-07", 0], ["2026-01-08", 0], ["2026-01-09", 0], ["2026-01-10", 0], ["2026-01-11", 0], ["2026-01-12", 0], ["2026-01-13", 0], ["2026-01-14", 0], ["2026-01-15", 0], ["2026-01-16", 1], ["2026-01-17", 1]]
-        }]
-
-    };
-
-    myChart.setOption(option);
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
 </script>
 
+            
+        </div>
+    </div>
+
     
 
     
 
-    <div id="cd-timeline" class="container">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
         
-        <div class="cd-timeline-block">
-
-            
-            
-            
-            <div class="cd-timeline-img year" data-aos="zoom-in-up">
-                <a href="/archives/2023">2023</a>
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
-            
-
-            
-            
-            
-            <div class="cd-timeline-img month" data-aos="zoom-in-up">
-                <a href="/archives/2023/05">05</a>
-            </div>
-            
-
-            
-            <div class="cd-timeline-img day" data-aos="zoom-in-up">
-                <span>29</span>
-            </div>
-            <article class="cd-timeline-content" data-aos="fade-up">
-                <div class="article col s12 m6">
-                    <div class="card">
-                        <a href="/2023/05/29/00068-sphinx-za-xiang/">
-                            <div class="card-image">
-                                
-                                <img src="https://cos.luyf-lemon-love.space/images/020-大长腿.png" class="responsive-img" alt="00068 Sphinx 杂项">
-                                
-                                <span class="card-title">00068 Sphinx 杂项</span>
-                            </div>
-                        </a>
-                        <div class="card-content article-content">
-                            <div class="summary block-with-text">
-                                
-                                    前言Sphinx 是一个能自动生成文档的工具，主要用于 Python 语言。
-官网: https://www.sphinx-doc.org/en/master/ 。
-其中下面三个著名工具网站就是应用它来生成文档的。
-
-
-python: ht
-                                
-                            </div>
-                            <div class="publish-info">
-                                <span class="publish-date">
-                                    <i class="far fa-clock fa-fw icon-date"></i>2023-05-29
-                                </span>
-                                <span class="publish-author">
-                                    
-                                    <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                    
-                                    <a href="/categories/%E6%9D%82%E9%A1%B9/" class="post-category">
-                                    杂项
-                                    </a>
-                                    
-                                    
-                                </span>
-                            </div>
-                        </div>
-
+            <div class="card">
+                <a href="/2026/01/17/00371-ru-he-yong-skills-yu-mcp-model-context-protocol-kuo-zhan-claude-de-neng-li/">
+                    <div class="card-image">
                         
-                        <div class="card-action article-tags">
+                        <img src="https://cos.luyf-lemon-love.space/images/071-%E6%8A%A5%E7%BA%B8%E5%A2%99-%E5%8D%A1%E8%8E%8E.jpg" class="responsive-img" alt="00371 如何用 Skills 与 MCP（Model Context Protocol）扩展 Claude 的能力">
+                        
+                        <span class="card-title">00371 如何用 Skills 与 MCP（Model Context Protocol）扩展 Claude 的能力</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
                             
-                            <a href="/tags/Python/"><span class="chip bg-color">Python</span></a>
-                            
-                        </div>
                         
                     </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-01-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Blog/" class="post-category">
+                                    Blog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
                 </div>
-            </article>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
         </div>
         
-        <div class="cd-timeline-block">
-
-            
-            
-
-            
-            
-
-            
-            <div class="cd-timeline-img day" data-aos="zoom-in-up">
-                <span>29</span>
-            </div>
-            <article class="cd-timeline-content" data-aos="fade-up">
-                <div class="article col s12 m6">
-                    <div class="card">
-                        <a href="/2023/05/29/00067-du-de-shu-pdf-ban-ben-qing-dan/">
-                            <div class="card-image">
-                                
-                                <img src="https://cos.luyf-lemon-love.space/images/019-美女-居家.jpg" class="responsive-img" alt="00067-读的书--PDF版本清单">
-                                
-                                <span class="card-title">00067-读的书--PDF版本清单</span>
-                            </div>
-                        </a>
-                        <div class="card-content article-content">
-                            <div class="summary block-with-text">
-                                
-                                    前言记录一些电子书, PDF 上有一些本人读过的标注.
-操作系统：Ubuntu 20.04.4 LTS
-C++
-C++ Primer.
-
-C++ Concurrency in Action, Second Edition.
-
-TCP&#x2
-                                
-                            </div>
-                            <div class="publish-info">
-                                <span class="publish-date">
-                                    <i class="far fa-clock fa-fw icon-date"></i>2023-05-29
-                                </span>
-                                <span class="publish-author">
-                                    
-                                    <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                    
-                                    <a href="/categories/C/" class="post-category">
-                                    C++
-                                    </a>
-                                    
-                                    
-                                </span>
-                            </div>
-                        </div>
-
-                        
-                        <div class="card-action article-tags">
-                            
-                            <a href="/tags/C/"><span class="chip bg-color">C++</span></a>
-                            
-                        </div>
-                        
-                    </div>
-                </div>
-            </article>
-        </div>
         
-        <div class="cd-timeline-block">
-
-            
-            
-
-            
-            
-
-            
-            <div class="cd-timeline-img day" data-aos="zoom-in-up">
-                <span>29</span>
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
-            <article class="cd-timeline-content" data-aos="fade-up">
-                <div class="article col s12 m6">
-                    <div class="card">
-                        <a href="/2023/05/29/00066-du-de-shu-pdf-ban-ben-er/">
-                            <div class="card-image">
-                                
-                                <img src="https://cos.luyf-lemon-love.space/images/021-可爱.jpg" class="responsive-img" alt="00066-读的书--PDF版本 (二)">
-                                
-                                <span class="card-title">00066-读的书--PDF版本 (二)</span>
-                            </div>
-                        </a>
-                        <div class="card-content article-content">
-                            <div class="summary block-with-text">
-                                
-                                    前言记录一些电子书, PDF 上有一些本人读过的标注.
-操作系统：Ubuntu 20.04.4 LTS
-TCP&#x2F;IP网络编程
-TCP&#x2F;IP 网络编程的入门书籍，同时讲解了 Windows 和 Linux 网络编程，最后实
-                                
-                            </div>
-                            <div class="publish-info">
-                                <span class="publish-date">
-                                    <i class="far fa-clock fa-fw icon-date"></i>2023-05-29
-                                </span>
-                                <span class="publish-author">
-                                    
-                                    <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                    
-                                    <a href="/categories/C/" class="post-category">
-                                    C++
-                                    </a>
-                                    
-                                    
-                                </span>
-                            </div>
-                        </div>
-
+            <div class="card">
+                <a href="/2026/01/16/00370-m2-1-ju-bei-qiang-fan-hua-neng-li-de-duo-yu-yan-yu-duo-ren-wu-dai-ma-sheng-cheng/">
+                    <div class="card-image">
                         
-                        <div class="card-action article-tags">
+                        <img src="https://cos.luyf-lemon-love.space/images/070-%E5%94%AF%E7%BE%8E%E6%B5%B7%E8%BE%B9%E7%9A%84%E4%BA%9A%E6%B4%A5%E5%AD%90.jpg" class="responsive-img" alt="00370 M2.1：具备强泛化能力的多语言与多任务代码生成">
+                        
+                        <span class="card-title">00370 M2.1：具备强泛化能力的多语言与多任务代码生成</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
                             
-                            <a href="/tags/C/"><span class="chip bg-color">C++</span></a>
-                            
-                            <a href="/tags/Python/"><span class="chip bg-color">Python</span></a>
-                            
-                            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"><span class="chip bg-color">计算机图形学</span></a>
-                            
-                        </div>
                         
                     </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-01-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Blog/" class="post-category">
+                                    Blog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
                 </div>
-            </article>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
         </div>
         
     </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
 
 </main>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
 
 
 
