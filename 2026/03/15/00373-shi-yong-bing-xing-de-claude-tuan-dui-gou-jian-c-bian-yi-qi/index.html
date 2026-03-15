@@ -1,0 +1,1367 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="00373 使用并行的 Claude 团队构建 C 编译器, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="
+官方文章 · 发布日期：2026年2月5日src: https://www.anthropic.com/engineering/building-c-compiler
+(Building a C compiler with a team ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>00373 使用并行的 Claude 团队构建 C 编译器 | LuYF-Lemon-love の Blog</title>
+    <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
+    
+    <style>
+        body{
+            background-image: url(https://cos.luyf-lemon-love.space/images/016-%E6%8A%A5%E7%BA%B8%E5%A2%99%E9%BA%BB%E8%A1%A3%E5%AD%A6%E5%A7%90.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">LuYF-Lemon-love の Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>List</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Image</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/verse">
+          
+          <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Verse</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/bilibili">
+          
+          <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Bilibili</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">LuYF-Lemon-love の Blog</div>
+        <div class="logo-desc">
+            
+            天之道，损有余而补不足，人之道则不然，损不足以奉有余。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			List
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Image</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/verse " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Verse</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/bilibili " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Bilibili</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yanfeng98/paper-is-all-you-need" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yanfeng98/paper-is-all-you-need" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/073-%E6%A8%B1%E8%8A%B1-%E5%8F%A4%E9%A3%8E%E7%BE%8E%E5%A5%B3-%E5%88%98%E4%BA%9B%E5%AE%81.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00373 使用并行的 Claude 团队构建 C 编译器</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">大语言模型</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Blog/" class="post-category">
+                                Blog
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-03-15
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2026-03-15
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p><em>官方文章 · 发布日期：2026年2月5日</em><br>src: <a href="https://www.anthropic.com/engineering/building-c-compiler">https://www.anthropic.com/engineering/building-c-compiler</a></p>
+<p><strong>(Building a C compiler with a team of parallel Claudes)</strong></p>
+<p><strong>Anthropic 工程技术团队 (Engineering at Anthropic)</strong> <strong>发布时间：</strong> 2026年2月5日</p>
+<p><strong>作者：</strong> Nicholas Carlini，Anthropic 安全防护 (Safeguards) 团队研究员</p>
+</blockquote>
+<h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>我们让 Opus 4.6 使用智能体（Agent）团队来构建一个 C 编译器，然后（基本上）就撒手不管了。以下是它教会我们的关于自主软件开发未来的经验。</p>
+<hr>
+<p>我一直在尝试一种监督语言模型的新方法，我们称之为“智能体团队（Agent teams）”。</p>
+<p>在智能体团队的模式下，多个 Claude 实例在没有人类主动干预的情况下，在一个共享的代码库上并行工作。这种方法极大地扩展了大语言模型 (LLM) 智能体所能实现的范围。</p>
+<p>为了对其进行压力测试，我给 16 个智能体布置了任务：从零开始编写一个基于 Rust 的 C 编译器，且必须能够编译 Linux 内核。经过近 2,000 次 Claude Code 会话和 20,000 美元的 API 成本，这个智能体团队生成了一个拥有 100,000 行代码的编译器，它能够在 x86、ARM 和 RISC-V 架构上构建 Linux 6.9。</p>
+<p>这个<a href="https://github.com/anthropics/claudes-c-compiler">编译器</a>本身就是一个有趣的作品，但我在这里重点关注的是，我在为长期运行的自主智能体团队设计测试框架（harnesses）时学到的东西：如何编写能在没有人类监督的情况下让智能体保持正轨的测试，如何构建工作流程以便多个智能体可以并行取得进展，以及这种方法在哪里会达到其上限。</p>
+<h2 id="让-Claude-能够长期运行"><a href="#让-Claude-能够长期运行" class="headerlink" title="让 Claude 能够长期运行"></a>让 Claude 能够长期运行</h2><p>现有的智能体脚手架（如 Claude Code）需要操作员在线并随时准备协同工作。如果你要求它解决一个漫长而复杂的问题，模型可能会解决其中的一部分，但最终它会停下来等待后续的输入——一个问题、一个状态更新或一个澄清请求。</p>
+<p>为了引发出持续的、自主的进展，我构建了一个测试框架，将 Claude 置于一个简单的循环中（如果你见过 Ralph-loop，这个应该看起来很眼熟）。当它完成一个任务时，它会立即接手下一个任务。（请在容器中运行它，而不是在你实际的机器上运行）。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token keyword">while</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+  <span class="token assign-left variable">COMMIT</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">git</span> rev-parse <span class="token parameter variable">--short</span><span class="token operator">=</span><span class="token number">6</span> HEAD<span class="token variable">)</span></span>
+  <span class="token assign-left variable">LOGFILE</span><span class="token operator">=</span><span class="token string">"agent_logs/agent_<span class="token variable">$&#123;COMMIT&#125;</span>.log"</span>
+  claude --dangerously-skip-permissions <span class="token punctuation">\</span>
+    <span class="token parameter variable">-p</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> AGENT_PROMPT.md<span class="token variable">)</span></span>"</span> <span class="token punctuation">\</span>
+    <span class="token parameter variable">--model</span> claude-opus-X-Y <span class="token operator">&amp;></span> <span class="token string">"<span class="token variable">$LOGFILE</span>"</span>
+<span class="token keyword">done</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在智能体提示词（prompt）中，我告诉 Claude 要解决什么问题，并要求它通过将问题分解成小块来处理，跟踪它正在处理的工作，弄清楚下一步要做什么，并有效地坚持下去直到完美。（关于最后一点，Claude 别无选择。循环会永远运行——尽管在一次意外中，我确实看到 Claude 不小心执行了 <code>pkill -9 bash</code>，从而杀死了它自己并结束了循环。哎呀！）。</p>
+<h2 id="并行运行-Claude"><a href="#并行运行-Claude" class="headerlink" title="并行运行 Claude"></a>并行运行 Claude</h2><p>并行运行多个实例可以解决单智能体框架的两个弱点：</p>
+<ol>
+<li><strong>一个 Claude Code 会话一次只能做一件事。</strong> 特别是当项目的范围扩大时，并行调试多个问题要高效得多。</li>
+<li><strong>运行多个 Claude 智能体可以实现专业化分工。</strong> 虽然有几个智能体的任务是解决手头的实际问题，但可以调用其他专门的智能体来（例如）维护文档、关注代码质量或解决专门的子任务。</li>
+</ol>
+<p>我对并行 Claude 的实现非常简陋。首先创建一个新的空 git 仓库（bare git repo），并为每个智能体启动一个 Docker 容器，将仓库挂载到 <code>/upstream</code>。每个智能体将代码克隆一份本地副本到 <code>/workspace</code>，当它完成后，再从它自己的本地容器推送到 upstream。</p>
+<p>为了防止两个智能体试图同时解决同一个问题，该框架使用了一个简单的同步算法：</p>
+<ol>
+<li>Claude 通过在 <code>current_tasks/</code> 目录下写入一个文本文件来对任务进行“加锁”（例如，一个智能体可能会锁定 <code>current_tasks/parse_if_statement.txt</code>，而另一个锁定 <code>current_tasks/codegen_function_definition.txt</code>）。</li>
+<li>如果两个智能体试图认领同一个任务，git 的同步机制会迫使第二个智能体选择一个不同的任务。</li>
+<li>Claude 处理任务，然后从 upstream 拉取代码，合并其他智能体的更改，推送它的更改，并移除锁。合并冲突很频繁，但 Claude 足够聪明，能够弄清楚如何解决。</li>
+<li>无限的智能体生成循环会在一个全新的容器中产生一个新的 Claude Code 会话，并且循环重复。</li>
+</ol>
+<p>这是一个非常早期的研究原型。我还没有实现智能体之间通信的任何其他方法，也没有强制执行任何管理高层目标的流程。我也没使用编排智能体（orchestration agent）。</p>
+<p>相反，我让每个 Claude 智能体自己决定如何行动。在大多数情况下，Claude 会接手“下一个最明显的”问题。当在一个 bug 上卡住时，Claude 通常会维护一个记录了失败尝试和剩余任务的运行文档。在项目的 git <a href="https://github.com/anthropics/claudes-c-compiler">仓库</a>中，你可以阅读历史记录，并观察它在各种任务上加锁的过程。</p>
+<h2 id="与-Claude-智能体团队一起编程的经验教训"><a href="#与-Claude-智能体团队一起编程的经验教训" class="headerlink" title="与 Claude 智能体团队一起编程的经验教训"></a>与 Claude 智能体团队一起编程的经验教训</h2><p>脚手架让 Claude 在一个循环中运行，但只有当 Claude 知道如何取得进展时，这个循环才是有用的。我的大部分精力都花在了设计 Claude 周围的环境上——测试、环境、反馈——以便它可以在没有我的情况下完成自我定位。以下是我在编排多个 Claude 实例时发现最有用的方法。</p>
+<h3 id="编写极高质量的测试"><a href="#编写极高质量的测试" class="headerlink" title="编写极高质量的测试"></a>编写极高质量的测试</h3><p>Claude 会自主工作来解决我给它的任何问题。因此，任务验证器必须近乎完美，否则 Claude 会去解决错误的问题。改进测试框架需要：寻找高质量的编译器测试套件，为开源软件包编写验证器和构建脚本，观察 Claude 正在犯的错误，然后在我发现这些失败模式时设计新的测试。</p>
+<p>例如，在项目临近结束时，Claude 开始频繁地在每次实现新功能时破坏现有功能。为了解决这个问题，我构建了一个持续集成（CI）流水线，并实施了更严格的强制执行措施，让 Claude 能够更好地测试其工作，从而确保新的提交不会破坏现有代码。</p>
+<h3 id="站在-Claude-的角度思考"><a href="#站在-Claude-的角度思考" class="headerlink" title="站在 Claude 的角度思考"></a>站在 Claude 的角度思考</h3><p>我必须不断提醒自己，我是为 Claude 而不是为我自己编写这个测试框架的，这意味着要重新思考我关于“测试应如何传达结果”的许多假设。</p>
+<p>例如，每个智能体都被放入一个没有上下文的全新容器中，并且会花费大量时间来定位自己，尤其是在大型项目上。甚至在进行测试之前，为了帮助 Claude 自助，我加入了维护详尽 README 和进度文件的指令，这些文件应该被频繁更新以反映当前状态。</p>
+<p>我还牢记一点：语言模型有其固有的局限性，在这种情况下，需要围绕这些局限性进行设计。这包括：</p>
+<ul>
+<li><strong>上下文窗口污染 (Context window pollution)：</strong> 测试框架不应打印数以千计的无用字节。它最多应该打印几行输出，并将所有重要信息记录到一个文件中，以便 Claude 在需要时可以找到它。</li>
+<li><strong>日志文件应易于自动处理：</strong> 如果有错误，Claude 应该写下 <code>ERROR</code> 并将原因放在同一行，以便 <code>grep</code> 命令可以找到它。预先计算聚合的摘要统计信息也会有所帮助，这样 Claude 就不必重新计算它们。</li>
+<li><strong>时间盲区 (Time blindness)：</strong> Claude 没有时间概念，如果让它独处，它会很乐意花上几个小时运行测试，而不是去取得实际进展。该测试框架很少打印增量进度（为了避免污染上下文），并且包含一个默认的 <code>--fast</code> 选项，该选项会运行 1% 或 10% 的随机测试样本。这个子样本在每个智能体内部是确定的，但在不同的虚拟机之间是随机的，所以所有的 Claude 结合起来仍然覆盖了所有的文件，但每个智能体都能完美地识别出代码退化（regressions）的情况。</li>
+</ul>
+<h3 id="让并行化变得简单"><a href="#让并行化变得简单" class="headerlink" title="让并行化变得简单"></a>让并行化变得简单</h3><p>当有许多不同的失败测试时，并行化是轻而易举的：每个智能体挑选一个不同的失败测试来处理。在测试套件达到 99% 的通过率后，每个智能体都去致力于让不同的开源小项目（例如 SQlite、Redis、libjpeg、MQuickJS、Lua）编译成功。</p>
+<p>但是，当智能体开始编译 Linux 内核时，它们卡住了。与具有数百个独立测试的测试套件不同，编译 Linux 内核是一项庞大的单一任务。每个智能体都会遇到同一个 bug，修复那个 bug，然后覆盖彼此的更改。让 16 个智能体同时运行并没有任何帮助，因为它们都卡在解决同一个任务上。</p>
+<p>解决办法是使用 GCC 作为在线的“已知良好”的编译器预言机（oracle）来进行对照。我编写了一个新的测试框架，随机地使用 GCC 编译内核的大部分内容，而只用 Claude 的 C 编译器编译剩余的文件。如果内核运行正常，那么问题就不在 Claude 编译的那部分文件子集中。如果它崩溃了，那么它可以进一步通过用 GCC 重新编译其中一些文件来进行细化排查。这使得每个智能体可以并行工作，在不同的文件中修复不同的 bug，直到 Claude 的编译器最终能够编译所有文件。（在这项工作完成后，仍然需要应用增量调试（delta debugging）技术来寻找一起失败但独立工作却正常的成对文件。）</p>
+<h3 id="多智能体角色"><a href="#多智能体角色" class="headerlink" title="多智能体角色"></a>多智能体角色</h3><p>并行性还促成了专业化。LLM 编写的代码经常重复实现现有的功能，所以我指派一个智能体负责合并它发现的任何重复代码。我让另一个智能体负责提高编译器本身的性能，并让第三个智能体负责输出高效的编译后代码。我要求另一个智能体从 Rust 开发者的角度审查项目的设计，并对项目进行结构上的更改以提高整体代码质量，还有另一个智能体专门负责处理文档。</p>
+<h2 id="对智能体团队的极限进行压力测试"><a href="#对智能体团队的极限进行压力测试" class="headerlink" title="对智能体团队的极限进行压力测试"></a>对智能体团队的极限进行压力测试</h2><p>这个项目被设计为一个能力基准测试。我对“压力测试目前 LLM 勉强能达到的极限”很感兴趣，以便帮助我们为模型在未来能够可靠实现的目标做好准备。</p>
+<p>我一直将这个 C 编译器项目作为整个 Claude 4 模型系列的基准测试。就像我处理之前的项目一样，我从起草我想要的东西开始：一个从零开始的、没有外部依赖的、兼容 GCC 的、能够编译 Linux 内核的优化编译器，并且被设计为支持多个后端。虽然我指定了设计的一些方面（例如，它应该具有一个 SSA IR 以支持多次优化），但我没有详细说明具体如何去做。</p>
+<p>以前的 Opus 4 模型几乎无法生成可用的编译器。Opus 4.5 是第一个跨越门槛，能够生成通过大型测试套件的功能性编译器的模型，但它仍然无法编译任何真正的大型项目。我对 Opus 4.6 的目标是再次测试其极限。</p>
+<h2 id="评估结果"><a href="#评估结果" class="headerlink" title="评估结果"></a>评估结果</h2><p>在两周内近 2,000 次 Claude Code 会话中，Opus 4.6 消耗了 20 亿个输入 token，生成了 1.4 亿个输出 token，总成本略低于 20,000 美元。即使与最昂贵的 Claude Max 计划相比，这也是一个极其昂贵的项目。但是，这个总成本仅仅是我自己来编写这个项目（更不用说雇佣整个团队了）所需成本的一小部分。</p>
+<p>这是一个“净室”（clean-room）实现（Claude 在其开发过程中的任何时候都无法访问互联网）；它只依赖于 Rust 标准库。这个 100,000 行代码的编译器可以在 x86、ARM 和 RISC-V 上构建一个可启动的 Linux 6.9。它还可以编译 QEMU、FFmpeg、SQlite、postgres、redis，并且在包括 GCC 严酷测试套件（torture test suite）在内的大多数编译器测试套件上拥有 99% 的通过率。它还通过了开发者的终极试金石测试：它可以编译并运行《毁灭战士（Doom）》。</p>
+<p>然而，这个编译器并非没有局限性。这些局限包括：</p>
+<ul>
+<li>它缺乏将 Linux 从实模式启动所必需的 16 位 x86 编译器。为此，它需要调用 GCC（x86_32 和 x86_64 编译器则是它自己实现的）。</li>
+<li>它没有自己的汇编器和链接器；这是 Claude 开始自动化的最后一部分，并且仍然有一些 bug。演示视频是使用 GCC 的汇编器和链接器制作的。</li>
+<li>该编译器成功构建了许多项目，但并非全部。它还不能作为真实编译器的直接替代品（drop-in replacement）。</li>
+<li>生成的代码不是很高效。即使启用了所有优化，它输出的代码效率也低于禁用了所有优化的 GCC。</li>
+<li>Rust 代码质量尚可，但远不及专家级 Rust 程序员可能编写的质量水平。</li>
+</ul>
+<p>生成的编译器几乎达到了 Opus 能力的极限。我尝试过（非常努力地！）去修复上述几个限制，但并未完全成功。新功能和错误修复经常会破坏现有的功能。</p>
+<p>作为一个特别具有挑战性的例子，Opus 无法实现启动到 16 位实模式所需的 16 位 x86 代码生成器。虽然编译器可以通过 66&#x2F;67 操作码前缀输出正确的 16 位 x86 代码，但最终的编译输出超过了 60kb，远远超过了 Linux 强制规定的 32k 代码限制。取而代之的是，Claude 在这里干脆作弊，在此阶段调用了 GCC（这仅仅针对 x86 架构。对于 ARM 或 RISC-V，Claude 的编译器可以完全独立完成编译）。</p>
+<p>该编译器的<a href="https://github.com/anthropics/claudes-c-compiler">源代码</a>是公开的。您可以下载它，阅读代码，并在你最喜欢的 C 项目上进行尝试。我始终发现，了解语言模型能做什么的最好方法是将它们推向极限，然后研究它们从哪里开始崩溃。在接下来的几天里，如果你想跟进 Claude 在解决这些限制上的持续尝试，我将继续让 Claude 推送新的更改。</p>
+<h2 id="展望未来"><a href="#展望未来" class="headerlink" title="展望未来"></a>展望未来</h2><p>每一代语言模型都开启了与其协同工作的新方式。早期的模型在 IDE 中的代码补全方面很有用。不久之后，模型可以根据文档字符串（docstring）补全完整的函数体。Claude Code 的推出将智能体带入了主流，并使开发人员能够与 Claude 进行结对编程。但所有这些产品的运作都基于这样一个假设：用户定义一个任务，LLM 运行几秒钟或几分钟并返回答案，然后用户提供后续反馈。</p>
+<p>智能体团队展示了自主实现完整、复杂项目的可能性。这让我们作为这些工具的用户，能够在设定目标时变得更加雄心勃勃。</p>
+<p>我们还处于早期阶段，完全自主的开发伴随着真正的风险。在开发过程中如果有人类与 Claude 并肩工作，他们可以确保稳定的质量并实时捕捉错误。但对于自主系统来说，人们很容易看到测试通过就认为工作完成了，然而事实往往并非如此。我曾经从事过渗透测试工作，专门利用大公司生产的产品漏洞，因此，一想到程序员去部署他们从未亲自验证过的软件，这就着实令人担忧。</p>
+<p>所以，虽然这个实验让我感到兴奋，但它也让我感到不安。构建这个编译器是我最近获得的最大乐趣之一，但我没预料到在 2026 年初就能达到这种可能性。语言模型以及我们用来与它们交互的脚手架的快速进步，为编写海量的新代码打开了大门。我期望积极的应用能够超过消极的应用，但我们正在进入一个新世界，这将需要我们制定新的策略来安全航行。</p>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>特别感谢 Josef Bacik, Edwin Chen, Bernardo Meurer Costa, Jake Eaton, Dan Kelley, Felix Klock, Jannet Park, Steve Weis 以及 Anthropic 其他许多人的帮助和贡献。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百七十三篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2026/03/15/00373-shi-yong-bing-xing-de-claude-tuan-dui-gou-jian-c-bian-yi-qi/">https://luyf-lemon-love.space/2026/03/15/00373-shi-yong-bing-xing-de-claude-tuan-dui-gou-jian-c-bian-yi-qi/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">大语言模型</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/03/15/00373-shi-yong-bing-xing-de-claude-tuan-dui-gou-jian-c-bian-yi-qi/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/073-%E6%A8%B1%E8%8A%B1-%E5%8F%A4%E9%A3%8E%E7%BE%8E%E5%A5%B3-%E5%88%98%E4%BA%9B%E5%AE%81.jpg" class="responsive-img" alt="00373 使用并行的 Claude 团队构建 C 编译器">
+                        
+                        <span class="card-title">00373 使用并行的 Claude 团队构建 C 编译器</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-03-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Blog/" class="post-category">
+                                    Blog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2026/02/03/00372-si-kao-gong-ju-rang-claude-ting-xia-lai-si-kao-kuo-zhan-si-kao-mo-shi-geng-xin/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/072-%E7%BE%8E%E4%B8%BD%E5%85%AC%E4%B8%BB-%E6%B5%B7%E9%B8%A5.jpg" class="responsive-img" alt="00372 思考工具：让 Claude 停下来思考——扩展思考模式更新">
+                        
+                        <span class="card-title">00372 思考工具：让 Claude 停下来思考——扩展思考模式更新</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-02-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Blog/" class="post-category">
+                                    Blog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2026</span>
+            
+            <a href="/about" target="_blank">LuYF-Lemon-love</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "5";
+                        var startDate = "7";
+                        var startHour = "4";
+                        var startMinute = "53";
+                        var startSecond = "32";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+                <span id="icp"><img src="/medias/icp.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="https://beian.miit.gov.cn" target="_blank">冀ICP备2022012632号-1</a>
+            </span>
+            
+            <br>
+            
+                <span id="gongan"><img src="https://cos.luyf-lemon-love.space/images/备案图标.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011618" target="_blank">苏公网安备 32011502011618号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yanfeng98" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:luyanfeng_nlp@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
