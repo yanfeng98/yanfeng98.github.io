@@ -518,9 +518,9 @@ Python 内置了一个非常强大且易用的测试框架——unittest">
 </ul>
 <h2 id="核心概念：unittest-的三大基石"><a href="#核心概念：unittest-的三大基石" class="headerlink" title="核心概念：unittest 的三大基石"></a>核心概念：<code>unittest</code> 的三大基石</h2><p>使用 <code>unittest</code> 就像是在搭积木，你只需要掌握以下几个核心概念：</p>
 <ol>
-<li>**<code>TestCase</code> (测试用例)**：测试的基础单元。我们需要创建一个类，并继承 <code>unittest.TestCase</code>。</li>
+<li><code>TestCase</code> (测试用例)：测试的基础单元。我们需要创建一个类，并继承 <code>unittest.TestCase</code>。</li>
 <li><strong>测试方法</strong>：在测试类中，所有以 <code>test_</code> 开头的方法都会被当作测试自动运行。</li>
-<li>**断言 (Assertions)**：这是测试的灵魂。断言用来判断“实际结果”和“预期结果”是否一致。比如 <code>assertEqual(a, b)</code> 就是判断 <code>a</code> 和 <code>b</code> 是否相等。</li>
+<li>断言 (Assertions)：这是测试的灵魂。断言用来判断“实际结果”和“预期结果”是否一致。比如 <code>assertEqual(a, b)</code> 就是判断 <code>a</code> 和 <code>b</code> 是否相等。</li>
 </ol>
 <h2 id="实战演练：写下你的第一个测试"><a href="#实战演练：写下你的第一个测试" class="headerlink" title="实战演练：写下你的第一个测试"></a>实战演练：写下你的第一个测试</h2><p>假设我们写了一个非常简单的函数，用于将两个数字相加。我们将它保存在 <code>calculator.py</code> 文件中：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># calculator.py</span>
