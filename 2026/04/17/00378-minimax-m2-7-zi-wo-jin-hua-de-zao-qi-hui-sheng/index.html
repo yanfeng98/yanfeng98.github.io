@@ -1,0 +1,1346 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="00378 MiniMax M2.7：自我进化的早期回声, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="
+社区文章 · 发布日期：2026 年 3 月 18 日src: https://www.minimax.io/news/minimax-m27-en
+
+
+MiniMax M2.7: Early Echoes of Self-Evoluti">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>00378 MiniMax M2.7：自我进化的早期回声 | LuYF-Lemon-love の Blog</title>
+    <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
+    
+    <style>
+        body{
+            background-image: url(https://cos.luyf-lemon-love.space/images/016-%E6%8A%A5%E7%BA%B8%E5%A2%99%E9%BA%BB%E8%A1%A3%E5%AD%A6%E5%A7%90.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">LuYF-Lemon-love の Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>List</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Image</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/verse">
+          
+          <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Verse</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/bilibili">
+          
+          <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Bilibili</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">LuYF-Lemon-love の Blog</div>
+        <div class="logo-desc">
+            
+            天之道，损有余而补不足，人之道则不然，损不足以奉有余。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			List
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Image</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/verse " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Verse</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/bilibili " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Bilibili</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yanfeng98/paper-is-all-you-need" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yanfeng98/paper-is-all-you-need" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/078-%E5%8E%9F%E7%A5%9E%E8%83%A1%E6%A1%83-%E5%B0%8F%E5%B9%BD%E7%81%B5-%E8%9D%B4%E8%9D%B6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00378 MiniMax M2.7：自我进化的早期回声</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">大语言模型</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Blog/" class="post-category">
+                                Blog
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-04-17
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2026-04-17
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p><em>社区文章 · 发布日期：2026 年 3 月 18 日</em><br>src: <a href="https://www.minimax.io/news/minimax-m27-en">https://www.minimax.io/news/minimax-m27-en</a></p>
+</blockquote>
+<hr>
+<h2 id="MiniMax-M2-7-Early-Echoes-of-Self-Evolution"><a href="#MiniMax-M2-7-Early-Echoes-of-Self-Evolution" class="headerlink" title="MiniMax M2.7: Early Echoes of Self-Evolution"></a>MiniMax M2.7: Early Echoes of Self-Evolution</h2><p>在我们首次发布M2系列模型后的几个月里，我们收到了大量来自热心用户和开发者的反馈与建议，这驱使我们进一步加速模型迭代的效率。随着人类生产力已经被充分释放，自然的下一步便是启动模型与组织的自我进化。M2.7是我们首个深度参与其自身进化的模型。</p>
+<p>M2.7能够构建复杂的智能体线束（agent harnesses）并完成极其精细的生产力任务，这得益于其智能体团队（Agent Teams）、复杂技能（complex Skills）以及动态工具搜索等能力。例如，在开发M2.7时，我们让模型更新其自身的记忆，并在其线束中构建数十项复杂的技能，以辅助强化学习实验。我们进一步让模型根据实验结果改进其学习过程和线束。这一过程开启了模型自我进化的循环。</p>
+<ol>
+<li><p><strong>M2.7在现实世界的软件工程中表现卓越</strong>，包括端到端的全项目交付、日志分析、Bug排查、代码安全、机器学习等。在SWE-Pro基准测试中，M2.7得分为56.22%，几乎逼近Opus的最高水平。这种能力同样延伸到了端到端全项目交付场景（VIBE-Pro 55.6%），以及对复杂工程系统具备深刻理解的Terminal Bench 2（57.0%）。</p>
+</li>
+<li><p><strong>我们还增强了该模型在专业办公软件领域各项专业知识与任务交付的能力。</strong> 它在GDPval-AA上的ELO评分为1495，是开源模型中最高的。M2.7在Office套件（Excel、PPT和Word）的复杂编辑能力上展现出显著提升，能够更好地处理多轮修改和高保真编辑。M2.7具备与复杂环境交互的能力：在处理40多项复杂技能（每项技能均超过2000 tokens）时，它保持了97%的技能遵循率。</p>
+</li>
+<li><p><strong>M2.7展现了出色的人设一致性和情商</strong>，为产品创新开辟了更大的空间。</p>
+</li>
+</ol>
+<p>基于上述能力，M2.7也正在大幅加速我们自身向AI原生组织进化的步伐。</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20260417222313.png"></p>
+<h3 id="构建用于模型自我进化的智能体"><a href="#构建用于模型自我进化的智能体" class="headerlink" title="构建用于模型自我进化的智能体"></a>构建用于模型自我进化的智能体</h3><p>我们首先分享一个能让M2系列模型实现自我进化的内部工作流。这一工作流也起到了探索模型智能体能力边界的作用。</p>
+<p>现代智能体线束结合了复杂技能、记忆及其他外部模块，以帮助提高其对各种工作区环境的适应能力。在MiniMax，我们的智能体日常需要面对跨越多个部门、极其复杂且多样化的工作环境。因此，为了提高我们的智能体在这些异构环境中的鲁棒性，我们安排了一个内部版本的M2.7去构建一个研究型智能体线束，该线束能与不同的研究项目组进行互动和协作。该线束支持数据流水线、训练环境、基础设施、跨团队协作以及持久化记忆——使得研究人员能够驱动它交付更好的模型。这个研究型智能体线束在研究人员设定的指导下，推动了产生下一代模型的迭代周期。</p>
+<p>一个典型的工作流存在于我们强化学习（RL）团队的日常中。研究人员首先与智能体讨论一个实验想法，智能体会协助进行文献综述、追踪预设的实验规范、搭建数据和其他工件的流水线，并启动实验。在实验期间，智能体会监控并剖析实验进度，自动触发日志读取、调试、指标分析、代码修复、合并请求（merge requests）以及冒烟测试，识别并配置那些细微却关键的变更。在此之前，这可能需要来自不同团队的多名人类研究人员协同合作，但现在人类研究人员只需进行关键决策和讨论即可。这加速了问题的发现和实验过程，从而更快地交付模型。在这里，M2.7能够处理30%-50%的工作流。</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20260417222345.png"></p>
+<p>在迭代过程中，我们意识到模型递归演进其自身线束的能力同样至关重要。我们的内部线束会自动收集反馈，为内部任务构建评估集，并以此为基础持续迭代其自身的架构、技能&#x2F;MCP实现和记忆机制，以更好、更高效地完成任务。</p>
+<p>例如，我们曾让M2.7在一个内部脚手架上优化某个模型的编程性能。M2.7完全自主运行，执行了超过100轮的迭代循环：“分析失败轨迹 → 规划变更 → 修改脚手架代码 → 运行评估 → 对比结果 → 决定保留或回退变更”。在这个过程中，M2.7为模型发现了有效的优化方案：系统地搜索采样参数的最佳组合（如温度、频率惩罚和存在惩罚）；为模型设计更具体的工作流指南（例如，在修复后自动在其他文件中搜索相同的bug模式）；并在脚手架的智能体循环中添加循环检测等其他优化。最终，这使得内部评估集的性能提升了30%。</p>
+<p>我们相信，未来的AI自我进化将逐渐向完全自治过渡，在无需人类参与的情况下协调数据构建、模型训练、推理架构、评估等各个阶段。</p>
+<p>为此，我们在低资源场景中进行了初步的探索性测试。我们让M2.7参与了OpenAI开源的MLE Bench Lite级别的22项机器学习比赛。这些比赛可以在单张A30 GPU上运行，但它们几乎涵盖了机器学习工作流的所有阶段。</p>
+<p>我们设计并实现了一个简单的线束来引导智能体进行自主优化。其核心模块包含三个部分：短期记忆、自我反馈和自我优化。具体而言，在每个迭代轮次之后，智能体会生成一个短期记忆的Markdown文件，同时对当前轮次的结果进行自我批判，从而为下一轮提供潜在的优化方向。然后，下一轮再根据之前所有轮次的记忆和自我反馈链条进行进一步的自我优化。我们总共进行了三次试验，每次试验均给予24小时的迭代进化时间。从下图中可以看出，随着时间的推移，由M2.7训练的机器学习模型持续获得了更高的奖牌率。最终，最好的一次运行斩获了9枚金牌、5枚银牌和1枚铜牌。三次运行的平均奖牌率为66.6%，这一成绩仅次于Opus-4.6（75.7%）和GPT-5.4（71.2%），与Gemini-3.1（66.6%）并列。</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20260417222420.png"></p>
+<h3 id="专业软件工程"><a href="#专业软件工程" class="headerlink" title="专业软件工程"></a>专业软件工程</h3><p>在软件工程任务中，M2.7更深度地探索了现实世界的编程能力，包括用于Bug狩猎的日志分析、代码重构、代码安全、机器学习、Android开发等。</p>
+<p>以一个常见的生产场景为例：生产环境中的线上调试。这不仅需要代码生成，还需要强大的综合推理能力。当面临生产环境的警报时，M2.7能够将监控指标与部署时间线关联起来进行因果推理，对Trace采样进行统计分析并提出精准假设，主动连接数据库以验证根本原因，精准定位代码仓库中缺失的索引迁移文件，甚至具备“先用非阻塞方式创建索引止血，再提交合并请求”的意识。从可观测性分析、数据库专业知识到SRE级别的决策——它不仅仅是一个能写代码的模型，而是一个真正理解生产系统的模型。与传统的人工排查流程相比，使用M2.7，我们已经多次将线上生产系统故障的恢复时间缩短至三分钟以内。</p>
+<p>在纯粹的编程能力方面，M2.7已经达到了最先进（SOTA）模型的水平。在涵盖多种编程语言的SWE-Pro测试中，M2.7达到了56.22%的准确率，与GPT-5.3-Codex持平。在更贴近现实工程场景的基准测试中，例如SWE Multilingual（76.5）和Multi SWE Bench（52.7），它展示出了更为显著的优势。</p>
+<p>这种能力还延伸到了端到端的全项目交付场景。在仓库级别的代码生成基准测试VIBE-Pro上，M2.7得分55.6%，几乎与Opus 4.6持平——这意味着无论需求涉及Web、Android、iOS还是模拟任务，都可以直接交给M2.7来完成。</p>
+<p>更值得关注的是它对复杂工程系统的深刻理解。在高度考验系统级理解能力的Terminal Bench 2（57.0%）和NL2Repo（39.8%）测试中，M2.7的表现同样扎实。这进一步证实了它不仅擅长生成代码，还能深入理解软件系统的运行逻辑和协作动态。</p>
+<p>为了提高开发效率，一个尤为重要的功能是原生的智能体团队（多智能体协作）。智能体团队对模型提出了范式级别的要求：角色边界、对抗性推理、协议遵守以及行为差异化——这些不能仅仅通过Prompt实现，而必须内化为模型的原生能力。在智能体团队场景中，模型需要稳定地锚定其角色身份，主动挑战队友的逻辑和伦理盲区，并在复杂的状态机内做出自主决策。以下是我们内部用于产品原型开发的智能体团队设置，其中包含构建产品原型的最小化组织。</p>
+<p><img src="https://cos.luyf-lemon-love.space/images/20260417222519.png"></p>
+<h3 id="专业办公"><a href="#专业办公" class="headerlink" title="专业办公"></a>专业办公</h3><p>除了软件工程之外，智能体在办公场景中的用处也越来越大。我们认为这归结于两项核心能力：</p>
+<p><strong>领域专业知识与任务交付能力。</strong> 模型需要具备各个领域的专业知识并理解用户需求。在衡量这项能力的GDPval-AA评估中，M2.7在45个模型中取得了1495的ELO评分，仅次于Opus 4.6、Sonnet 4.6和GPT5.4，超越了GPT5.3。对于最常见的办公文档处理任务，我们系统性地优化了模型处理Word、Excel和PPT的能力。在各种智能体线束中，M2.7不仅可以基于模板和技能直接生成文件，还可以跟随用户的交互指令对现有文件进行多轮高保真编辑，最终生成可编辑的交付成果。</p>
+<p><strong>与复杂环境交互的能力。</strong> 泛化的日常场景意味着模型必须灵活地适应各种上下文，调用多种多样的技能和工具，并在长时间的交互中保持稳定的指令遵循。M2.7在这些方面取得了实质性的改进。在Toolathon上，M2.7的准确率达到了46.3%，跻身全球第一梯队。现实工作场景中的智能体线束也往往需要理解和调用大量复杂技能。在MM Claw测试中，M2.7在面对40个复杂技能（每个技能超过2000 tokens）时，保持了97%的技能依从率。</p>
+<p>我们测试了该模型在金融领域的专业熟练度，相比上一代，其能力提升非常显著。例如，在一个包含阅读研究报告和对公司未来收入进行建模的场景中，M2.7可以自主阅读公司的年度报告和财报电话会议记录，交叉参考多份研报，独立设计假设并构建收入预测模型，然后根据模板制作PPT和研究报告——像初级分析师一样理解、做出判断并产生输出，同时在多轮互动中进行自我纠正。来自从业人员的反馈是，这些输出已经可以直接作为初稿进入后续的工作流程中。下面是一个针对台积电（TSMC）的案例。</p>
+<p><em>任务：基于台积电的年度报告和财报电话会议信息，为台积电建立一个收入模型。阅读多份研报，设计相应的假设，基于最新信息对台积电的收入进行建模，然后根据PPT模板制作PPT，并撰写Word文档研究报告。</em></p>
+<p>最近OpenClaw的爆火代表了一个繁荣的智能体生态系统，我们很高兴我们的M2系列模型为社区的繁荣做出了贡献。基于OpenClaw中常用的任务，我们构建了一个名为MM Claw的评估集，涵盖了工作和生活中广泛的现实需求——从个人学习计划，到办公文档处理和交付、定期的专业研究与投资建议，再到代码开发和维护。M2.7在这一测试中取得了接近Sonnet 4.6的水平，准确率为62.7%。</p>
+<h3 id="娱乐体验"><a href="#娱乐体验" class="headerlink" title="娱乐体验"></a>娱乐体验</h3><p>随着OpenClaw和类似的个人智能体的出现，我们注意到除了完成工作之外，许多用户也希望模型拥有高情商和人设一致性。设定好角色后，用户开始像对待朋友一样与OpenClaw进行互动。我们认为这提供了一个将智能体模型的使用范围从纯粹的生产力工具扩展到互动娱乐领域的机会。为此，我们在M2.7中加强了角色一致性和对话能力。</p>
+<p>基于此，我们搭建了一个初步的Demo：OpenRoom。这是一个基于智能体线束的互动系统，它将AI互动从纯文本流中解放出来，置于一个万物皆可交互的Web GUI空间内。在这里，角色设定不再是冰冷的Prompt提示块；对话驱动着整个体验，生成实时的视觉反馈和场景互动，角色会主动与他们所处的环境互动。我们认为这个框架具有极高的可扩展性，并且可以随着智能体能力的提高和社区的发展而不断演进，从而探索人类与智能体交互的全新方式。</p>
+<p>为了鼓励在这一领域的探索，我们开源了初始演示版本（其中大部分代码是由AI编写的）：</p>
+<ul>
+<li>项目代码库：<a href="https://github.com/MiniMax-AI/OpenRoom">https://github.com/MiniMax-AI/OpenRoom</a></li>
+<li>立即体验：<a href="https://www.openroom.ai/">https://www.openroom.ai/</a></li>
+</ul>
+<p>MiniMax M2.7现已在MiniMax Agent和MiniMax API平台上全面开放使用。我们期待用户和开发者使用M2.7探索出更多有趣的用例。</p>
+<ul>
+<li>MiniMax Agent：agent.minimax.io</li>
+<li>API：platform.minimax.io</li>
+<li>Coding Plan：platform.minimax.io&#x2F;subscribe&#x2F;coding-plan</li>
+<li>Intelligence with Everyone.（与所有人共享智能）</li>
+</ul>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百七十八篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2026/04/17/00378-minimax-m2-7-zi-wo-jin-hua-de-zao-qi-hui-sheng/">https://luyf-lemon-love.space/2026/04/17/00378-minimax-m2-7-zi-wo-jin-hua-de-zao-qi-hui-sheng/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">大语言模型</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/04/17/00378-minimax-m2-7-zi-wo-jin-hua-de-zao-qi-hui-sheng/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/078-%E5%8E%9F%E7%A5%9E%E8%83%A1%E6%A1%83-%E5%B0%8F%E5%B9%BD%E7%81%B5-%E8%9D%B4%E8%9D%B6.jpg" class="responsive-img" alt="00378 MiniMax M2.7：自我进化的早期回声">
+                        
+                        <span class="card-title">00378 MiniMax M2.7：自我进化的早期回声</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-04-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Blog/" class="post-category">
+                                    Blog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">大语言模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2026/04/13/00377-python-bing-fa-shi-zhan-you-ya-qie-lu-bang-di-diao-yong-fastapi-hao-shi-ren-wu/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/077-%E5%B4%A9%E5%9D%8F%E6%98%9F%E7%A9%B9%E9%93%81%E9%81%93%E9%A3%9E%E9%9C%84-%E7%8C%AB%E8%80%B3.jpg" class="responsive-img" alt="00377 Python 并发实战：优雅且鲁棒地调用 FastAPI 耗时任务">
+                        
+                        <span class="card-title">00377 Python 并发实战：优雅且鲁棒地调用 FastAPI 耗时任务</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-04-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Python/" class="post-category">
+                                    Python
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Python/">
+                        <span class="chip bg-color">Python</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2026</span>
+            
+            <a href="/about" target="_blank">LuYF-Lemon-love</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "5";
+                        var startDate = "7";
+                        var startHour = "4";
+                        var startMinute = "53";
+                        var startSecond = "32";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+                <span id="icp"><img src="/medias/icp.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="https://beian.miit.gov.cn" target="_blank">冀ICP备2022012632号-1</a>
+            </span>
+            
+            <br>
+            
+                <span id="gongan"><img src="https://cos.luyf-lemon-love.space/images/备案图标.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011618" target="_blank">苏公网安备 32011502011618号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yanfeng98" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:luyanfeng_nlp@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
