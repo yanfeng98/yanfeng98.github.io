@@ -479,7 +479,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2026-04-25
+                    2026-04-26
                 </div>
                 
 
@@ -840,6 +840,23 @@
     VIP1 <span class="token arrow operator">--></span><span class="token label property">|返回数据|</span> DUT
     VIP2 <span class="token arrow operator">--></span><span class="token label property">|返回错误|</span> DUT<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<h3 id="3-5-什么是覆盖率？"><a href="#3-5-什么是覆盖率？" class="headerlink" title="3.5 什么是覆盖率？"></a>3.5 什么是覆盖率？</h3><p>覆盖率（Coverage）是衡量<strong>验证完备性</strong>的核心指标。它回答了一个关键问题：</p>
+<blockquote>
+<p><strong>“我们的测试用例到底跑过了设计中的多少代码？”</strong></p>
+</blockquote>
+<h4 id="行覆盖率（Line-Coverage）"><a href="#行覆盖率（Line-Coverage）" class="headerlink" title="行覆盖率（Line Coverage）"></a>行覆盖率（Line Coverage）</h4><p>本教程使用的是最直观的覆盖率指标——<strong>行覆盖率</strong>：</p>
+<ul>
+<li><strong>定义</strong>：仿真过程中，RTL 源代码里<strong>每一行被执行的次数</strong>。</li>
+<li><strong>意义</strong>：如果某一行代码从未被执行（<code>%000000</code>），说明当前测试集<strong>没有覆盖到这个场景</strong>，对应的功能可能存在未被发现的 bug。</li>
+<li><strong>目标</strong>：通常追求尽可能高的行覆盖率（如 &gt;95%），但 100% 行覆盖率不等于没有 bug——它只说明代码被”跑到过”，不代表所有边界条件都被验证。</li>
+</ul>
+<p>举个例子：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token keyword">if</span> <span class="token punctuation">(</span>m_axi_rresp <span class="token operator">!=</span> <span class="token number">2'b00</span><span class="token punctuation">)</span> <span class="token keyword">begin</span>
+    error <span class="token operator">&lt;=</span> <span class="token number">1'b1</span><span class="token punctuation">;</span>   <span class="token comment">// 这行只有总线返回错误时才会执行</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>如果测试用例从不注入错误响应，那么 <code>error &lt;= 1&#39;b1</code> 这行就永远是 <code>%000000</code>，意味着<strong>错误处理逻辑从未被验证</strong>——而这恰恰是 DMA 控制器鲁棒性的关键部分。</p>
+<p>本教程通过 <code>--coverage</code> 参数让 Verilator 自动插桩，仿真结束后生成带执行次数标注的源码报告（详见 <a href="#92-%E7%94%9F%E6%88%90%E8%A6%86%E7%9B%96%E7%8E%87%E6%8A%A5%E5%91%8A">9.2 生成覆盖率报告</a>）。</p>
 <hr>
 <h2 id="4-项目概述"><a href="#4-项目概述" class="headerlink" title="4. 项目概述"></a>4. 项目概述</h2><p>我们要实现的是一个 <strong>Memory-to-Memory</strong> 的 AXI-Lite DMA 控制器：</p>
 <ul>
@@ -886,7 +903,10 @@ verilator <span class="token parameter variable">--version</span><span aria-hidd
 <blockquote>
 <p><strong>注意</strong>：确保安装的是 **Verilator 5.0+**，因为 Cocotb 2.x 需要较新的 VPI 支持。本教程使用 <code>Verilator 5.038</code>。</p>
 </blockquote>
-<h3 id="5-3-安装-Python-依赖"><a href="#5-3-安装-Python-依赖" class="headerlink" title="5.3 安装 Python 依赖"></a>5.3 安装 Python 依赖</h3><p>推荐使用 Conda 或 venv 创建虚拟环境：</p>
+<h3 id="5-3-安装-lcov（可选，用于生成-HTML-覆盖率报告）"><a href="#5-3-安装-lcov（可选，用于生成-HTML-覆盖率报告）" class="headerlink" title="5.3 安装 lcov（可选，用于生成 HTML 覆盖率报告）"></a>5.3 安装 lcov（可选，用于生成 HTML 覆盖率报告）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> lcov<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>lcov</code> 是 Linux 下的覆盖率可视化工具，能将 Verilator 生成的 <code>.dat</code> 覆盖率数据转换成美观的 HTML 网页报告，方便在浏览器中查看。</p>
+<h3 id="5-4-安装-Python-依赖"><a href="#5-4-安装-Python-依赖" class="headerlink" title="5.4 安装 Python 依赖"></a>5.4 安装 Python 依赖</h3><p>推荐使用 Conda 或 venv 创建虚拟环境：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建虚拟环境（示例使用 miniconda）</span>
 conda create <span class="token parameter variable">-n</span> cocotb_env <span class="token assign-left variable">python</span><span class="token operator">=</span><span class="token number">3.12</span> <span class="token parameter variable">-y</span>
 conda activate cocotb_env
@@ -1227,7 +1247,12 @@ EXTRA_ARGS <span class="token operator">+=</span> --coverage --trace
 <span class="token comment"># 自定义目标：生成带有源码标注的覆盖率报告</span>
 <span class="token target symbol">coverage_report</span><span class="token punctuation">:</span>
 	mkdir -p logs/annotated
-	verilator_coverage --annotate logs/annotated coverage.dat<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	verilator_coverage --annotate logs/annotated coverage.dat
+
+<span class="token comment"># 自定义目标：使用 lcov 生成 HTML 覆盖率报告</span>
+<span class="token target symbol">lcov_report</span><span class="token punctuation">:</span> coverage_report
+	geninfo logs/annotated --output-filename coverage.info
+	genhtml coverage.info --output-directory logs/html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="7-1-关键配置说明"><a href="#7-1-关键配置说明" class="headerlink" title="7.1 关键配置说明"></a>7.1 关键配置说明</h3><table>
 <thead>
@@ -1760,6 +1785,28 @@ EXTRA_ARGS <span class="token operator">+=</span> --coverage --trace
 <li><code>%000001</code> 表示该行只执行了 1 次（对应 <code>default</code> 分支的非法状态恢复测试）。</li>
 <li>如果看到 <code>%000000</code>，说明该行<strong>从未被执行</strong>，需要补充测试用例。</li>
 </ul>
+<h3 id="9-3-生成-HTML-覆盖率报告（需-lcov）"><a href="#9-3-生成-HTML-覆盖率报告（需-lcov）" class="headerlink" title="9.3 生成 HTML 覆盖率报告（需 lcov）"></a>9.3 生成 HTML 覆盖率报告（需 lcov）</h3><p>如果你已经安装了 <code>lcov</code>（见 <a href="#53-%E5%AE%89%E8%A3%85-lcov%E5%8F%AF%E9%80%89%E7%94%A8%E4%BA%8E%E7%94%9F%E6%88%90-html-%E8%A6%86%E7%9B%96%E7%8E%87%E6%8A%A5%E5%91%8A">5.3 安装 lcov</a>），可以运行：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span> lcov_report<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这会执行以下两步：</p>
+<ol>
+<li>先调用 <code>make coverage_report</code>，生成源码标注文件。</li>
+<li>再调用 <code>geninfo</code> 和 <code>genhtml</code>，将覆盖率数据转换成可在浏览器中查看的 HTML 报告。</li>
+</ol>
+<p>生成完成后，打开 <code>logs/html/index.html</code>：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Ubuntu / WSL</span>
+<span class="token function">xdg-open</span> logs/html/index.html
+
+<span class="token comment"># macOS</span>
+<span class="token function">open</span> logs/html/index.html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>你将看到一个带有颜色标注的网页：</p>
+<ul>
+<li><strong>绿色</strong>：已执行的代码行</li>
+<li><strong>红色</strong>：未执行的代码行</li>
+<li><strong>黄色</strong>：部分执行的分支</li>
+</ul>
+<p>这种方式比纯文本的 <code>--annotate</code> 输出更直观，尤其适合向团队或评审展示验证完备性。</p>
 <hr>
 <h2 id="10-常见问题排查"><a href="#10-常见问题排查" class="headerlink" title="10. 常见问题排查"></a>10. 常见问题排查</h2><h3 id="10-1-ModuleNotFoundError-No-module-named-cocotb"><a href="#10-1-ModuleNotFoundError-No-module-named-cocotb" class="headerlink" title="10.1 ModuleNotFoundError: No module named &#39;cocotb&#39;"></a>10.1 <code>ModuleNotFoundError: No module named &#39;cocotb&#39;</code></h3><p><strong>原因</strong>：Python 环境中未安装 <code>cocotb</code>，或 Makefile 调用的 Python 与安装环境不一致。</p>
 <p><strong>解决</strong>：</p>
