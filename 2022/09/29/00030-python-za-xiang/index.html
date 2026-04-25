@@ -483,7 +483,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-28
+                    2026-04-25
                 </div>
                 
 
@@ -915,6 +915,20 @@ conda pack <span class="token parameter variable">-n</span> env_name <span class
 conda info <span class="token parameter variable">-e</span>  <span class="token comment"># 查看是否存在了新的环境</span>
 conda activate env_name
 conda-unpack<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Conda-克隆环境"><a href="#Conda-克隆环境" class="headerlink" title="Conda 克隆环境"></a>Conda 克隆环境</h2><p>为了让新环境独立并指向新的代码仓库，请按照以下步骤操作：</p>
+<p><strong>1. 克隆现有的 Conda 环境</strong><br>这一步会帮你省去重新下载和安装所有其他依赖包（如 PyTorch、Numpy 等）的时间。Conda 底层会使用硬链接（Hard links），速度极快且不占用额外硬盘空间。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">conda create <span class="token parameter variable">-n</span> new_env <span class="token parameter variable">--clone</span> old_env<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>2. 激活新环境</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">conda activate new_env<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>3. 卸载旧的可编辑包（关键步骤）</strong><br>由于新环境直接把旧环境的软链接复制过来了，为了防止路径冲突，建议先在新环境中将该包卸载。<br><em>(注：由于是克隆的环境，这里的卸载只会删除新环境里的链接，<strong>绝对不会</strong>影响你的 <code>old_env</code>。)</em></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip uninstall <span class="token operator">&lt;</span>你的包名<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>4. 切换到新的代码仓库目录并重新安装</strong><br>进入你那个路径不同或版本不同的新代码仓库目录，重新执行可编辑安装。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /path/to/your/new_repo
+pip <span class="token function">install</span> <span class="token parameter variable">-e</span> <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h2 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h2><p>源教程地址: <a href="https://blog.csdn.net/weixin_42233605/article/details/123382596">https://blog.csdn.net/weixin_42233605/article/details/123382596</a> .</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
