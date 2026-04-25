@@ -547,20 +547,20 @@
                 </a>
                 
                 
-                <a href="/categories/Python/" title="Python: 78">
+                <a href="/categories/PyTorch/" title="PyTorch: 10">
                     <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            style="background-color: #A3E4D7;">Python
-                        <span class="tag-length">78</span>
+                             chip-default "
+                            style="background-color: #A3E4D7;">PyTorch
+                        <span class="tag-length">10</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/PyTorch/" title="PyTorch: 10">
+                <a href="/categories/Python/" title="Python: 78">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #85C1E9;">PyTorch
-                        <span class="tag-length">10</span>
+                             chip-active "
+                            style="background-color: #85C1E9;">Python
+                        <span class="tag-length">78</span>
                     </span>
                 </a>
                 
@@ -1357,6 +1357,31 @@ $(function () {
     <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
     <script src="/js/matery.js"></script>
 
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            if (!window.mermaid) return;
+            // 支持 Markdown 代码块 ```mermaid
+            var codes = document.querySelectorAll('pre code.language-mermaid, pre code.lang-mermaid');
+            codes.forEach(function (code) {
+              var pre = code.parentElement;
+              var container = pre.parentElement;
+              var target = (container.tagName === 'FIGURE' || container.classList.contains('highlight')) ? container : pre;
+              var div = document.createElement('div');
+              div.className = 'mermaid';
+              div.textContent = code.textContent;
+              target.parentNode.replaceChild(div, target);
+            });
+            mermaid.initialize({ theme: 'forest', startOnLoad: false });
+            if (typeof mermaid.run === 'function') {
+              mermaid.run();
+            } else {
+              mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            }
+          });
+        </script>
     
 
     

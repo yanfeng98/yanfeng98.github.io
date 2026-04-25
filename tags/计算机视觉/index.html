@@ -663,15 +663,6 @@
                 </a>
                 
                 
-                <a href="/tags/huggingface/" title="huggingface: 95">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="huggingface" style="background-color: #FFF;">huggingface
-                        <span class="tag-length">95</span>
-                    </span>
-                </a>
-                
-                
                 <a href="/tags/Office/" title="Office: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
@@ -686,6 +677,15 @@
                              chip-active "
                             data-tagname="计算机视觉" style="background-color: #F9E79F;">计算机视觉
                         <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/huggingface/" title="huggingface: 95">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="huggingface" style="background-color: #FFF;">huggingface
+                        <span class="tag-length">95</span>
                     </span>
                 </a>
                 
@@ -1334,6 +1334,31 @@ $(function () {
     <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
     <script src="/js/matery.js"></script>
 
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            if (!window.mermaid) return;
+            // 支持 Markdown 代码块 ```mermaid
+            var codes = document.querySelectorAll('pre code.language-mermaid, pre code.lang-mermaid');
+            codes.forEach(function (code) {
+              var pre = code.parentElement;
+              var container = pre.parentElement;
+              var target = (container.tagName === 'FIGURE' || container.classList.contains('highlight')) ? container : pre;
+              var div = document.createElement('div');
+              div.className = 'mermaid';
+              div.textContent = code.textContent;
+              target.parentNode.replaceChild(div, target);
+            });
+            mermaid.initialize({ theme: 'forest', startOnLoad: false });
+            if (typeof mermaid.run === 'function') {
+              mermaid.run();
+            } else {
+              mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            }
+          });
+        </script>
     
 
     
