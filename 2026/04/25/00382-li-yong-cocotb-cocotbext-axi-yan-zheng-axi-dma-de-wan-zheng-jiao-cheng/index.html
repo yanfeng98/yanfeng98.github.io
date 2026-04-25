@@ -1251,7 +1251,7 @@ EXTRA_ARGS <span class="token operator">+=</span> --coverage --trace
 
 <span class="token comment"># 自定义目标：使用 lcov 生成 HTML 覆盖率报告</span>
 <span class="token target symbol">lcov_report</span><span class="token punctuation">:</span> coverage_report
-	geninfo logs/annotated --output-filename coverage.info
+	verilator_coverage --write-info coverage.info coverage.dat
 	genhtml coverage.info --output-directory logs/html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="7-1-关键配置说明"><a href="#7-1-关键配置说明" class="headerlink" title="7.1 关键配置说明"></a>7.1 关键配置说明</h3><table>
@@ -1791,7 +1791,7 @@ EXTRA_ARGS <span class="token operator">+=</span> --coverage --trace
 <p>这会执行以下两步：</p>
 <ol>
 <li>先调用 <code>make coverage_report</code>，生成源码标注文件。</li>
-<li>再调用 <code>geninfo</code> 和 <code>genhtml</code>，将覆盖率数据转换成可在浏览器中查看的 HTML 报告。</li>
+<li>再调用 <code>verilator_coverage --write-info</code> 将 Verilator 覆盖率数据转换为 lcov 格式的 <code>.info</code> 文件，然后用 <code>genhtml</code> 生成可在浏览器中查看的 HTML 报告。</li>
 </ol>
 <p>生成完成后，打开 <code>logs/html/index.html</code>：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Ubuntu / WSL</span>
