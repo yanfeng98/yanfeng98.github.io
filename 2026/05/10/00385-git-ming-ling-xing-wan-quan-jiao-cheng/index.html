@@ -1130,18 +1130,149 @@ git add      git commit     git push
 <p>简单规则：<strong>已 push 到远程，用 revert；还在本地，用 reset。</strong></p>
 </blockquote>
 <hr>
-<h2 id="8-查看特定记录的代码"><a href="#8-查看特定记录的代码" class="headerlink" title="8. 查看特定记录的代码"></a>8. 查看特定记录的代码</h2><h3 id="8-1-查看某次提交的完整改动"><a href="#8-1-查看某次提交的完整改动" class="headerlink" title="8.1 查看某次提交的完整改动"></a>8.1 查看某次提交的完整改动</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> show abc1234                    <span class="token comment"># 看完整 diff</span>
-<span class="token function">git</span> show abc1234 <span class="token parameter variable">--stat</span>             <span class="token comment"># 只看改了哪些文件</span>
+<h2 id="8-查看特定记录的代码"><a href="#8-查看特定记录的代码" class="headerlink" title="8. 查看特定记录的代码"></a>8. 查看特定记录的代码</h2><h3 id="8-1-查看某次提交的完整改动（等效-GitHub-的-commit-详情页）"><a href="#8-1-查看某次提交的完整改动（等效-GitHub-的-commit-详情页）" class="headerlink" title="8.1 查看某次提交的完整改动（等效 GitHub 的 commit 详情页）"></a>8.1 查看某次提交的完整改动（等效 GitHub 的 commit 详情页）</h3><blockquote>
+<p><code>git show</code> 输出内容就是 GitHub 上点开某个 commit 看到的信息：作者、时间、提交信息、文件 diff，完全对应。</p>
+</blockquote>
+<h4 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> show abc1234                    <span class="token comment"># 看完整 diff（等效 GitHub commit 详情）</span>
+<span class="token function">git</span> show abc1234 <span class="token parameter variable">--stat</span>             <span class="token comment"># 只看改了哪些文件（等效 GitHub "Files changed" 概览）</span>
+<span class="token function">git</span> show abc1234 <span class="token parameter variable">--stat</span> <span class="token parameter variable">-p</span>          <span class="token comment"># 文件统计 + diff 一次看完</span>
 <span class="token function">git</span> show abc1234 -- 文件名           <span class="token comment"># 只看某个文件的改动</span>
-<span class="token function">git</span> show HEAD~3                     <span class="token comment"># 看 3 次提交之前的改动</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">git</span> show HEAD~3                     <span class="token comment"># 看 3 次提交之前的改动</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="8-2-查看某个文件在某个版本时的内容"><a href="#8-2-查看某个文件在某个版本时的内容" class="headerlink" title="8.2 查看某个文件在某个版本时的内容"></a>8.2 查看某个文件在某个版本时的内容</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看文件在特定 commit 时的内容（不修改工作区）</span>
-<span class="token function">git</span> show abc1234:路径/文件名
+<blockquote>
+<p><strong>注意：</strong> <code>git show &lt;hash&gt;</code> 展示的是<strong>这一次提交的改动</strong>。而 <code>git diff &lt;hash&gt;</code> &#x2F; <code>git difftool &lt;hash&gt;</code> 展示的是<strong>该提交到当前状态之间所有的累积差异</strong>，完全不一样。要用 difftool 只看一次提交，必须加 <code>^!</code>：</p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> show abc1234                      <span class="token comment"># ✅ 只看这一次提交</span>
 
-<span class="token comment"># 示例</span>
-<span class="token function">git</span> show abc1234:src/main.py
-<span class="token function">git</span> show v1.0.0:README.md
-<span class="token function">git</span> show HEAD~5:config/db.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>icdiff abc1234    <span class="token comment"># ❌ 从那次提交到现在的所有差异</span>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>icdiff abc1234^<span class="token operator">!</span>  <span class="token comment"># ✅ 只看这一次提交</span>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>icdiff abc1234~<span class="token punctuation">..</span>abc1234  <span class="token comment"># 等价写法</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="彩色单词级对比（更像-GitHub-的高亮效果）"><a href="#彩色单词级对比（更像-GitHub-的高亮效果）" class="headerlink" title="彩色单词级对比（更像 GitHub 的高亮效果）"></a>彩色单词级对比（更像 GitHub 的高亮效果）</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># GitHub 默认是单词级高亮，命令行加 --color-words 达到同样效果</span>
+<span class="token function">git</span> show abc1234 --color-words
+
+<span class="token comment"># 设置别名，以后直接用</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.showw <span class="token string">'show --color-words'</span>
+<span class="token function">git</span> showw abc1234<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="连续查看最近-N-次提交各自的-diff"><a href="#连续查看最近-N-次提交各自的-diff" class="headerlink" title="连续查看最近 N 次提交各自的 diff"></a>连续查看最近 N 次提交各自的 diff</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 最近 5 次提交，每次都有完整 diff（等效 GitHub Commits 列表逐个点开看）</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span> <span class="token parameter variable">-5</span>
+
+<span class="token comment"># 最近 5 次，只显示文件概览不展开 diff</span>
+<span class="token function">git</span> log <span class="token parameter variable">--stat</span> <span class="token parameter variable">-5</span>
+
+<span class="token comment"># 最近 5 次 + 单词级高亮</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span> <span class="token parameter variable">-5</span> --color-words<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="左右分屏对比（等效-GitHub-的-Split-视图）"><a href="#左右分屏对比（等效-GitHub-的-Split-视图）" class="headerlink" title="左右分屏对比（等效 GitHub 的 Split 视图）"></a>左右分屏对比（等效 GitHub 的 Split 视图）</h4><p>GitHub 默认是<strong>左旧右新</strong>的分屏 diff。终端下有几种方式实现同样效果。</p>
+<p><strong>方案一：vimdiff（零依赖，内置）</strong></p>
+<p>vimdiff 是 Vim 自带的分屏对比工具，所有 Linux 都内置：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看某次提交的左右分屏对比</span>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>vimdiff abc1234
+
+<span class="token comment"># 对比两个提交</span>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>vimdiff abc1234<span class="token punctuation">..</span>def5678
+
+<span class="token comment"># 对比某个文件的两版本</span>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>vimdiff abc1234 -- src/main.py
+
+<span class="token comment"># 设为默认 difftool，以后直接 git difftool</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> diff.tool vimdiff
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> difftool.prompt <span class="token boolean">false</span>   <span class="token comment"># 不弹出确认提示</span>
+<span class="token function">git</span> difftool abc1234<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>vimdiff 打开后：</p>
+<ul>
+<li>左边是旧版本，右边是新版本</li>
+<li><code>Ctrl+W</code> + 左右箭头 切换窗口</li>
+<li><code>:qa</code> 退出所有窗口，进入下一个文件</li>
+<li>红色高亮 &#x3D; 差异行</li>
+</ul>
+<p><strong>方案二：delta（最像 GitHub，强烈推荐）</strong></p>
+<p><a href="https://github.com/dandavison/delta">delta</a> 是一个 Rust 写的 diff 美化工具，支持左右分屏，效果跟 GitHub 几乎一样：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 安装（CentOS 可能需要先装 cargo 或下载二进制）</span>
+<span class="token comment"># 方式A：用 cargo</span>
+<span class="token function">cargo</span> <span class="token function">install</span> git-delta
+<span class="token comment"># 方式B：直接从 GitHub Release 下载二进制</span>
+<span class="token comment"># wget https://github.com/dandavison/delta/releases/latest/download/delta-*.tar.gz</span>
+
+<span class="token comment"># 配置 git 使用 delta</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> core.pager delta
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> interactive.diffFilter <span class="token string">'delta --color-only'</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.side-by-side <span class="token boolean">true</span>          <span class="token comment"># 开启左右分屏！</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.line-numbers <span class="token boolean">true</span>           <span class="token comment"># 显示行号</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.navigate <span class="token boolean">true</span>               <span class="token comment"># 用 n/N 跳转到下一个/上一个差异块</span>
+
+<span class="token comment"># 配置完后，git diff / git show 自动变成左右分屏</span>
+<span class="token function">git</span> show abc1234
+<span class="token function">git</span> <span class="token function">diff</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>效果演示：</p>
+<pre class="line-numbers language-none"><code class="language-none"> src&#x2F;main.py
+──────────────────────────────────────────────────────────────────
+  34  def login(user, pwd):    │  34  def login(user, pwd, method&#x3D;&#39;password&#39;):
+  35      return api.login()   │  35      return api.authenticate(user, pwd, method)
+                               │  36
+                               │  37  def logout():
+                               │  38      session.clear()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>方案三：icdiff（轻量 Python 方案）</strong></p>
+<p>如果装不了 Rust，用 Python 的 icdiff。注意 icdiff 不是 Git 内置工具，需要先安装再注册：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 安装 icdiff</span>
+pip <span class="token function">install</span> icdiff
+
+<span class="token comment"># 2. 注册为 Git 自定义 difftool（关键一步！否则报 Unknown merge tool）</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> difftool.icdiff.cmd <span class="token string">'icdiff --line-numbers --no-bold "$LOCAL" "$REMOTE"'</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> difftool.prompt <span class="token boolean">false</span>
+
+<span class="token comment"># 3. 使用</span>
+<span class="token function">git</span> difftool <span class="token parameter variable">--tool</span><span class="token operator">=</span>icdiff abc1234
+
+<span class="token comment"># 设为默认</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> diff.tool icdiff
+<span class="token function">git</span> difftool abc1234<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>三种方案对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>安装</th>
+<th>效果</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vimdiff</td>
+<td>零依赖，系统自带</td>
+<td>功能全但颜值一般</td>
+<td>临时用、不想装东西</td>
+</tr>
+<tr>
+<td>delta</td>
+<td>需下载二进制</td>
+<td>最像 GitHub，真分屏</td>
+<td><strong>日常使用（推荐）</strong></td>
+</tr>
+<tr>
+<td>icdiff</td>
+<td>pip install</td>
+<td>轻量分屏</td>
+<td>Python 环境已有</td>
+</tr>
+</tbody></table>
+<pre class="line-numbers language-none"><code class="language-none">
+### 8.2 查看某个文件在某个版本时的内容
+
+&#96;&#96;&#96;bash
+# 查看文件在特定 commit 时的内容（不修改工作区）
+git show abc1234:路径&#x2F;文件名
+
+# 示例
+git show abc1234:src&#x2F;main.py
+git show v1.0.0:README.md
+git show HEAD~5:config&#x2F;db.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="8-3-比较文件在不同版本间的差异"><a href="#8-3-比较文件在不同版本间的差异" class="headerlink" title="8.3 比较文件在不同版本间的差异"></a>8.3 比较文件在不同版本间的差异</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 同一个文件在两个版本间的差异</span>
 <span class="token function">git</span> <span class="token function">diff</span> abc1234<span class="token punctuation">..</span>def5678 -- 文件名
