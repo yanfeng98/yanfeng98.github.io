@@ -1,0 +1,2214 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="00385 Git 命令行完全教程, NLP LLM DeepLearning LuYF-Lemon-love 自然语言处理 深度学习 大语言模型">
+    <meta name="description" content="Git 命令行完全教程
+目标：从零开始，用纯命令行完成 VS Code 可视化 Git 的所有常用操作。
+
+
+目录
+初始化仓库
+提交代码
+查看提交记录
+Tag 标签管理
+Worktree 多分支并行开发
+打包特定版本为 zip
+版本回退
+查">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>00385 Git 命令行完全教程 | LuYF-Lemon-love の Blog</title>
+    <link rel="icon" type="image/jpeg" href="https://cos.luyf-lemon-love.space/images/苏苏1.jpeg">
+    
+    <style>
+        body{
+            background-image: url(https://cos.luyf-lemon-love.space/images/016-%E6%8A%A5%E7%BA%B8%E5%A2%99%E9%BA%BB%E8%A1%A3%E5%AD%A6%E5%A7%90.jpg);
+            background-repeat:no-repeat;
+            background-size: 100% 100%;
+            background-attachment:fixed;
+        }
+    </style>
+
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">LuYF-Lemon-love の Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>List</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Image</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/verse">
+          
+          <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Verse</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/bilibili">
+          
+          <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Bilibili</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">LuYF-Lemon-love の Blog</div>
+        <div class="logo-desc">
+            
+            天之道，损有余而补不足，人之道则不然，损不足以奉有余。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			List
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Image</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/verse " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Verse</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/bilibili " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Bilibili</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yanfeng98/paper-is-all-you-need" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yanfeng98/paper-is-all-you-need" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cos.luyf-lemon-love.space/images/085-%E7%BE%8E%E5%A5%B3-%E5%9D%90%E5%9C%B0%E6%9D%BF-%E6%8A%A5%E7%BA%B8%E5%A2%99%E8%83%8C%E6%99%AF.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">00385 Git 命令行完全教程</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Git/">
+                                <span class="chip bg-color">Git</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                计算机基础
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-05-10
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2026-05-10
+                </div>
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Git-命令行完全教程"><a href="#Git-命令行完全教程" class="headerlink" title="Git 命令行完全教程"></a>Git 命令行完全教程</h1><blockquote>
+<p>目标：从零开始，用纯命令行完成 VS Code 可视化 Git 的所有常用操作。</p>
+</blockquote>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#1-%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BB%93%E5%BA%93">初始化仓库</a></li>
+<li><a href="#2-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81">提交代码</a></li>
+<li><a href="#3-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E8%AE%B0%E5%BD%95">查看提交记录</a></li>
+<li><a href="#4-tag-%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86">Tag 标签管理</a></li>
+<li><a href="#5-worktree-%E5%A4%9A%E5%88%86%E6%94%AF%E5%B9%B6%E8%A1%8C%E5%BC%80%E5%8F%91">Worktree 多分支并行开发</a></li>
+<li><a href="#6-%E6%89%93%E5%8C%85%E7%89%B9%E5%AE%9A%E7%89%88%E6%9C%AC%E4%B8%BA-zip">打包特定版本为 zip</a></li>
+<li><a href="#7-%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80">版本回退</a></li>
+<li><a href="#8-%E6%9F%A5%E7%9C%8B%E7%89%B9%E5%AE%9A%E8%AE%B0%E5%BD%95%E7%9A%84%E4%BB%A3%E7%A0%81">查看特定记录的代码</a></li>
+<li><a href="#9-merge-%E5%90%88%E5%B9%B6">Merge 合并</a></li>
+<li><a href="#10-%E8%A7%A3%E5%86%B3%E5%90%88%E5%B9%B6%E5%86%B2%E7%AA%81">解决合并冲突</a></li>
+<li><a href="#%E9%99%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5%E8%A1%A8">附：常用命令速查表</a></li>
+</ol>
+<hr>
+<h2 id="1-初始化仓库"><a href="#1-初始化仓库" class="headerlink" title="1. 初始化仓库"></a>1. 初始化仓库</h2><h3 id="1-1-全新项目"><a href="#1-1-全新项目" class="headerlink" title="1.1 全新项目"></a>1.1 全新项目</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建项目目录并进入</span>
+<span class="token function">mkdir</span> my-project
+<span class="token builtin class-name">cd</span> my-project
+
+<span class="token comment"># 初始化 git 仓库</span>
+<span class="token function">git</span> init
+
+<span class="token comment"># 查看仓库状态</span>
+<span class="token function">git</span> status<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>执行后会在当前目录生成 <code>.git</code> 隐藏目录，这就是 git 的”数据库”。</p>
+<h3 id="1-2-配置用户信息（首次使用必做）"><a href="#1-2-配置用户信息（首次使用必做）" class="headerlink" title="1.2 配置用户信息（首次使用必做）"></a>1.2 配置用户信息（首次使用必做）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name  <span class="token string">"你的名字"</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email <span class="token string">"your@email.com"</span>
+
+<span class="token comment"># 查看配置</span>
+<span class="token function">git</span> config <span class="token parameter variable">--list</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-忽略不需要跟踪的文件"><a href="#1-3-忽略不需要跟踪的文件" class="headerlink" title="1.3 忽略不需要跟踪的文件"></a>1.3 忽略不需要跟踪的文件</h3><p>创建 <code>.gitignore</code> 文件：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> <span class="token operator">></span> .gitignore <span class="token operator">&lt;&lt;</span> <span class="token string">'EOF'
+# 编译产物
+*.o
+*.class
+*.pyc
+__pycache__/
+
+# 依赖
+node_modules/
+vendor/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# 敏感文件
+.env
+*.key
+*.pem
+EOF</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-4-克隆已有仓库"><a href="#1-4-克隆已有仓库" class="headerlink" title="1.4 克隆已有仓库"></a>1.4 克隆已有仓库</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 通过 SSH（推荐）</span>
+<span class="token function">git</span> clone git@github.com:user/repo.git
+
+<span class="token comment"># 通过 HTTPS</span>
+<span class="token function">git</span> clone https://github.com/user/repo.git
+
+<span class="token comment"># 克隆到指定目录</span>
+<span class="token function">git</span> clone git@github.com:user/repo.git my-folder<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="2-提交代码"><a href="#2-提交代码" class="headerlink" title="2. 提交代码"></a>2. 提交代码</h2><h3 id="2-1-基本工作流"><a href="#2-1-基本工作流" class="headerlink" title="2.1 基本工作流"></a>2.1 基本工作流</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 第一步：查看当前状态（看看改了哪些文件）</span>
+<span class="token function">git</span> status
+
+<span class="token comment"># 第二步：添加文件到暂存区</span>
+<span class="token function">git</span> <span class="token function">add</span> 文件名              <span class="token comment"># 添加单个文件</span>
+<span class="token function">git</span> <span class="token function">add</span> file1.txt file2.py  <span class="token comment"># 添加多个文件</span>
+<span class="token function">git</span> <span class="token function">add</span> src/                <span class="token comment"># 添加整个目录</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span>                   <span class="token comment"># 添加当前目录所有改动</span>
+
+<span class="token comment"># 第三步：提交到本地仓库</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 添加登录功能"</span>
+
+<span class="token comment"># 一步到位：添加所有已跟踪文件的改动并提交</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-am</span> <span class="token string">"fix: 修复分页bug"</span>
+<span class="token comment"># 注意：-a 只对已跟踪的文件生效，新文件仍需先 git add</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-提交信息规范"><a href="#2-2-提交信息规范" class="headerlink" title="2.2 提交信息规范"></a>2.2 提交信息规范</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 推荐格式：类型: 简短描述</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 新增用户管理模块"</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"fix: 修复登录超时问题"</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"docs: 更新API文档"</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"refactor: 重构数据库连接层"</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"perf: 优化列表查询性能"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-3-修改最近一次提交"><a href="#2-3-修改最近一次提交" class="headerlink" title="2.3 修改最近一次提交"></a>2.3 修改最近一次提交</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 漏了文件，想追加到上一次提交</span>
+<span class="token function">git</span> <span class="token function">add</span> 漏掉的文件
+<span class="token function">git</span> commit <span class="token parameter variable">--amend</span> --no-edit
+
+<span class="token comment"># 想改上次的提交信息</span>
+<span class="token function">git</span> commit <span class="token parameter variable">--amend</span> <span class="token parameter variable">-m</span> <span class="token string">"新的提交信息"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-4-实操演示"><a href="#2-4-实操演示" class="headerlink" title="2.4 实操演示"></a>2.4 实操演示</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 模拟一次完整提交</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"print('hello')"</span> <span class="token operator">></span> main.py
+<span class="token function">git</span> status                              <span class="token comment"># 看到 main.py 是未跟踪的（红色）</span>
+<span class="token function">git</span> <span class="token function">add</span> main.py                         <span class="token comment"># 加入暂存区</span>
+<span class="token function">git</span> status                              <span class="token comment"># 看到 main.py 变绿色</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 添加main.py入口"</span>    <span class="token comment"># 提交！</span>
+
+<span class="token builtin class-name">echo</span> <span class="token string">"print('world')"</span> <span class="token operator">>></span> main.py
+<span class="token function">git</span> status                              <span class="token comment"># 看到 main.py 被修改</span>
+<span class="token function">git</span> <span class="token function">diff</span>                                <span class="token comment"># 看看具体改了什么</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-am</span> <span class="token string">"feat: main.py增加输出"</span>   <span class="token comment"># 一步到位提交</span>
+
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span>                       <span class="token comment"># 查看提交历史</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="3-查看提交记录"><a href="#3-查看提交记录" class="headerlink" title="3. 查看提交记录"></a>3. 查看提交记录</h2><p>这是 VS Code 可视化最核心的替代功能。</p>
+<h3 id="3-1-基本查看"><a href="#3-1-基本查看" class="headerlink" title="3.1 基本查看"></a>3.1 基本查看</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 完整日志（按j/k上下翻页，按q退出）</span>
+<span class="token function">git</span> log
+
+<span class="token comment"># 简洁模式（一行一条）</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span>
+
+<span class="token comment"># 最近 N 条</span>
+<span class="token function">git</span> log <span class="token parameter variable">-5</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">-10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-2-图形化分支图（最接近-VS-Code-的视图）"><a href="#3-2-图形化分支图（最接近-VS-Code-的视图）" class="headerlink" title="3.2 图形化分支图（最接近 VS Code 的视图）"></a>3.2 图形化分支图（最接近 VS Code 的视图）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 最推荐：带分支图的简洁日志</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--graph</span> <span class="token parameter variable">--all</span>
+
+<span class="token comment"># 更详细的分支图</span>
+<span class="token function">git</span> log <span class="token parameter variable">--graph</span> <span class="token parameter variable">--all</span> <span class="token parameter variable">--decorate</span> <span class="token parameter variable">--format</span><span class="token operator">=</span><span class="token string">'%C(auto)%h %C(blue)%an %C(green)%ad %C(reset)%s'</span> <span class="token parameter variable">--date</span><span class="token operator">=</span>short
+
+<span class="token comment"># 建议设置别名，方便反复使用</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.tree <span class="token string">"log --oneline --graph --all"</span>
+<span class="token function">git</span> tree   <span class="token comment"># 以后直接打这个就行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-3-查看每次提交的具体改动"><a href="#3-3-查看每次提交的具体改动" class="headerlink" title="3.3 查看每次提交的具体改动"></a>3.3 查看每次提交的具体改动</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看某次提交改了哪些内容</span>
+<span class="token function">git</span> show <span class="token operator">&lt;</span>commit-hash<span class="token operator">></span>
+
+<span class="token comment"># 只看某个文件在两次提交间的变化</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span> 文件名
+
+<span class="token comment"># 查看每一行的最后修改者和修改时间</span>
+<span class="token function">git</span> blame 文件名
+<span class="token function">git</span> blame <span class="token parameter variable">-L</span> <span class="token number">10,20</span> 文件名   <span class="token comment"># 只看第10到20行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-4-搜索提交记录"><a href="#3-4-搜索提交记录" class="headerlink" title="3.4 搜索提交记录"></a>3.4 搜索提交记录</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 按提交信息关键词搜索</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--grep</span><span class="token operator">=</span><span class="token string">"登录"</span>
+
+<span class="token comment"># 按代码改动的关键词搜索</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">-S</span> <span class="token string">"functionName"</span>
+
+<span class="token comment"># 按作者搜索</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--author</span><span class="token operator">=</span><span class="token string">"张三"</span>
+
+<span class="token comment"># 按时间范围</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--since</span><span class="token operator">=</span><span class="token string">"2025-01-01"</span> <span class="token parameter variable">--until</span><span class="token operator">=</span><span class="token string">"2025-12-31"</span>
+
+<span class="token comment"># 查看某个文件的所有提交历史</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> -- 文件名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-5-查看改了什么（类似-VS-Code-的对比视图）"><a href="#3-5-查看改了什么（类似-VS-Code-的对比视图）" class="headerlink" title="3.5 查看改了什么（类似 VS Code 的对比视图）"></a>3.5 查看改了什么（类似 VS Code 的对比视图）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 工作区 vs 暂存区（还没 git add 的改动）</span>
+<span class="token function">git</span> <span class="token function">diff</span>
+
+<span class="token comment"># 暂存区 vs 最新提交（已经 git add 了但没 commit）</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--cached</span>
+<span class="token comment"># 或</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--staged</span>
+
+<span class="token comment"># 工作区 vs 最新提交（所有未提交的改动）</span>
+<span class="token function">git</span> <span class="token function">diff</span> HEAD
+
+<span class="token comment"># 比较两个提交</span>
+<span class="token function">git</span> <span class="token function">diff</span> commit1 commit2
+<span class="token function">git</span> <span class="token function">diff</span> abc123<span class="token punctuation">..</span>def456
+
+<span class="token comment"># 比较两个分支</span>
+<span class="token function">git</span> <span class="token function">diff</span> main<span class="token punctuation">..</span>feature-login
+
+<span class="token comment"># 只看某个文件的差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> -- 文件名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="4-Tag-标签管理"><a href="#4-Tag-标签管理" class="headerlink" title="4. Tag 标签管理"></a>4. Tag 标签管理</h2><p>Tag 就是给某个 commit 打上版本号标记，比如 <code>v1.0.0</code>，方便以后快速定位。</p>
+<h3 id="4-1-创建-Tag"><a href="#4-1-创建-Tag" class="headerlink" title="4.1 创建 Tag"></a>4.1 创建 Tag</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 轻量标签（不推荐，信息太少）</span>
+<span class="token function">git</span> tag v1.0.0
+
+<span class="token comment"># 附注标签（推荐，带说明信息）</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-a</span> v1.0.0 <span class="token parameter variable">-m</span> <span class="token string">"正式发布 1.0.0 版本"</span>
+
+<span class="token comment"># 给之前的某个提交打标签</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-a</span> v0.9.0 <span class="token parameter variable">-m</span> <span class="token string">"测试版"</span> <span class="token operator">&lt;</span>commit-hash<span class="token operator">></span>
+
+<span class="token comment"># 查看某个标签的详情</span>
+<span class="token function">git</span> show v1.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-2-查看-Tag"><a href="#4-2-查看-Tag" class="headerlink" title="4.2 查看 Tag"></a>4.2 查看 Tag</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 列出所有标签</span>
+<span class="token function">git</span> tag
+
+<span class="token comment"># 按模式过滤</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-l</span> <span class="token string">"v1.*"</span>
+
+<span class="token comment"># 按时间排序查看</span>
+<span class="token function">git</span> tag <span class="token parameter variable">--sort</span><span class="token operator">=</span>-creatordate <span class="token operator">|</span> <span class="token function">head</span> <span class="token parameter variable">-10</span>
+<span class="token function">git</span> tag <span class="token parameter variable">--sort</span><span class="token operator">=</span>-v:refname           <span class="token comment"># 按版本号排序</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-3-推送-Tag-到远程"><a href="#4-3-推送-Tag-到远程" class="headerlink" title="4.3 推送 Tag 到远程"></a>4.3 推送 Tag 到远程</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 推送单个标签</span>
+<span class="token function">git</span> push origin v1.0.0
+
+<span class="token comment"># 推送所有标签</span>
+<span class="token function">git</span> push origin <span class="token parameter variable">--tags</span>
+
+<span class="token comment"># 默认 git push 不会推送标签，需要显式指定</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-4-删除-Tag"><a href="#4-4-删除-Tag" class="headerlink" title="4.4 删除 Tag"></a>4.4 删除 Tag</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 删除本地标签</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-d</span> v1.0.0
+
+<span class="token comment"># 删除远程标签</span>
+<span class="token function">git</span> push origin <span class="token parameter variable">--delete</span> v1.0.0
+<span class="token comment"># 或</span>
+<span class="token function">git</span> push origin :refs/tags/v1.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-5-切换到某个-Tag-的代码"><a href="#4-5-切换到某个-Tag-的代码" class="headerlink" title="4.5 切换到某个 Tag 的代码"></a>4.5 切换到某个 Tag 的代码</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 只读查看</span>
+<span class="token function">git</span> checkout v1.0.0
+
+<span class="token comment"># 基于 Tag 创建新分支（推荐方式，可以在上面改代码）</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> hotfix-from-v1 v1.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="5-Worktree-多分支并行开发"><a href="#5-Worktree-多分支并行开发" class="headerlink" title="5. Worktree 多分支并行开发"></a>5. Worktree 多分支并行开发</h2><blockquote>
+<p>Worktree 让你在<strong>同一个仓库</strong>里同时检出多个分支到<strong>不同目录</strong>，互不干扰。</p>
+</blockquote>
+<p><strong>典型场景</strong>：</p>
+<ul>
+<li>正在 <code>feature-A</code> 分支开发，突然要修 <code>main</code> 分支的紧急 bug</li>
+<li>不用 stash 当前工作，直接开个新 worktree 修 bug</li>
+</ul>
+<h3 id="5-1-创建-Worktree"><a href="#5-1-创建-Worktree" class="headerlink" title="5.1 创建 Worktree"></a>5.1 创建 Worktree</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 语法</span>
+<span class="token function">git</span> worktree <span class="token function">add</span> <span class="token operator">&lt;</span>目录路径<span class="token operator">></span> <span class="token operator">&lt;</span>分支名<span class="token operator">></span>
+
+<span class="token comment"># 示例：在隔壁目录检出 main 分支修 bug</span>
+<span class="token function">git</span> worktree <span class="token function">add</span> <span class="token punctuation">..</span>/my-project-hotfix main
+
+<span class="token comment"># 基于某个提交创建新分支并检出</span>
+<span class="token function">git</span> worktree <span class="token function">add</span> <span class="token parameter variable">-b</span> feature-payment <span class="token punctuation">..</span>/my-project-payment main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-2-查看所有-Worktree"><a href="#5-2-查看所有-Worktree" class="headerlink" title="5.2 查看所有 Worktree"></a>5.2 查看所有 Worktree</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> worktree list
+<span class="token comment"># 输出示例：</span>
+<span class="token comment"># /home/user/my-project        abc1234 [main]</span>
+<span class="token comment"># /home/user/my-project-hotfix def5678 [main]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-3-删除-Worktree"><a href="#5-3-删除-Worktree" class="headerlink" title="5.3 删除 Worktree"></a>5.3 删除 Worktree</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 到那个 worktree 目录下正常删除文件后</span>
+<span class="token function">git</span> worktree remove <span class="token punctuation">..</span>/my-project-hotfix
+
+<span class="token comment"># 或先清理，再删除</span>
+<span class="token function">git</span> worktree prune
+<span class="token function">rm</span> <span class="token parameter variable">-rf</span> <span class="token punctuation">..</span>/my-project-hotfix<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-4-完整实战：用-Worktree-修紧急-Bug"><a href="#5-4-完整实战：用-Worktree-修紧急-Bug" class="headerlink" title="5.4 完整实战：用 Worktree 修紧急 Bug"></a>5.4 完整实战：用 Worktree 修紧急 Bug</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/user/my-project          <span class="token comment"># 当前在 main 分支开发功能</span>
+
+<span class="token function">git</span> worktree list                  <span class="token comment"># 看看有哪些 worktree</span>
+
+<span class="token comment"># 开新 worktree 修 bug</span>
+<span class="token function">git</span> worktree <span class="token function">add</span> <span class="token punctuation">..</span>/my-project-hotfix main
+
+<span class="token comment"># 进新目录修 bug</span>
+<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>/my-project-hotfix
+<span class="token comment"># ... 修改代码 ...</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-am</span> <span class="token string">"hotfix: 修复支付回调空指针"</span>
+<span class="token function">git</span> push
+
+<span class="token comment"># 回到原目录继续开发</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project
+<span class="token comment"># 新目录和原目录完全独立，各干各的</span>
+
+<span class="token comment"># 修完后清理 worktree</span>
+<span class="token function">git</span> worktree remove <span class="token punctuation">..</span>/my-project-hotfix<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-5-Worktree-中的合并操作"><a href="#5-5-Worktree-中的合并操作" class="headerlink" title="5.5 Worktree 中的合并操作"></a>5.5 Worktree 中的合并操作</h3><p>Worktree 本质上是共享同一个 <code>.git</code> 仓库的不同工作目录，所以<strong>合并命令和普通方式完全一样</strong>。关键在于搞清楚”你在哪个目录、要合并谁”。</p>
+<h4 id="场景A：在-Worktree-里开发完，合并回主分支"><a href="#场景A：在-Worktree-里开发完，合并回主分支" class="headerlink" title="场景A：在 Worktree 里开发完，合并回主分支"></a>场景A：在 Worktree 里开发完，合并回主分支</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 假设目录结构：</span>
+<span class="token comment"># /home/user/my-project         → main 分支</span>
+<span class="token comment"># /home/user/my-project-feature → feature-login 分支（worktree）</span>
+
+<span class="token comment"># 在 feature worktree 里开发并提交</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project-feature
+<span class="token comment"># ... 开发 ...</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 登录功能完成"</span>
+
+<span class="token comment"># 然后回到主目录，把 feature 分支合并进来</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project
+<span class="token function">git</span> merge feature-login
+<span class="token comment"># 或者</span>
+<span class="token function">git</span> merge --no-ff feature-login <span class="token parameter variable">-m</span> <span class="token string">"merge: 合并登录功能"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="场景B：主分支有新提交，同步到-Worktree"><a href="#场景B：主分支有新提交，同步到-Worktree" class="headerlink" title="场景B：主分支有新提交，同步到 Worktree"></a>场景B：主分支有新提交，同步到 Worktree</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># main 分支有人提交了新代码（不管是在哪个 worktree 提交的）</span>
+<span class="token comment"># 在 feature worktree 里把最新 main 合并进来</span>
+
+<span class="token builtin class-name">cd</span> /home/user/my-project-feature   <span class="token comment"># 进入 feature worktree</span>
+<span class="token function">git</span> merge main                      <span class="token comment"># 把 main 的最新代码合并到当前分支</span>
+
+<span class="token comment"># 如果有冲突，在当前目录正常解决即可</span>
+<span class="token comment"># ... 解决冲突 ...</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"merge: 同步 main 最新代码"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="场景C：一个-Worktree-一个任务，互不阻塞"><a href="#场景C：一个-Worktree-一个任务，互不阻塞" class="headerlink" title="场景C：一个 Worktree 一个任务，互不阻塞"></a>场景C：一个 Worktree 一个任务，互不阻塞</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Terminal 1：在 feature 目录开发新功能</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project-feature
+<span class="token function">git</span> checkout feature-login
+<span class="token comment"># ... 正常开发、提交 ...</span>
+
+<span class="token comment"># Terminal 2：在 hotfix 目录修紧急 bug</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project-hotfix
+<span class="token function">git</span> checkout hotfix-urgent
+<span class="token comment"># ... 修 bug、提交 ...</span>
+
+<span class="token comment"># Terminal 3：在 main 目录做发布</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project
+<span class="token function">git</span> merge feature-login      <span class="token comment"># 合并功能</span>
+<span class="token function">git</span> merge hotfix-urgent      <span class="token comment"># 合并热修复</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-a</span> v2.0.0 <span class="token parameter variable">-m</span> <span class="token string">"发布"</span>   <span class="token comment"># 打版本</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="场景D：Worktree-间交叉合并（不推荐，但可行）"><a href="#场景D：Worktree-间交叉合并（不推荐，但可行）" class="headerlink" title="场景D：Worktree 间交叉合并（不推荐，但可行）"></a>场景D：Worktree 间交叉合并（不推荐，但可行）</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 直接在 feature worktree 目录执行 merge</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project-feature
+<span class="token function">git</span> merge hotfix-urgent       <span class="token comment"># 此时会报错！</span>
+
+<span class="token comment"># 错误原因：hotfix-urgent 分支被另一个 worktree 检出了</span>
+<span class="token comment"># Git 不允许同一个分支同时被两个 worktree 检出</span>
+
+<span class="token comment"># 解决方案：先让 hotfix worktree 切换到别的分支</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project-hotfix
+<span class="token function">git</span> checkout main             <span class="token comment"># 或直接 git switch main</span>
+<span class="token comment"># 现在 hotfix-urgent 没人占用了</span>
+
+<span class="token builtin class-name">cd</span> /home/user/my-project-feature
+<span class="token function">git</span> merge hotfix-urgent       <span class="token comment"># 可以了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-6-Worktree-Merge-完整实战：并行开发两个功能，最后一起合并"><a href="#5-6-Worktree-Merge-完整实战：并行开发两个功能，最后一起合并" class="headerlink" title="5.6 Worktree + Merge 完整实战：并行开发两个功能，最后一起合并"></a>5.6 Worktree + Merge 完整实战：并行开发两个功能，最后一起合并</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 初始状态：只有 main 分支</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project
+<span class="token function">git</span> branch
+<span class="token comment"># * main</span>
+
+<span class="token comment"># 创建两个 worktree，分别开发两个独立功能</span>
+<span class="token function">git</span> worktree <span class="token function">add</span> <span class="token parameter variable">-b</span> feature-payment <span class="token punctuation">..</span>/my-project-payment main
+<span class="token function">git</span> worktree <span class="token function">add</span> <span class="token parameter variable">-b</span> feature-report  <span class="token punctuation">..</span>/my-project-report  main
+
+<span class="token comment"># 开发 payment 功能</span>
+<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>/my-project-payment
+<span class="token builtin class-name">echo</span> <span class="token string">"payment module"</span> <span class="token operator">></span> payment.py
+<span class="token function">git</span> <span class="token function">add</span> payment.py
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 支付模块"</span>
+
+<span class="token comment"># 开发 report 功能（payment 还在开发中，互不干扰！）</span>
+<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>/my-project-report
+<span class="token builtin class-name">echo</span> <span class="token string">"report module"</span> <span class="token operator">></span> report.py
+<span class="token function">git</span> <span class="token function">add</span> report.py
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 报表模块"</span>
+
+<span class="token comment"># payment 继续开发</span>
+<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>/my-project-payment
+<span class="token builtin class-name">echo</span> <span class="token string">"alipay support"</span> <span class="token operator">>></span> payment.py
+<span class="token function">git</span> commit <span class="token parameter variable">-am</span> <span class="token string">"feat: 支持支付宝"</span>
+
+<span class="token comment"># 回到主目录，逐个合并</span>
+<span class="token builtin class-name">cd</span> /home/user/my-project
+
+<span class="token comment"># 先合并 payment</span>
+<span class="token function">git</span> merge --no-ff feature-payment <span class="token parameter variable">-m</span> <span class="token string">"merge: 合并支付模块"</span>
+
+<span class="token comment"># 再合并 report（可能需要解决冲突）</span>
+<span class="token function">git</span> merge --no-ff feature-report <span class="token parameter variable">-m</span> <span class="token string">"merge: 合并报表模块"</span>
+
+<span class="token comment"># 发布</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-a</span> v1.0.0 <span class="token parameter variable">-m</span> <span class="token string">"第一个正式版"</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/myproject-v1.0.0.zip v1.0.0
+
+<span class="token comment"># 清理 worktree</span>
+<span class="token function">git</span> worktree remove <span class="token punctuation">..</span>/my-project-payment
+<span class="token function">git</span> worktree remove <span class="token punctuation">..</span>/my-project-report
+
+<span class="token comment"># 查看最终的分支图</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--graph</span> <span class="token parameter variable">--all</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-7-Worktree-注意事项"><a href="#5-7-Worktree-注意事项" class="headerlink" title="5.7 Worktree 注意事项"></a>5.7 Worktree 注意事项</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 同一个分支不能被两个 worktree 同时检出</span>
+<span class="token function">git</span> worktree list
+<span class="token comment"># 确保没有分支名重复出现在不同目录</span>
+
+<span class="token comment"># 2. worktree 里删除分支前，先切换到其他分支</span>
+<span class="token function">git</span> switch main
+<span class="token function">git</span> branch <span class="token parameter variable">-d</span> feature-old
+
+<span class="token comment"># 3. 主仓库删了分支，worktree 引用会失效，记得 prune</span>
+<span class="token function">git</span> worktree prune
+
+<span class="token comment"># 4. Worktree 共享 .git，所以 git log / git stash 等操作数据互通</span>
+<span class="token comment">#    在一个 worktree 里 git stash，在另一个 worktree 里 git stash list 能看到</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="6-打包特定版本为-zip"><a href="#6-打包特定版本为-zip" class="headerlink" title="6. 打包特定版本为 zip"></a>6. 打包特定版本为 zip</h2><blockquote>
+<p><code>git archive</code> 可以直接导出任意版本为 zip&#x2F;tar.gz，不包含 <code>.git</code> 目录，适合交付。</p>
+</blockquote>
+<h3 id="6-1-打包当前版本"><a href="#6-1-打包当前版本" class="headerlink" title="6.1 打包当前版本"></a>6.1 打包当前版本</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 当前 HEAD 版本打包为 zip</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/output.zip HEAD
+
+<span class="token comment"># 打包为 tar.gz</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/output.tar.gz HEAD<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-2-打包指定版本"><a href="#6-2-打包指定版本" class="headerlink" title="6.2 打包指定版本"></a>6.2 打包指定版本</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 按 Tag 打包</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/v1.0.0.zip v1.0.0
+
+<span class="token comment"># 按分支打包</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/develop.zip develop
+
+<span class="token comment"># 按 commit hash 打包</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/snapshot.zip abc1234
+
+<span class="token comment"># 只打包某个子目录</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/src.zip HEAD src/
+
+<span class="token comment"># 排除某些文件</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token punctuation">..</span>/no-test.zip HEAD -- <span class="token string">':!test'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-3-实用脚本：一键打包发布"><a href="#6-3-实用脚本：一键打包发布" class="headerlink" title="6.3 实用脚本：一键打包发布"></a>6.3 实用脚本：一键打包发布</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token comment"># 保存为 release.sh</span>
+
+<span class="token assign-left variable">VERSION</span><span class="token operator">=</span><span class="token variable">$&#123;1<span class="token operator">:-</span>"v1.0.0"&#125;</span>
+<span class="token function">git</span> archive <span class="token parameter variable">-o</span> <span class="token string">"../myproject-<span class="token variable">$&#123;VERSION&#125;</span>.zip"</span> <span class="token string">"<span class="token variable">$VERSION</span>"</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"已生成: myproject-<span class="token variable">$&#123;VERSION&#125;</span>.zip"</span>
+<span class="token function">ls</span> <span class="token parameter variable">-lh</span> <span class="token string">"../myproject-<span class="token variable">$&#123;VERSION&#125;</span>.zip"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>用法：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">chmod</span> +x release.sh
+./release.sh v2.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="6-4-打包带-git-的完整仓库（迁移到另一台机器继续开发）"><a href="#6-4-打包带-git-的完整仓库（迁移到另一台机器继续开发）" class="headerlink" title="6.4 打包带 .git 的完整仓库（迁移到另一台机器继续开发）"></a>6.4 打包带 <code>.git</code> 的完整仓库（迁移到另一台机器继续开发）</h3><blockquote>
+<p><code>git archive</code> 不含 <code>.git</code>，如果你要把整个仓库（含提交历史、分支、标签）搬到内网服务器继续开发，用下面三种方式。</p>
+</blockquote>
+<h4 id="方式一：直接打包整个目录（最简单）"><a href="#方式一：直接打包整个目录（最简单）" class="headerlink" title="方式一：直接打包整个目录（最简单）"></a>方式一：直接打包整个目录（最简单）</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 打包为 zip（含 .git）</span>
+<span class="token function">zip</span> <span class="token parameter variable">-r</span> <span class="token punctuation">..</span>/myproject-full.zip <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 打包为 tar.gz（推荐，压缩比更高且保留权限）</span>
+<span class="token function">tar</span> <span class="token parameter variable">-czf</span> <span class="token punctuation">..</span>/myproject-full.tar.gz <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 到目标机器解压</span>
+<span class="token function">unzip</span> myproject-full.zip <span class="token parameter variable">-d</span> /path/to/new-project/
+<span class="token comment"># 或</span>
+<span class="token function">tar</span> <span class="token parameter variable">-xzf</span> myproject-full.tar.gz <span class="token parameter variable">-C</span> /path/to/new-project/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="方式二：git-bundle-打包（最-Git-原生，推荐）"><a href="#方式二：git-bundle-打包（最-Git-原生，推荐）" class="headerlink" title="方式二：git bundle 打包（最 Git 原生，推荐）"></a>方式二：<code>git bundle</code> 打包（最 Git 原生，推荐）</h4><p><code>git bundle</code> 把整个仓库（所有分支、标签、历史）打包成一个文件，<strong>无需解压</strong>，直接当远程仓库用。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 打包：导出所有分支和标签</span>
+<span class="token function">git</span> bundle create <span class="token punctuation">..</span>/myproject.bundle <span class="token parameter variable">--all</span>
+
+<span class="token comment"># 查看 bundle 里有什么</span>
+<span class="token function">git</span> bundle list-heads <span class="token punctuation">..</span>/myproject.bundle
+<span class="token comment"># 输出示例：</span>
+<span class="token comment"># abc1234 refs/heads/main</span>
+<span class="token comment"># def5678 refs/heads/develop</span>
+<span class="token comment"># 1112222 refs/tags/v1.0.0</span>
+
+<span class="token comment"># 也可以只打包某个分支及其历史</span>
+<span class="token function">git</span> bundle create <span class="token punctuation">..</span>/myproject.bundle main develop
+
+<span class="token comment"># 也可以打包某个范围（比如只导出 v1.0.0 之后的内容）</span>
+<span class="token function">git</span> bundle create <span class="token punctuation">..</span>/myproject.bundle v1.0.0<span class="token punctuation">..</span>main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>到目标机器恢复：</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在目标机器上，像克隆远程仓库一样从 bundle 文件恢复</span>
+<span class="token function">git</span> clone /path/to/myproject.bundle /path/to/new-project/
+
+<span class="token comment"># 克隆完就是一个完整的 git 仓库，历史、分支、标签全在</span>
+<span class="token builtin class-name">cd</span> /path/to/new-project/
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--graph</span> <span class="token parameter variable">--all</span>   <span class="token comment"># 一切都在</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-a</span>                      <span class="token comment"># 所有分支都在</span>
+<span class="token function">git</span> tag                            <span class="token comment"># 所有标签都在</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="方式三：U-盘-SCP-拷贝（物理隔离环境）"><a href="#方式三：U-盘-SCP-拷贝（物理隔离环境）" class="headerlink" title="方式三：U 盘 &#x2F; SCP 拷贝（物理隔离环境）"></a>方式三：U 盘 &#x2F; SCP 拷贝（物理隔离环境）</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 源机器：直接复制整个项目目录（.git 自然在里面）</span>
+<span class="token function">scp</span> <span class="token parameter variable">-r</span> /home/user/my-project user@目标IP:/home/user/
+
+<span class="token comment"># 或者先 tar 再传</span>
+<span class="token function">tar</span> <span class="token parameter variable">-czf</span> myproject.tar.gz my-project/
+<span class="token function">scp</span> myproject.tar.gz user@目标IP:/home/user/
+
+<span class="token comment"># 到目标机器解压即用</span>
+<span class="token function">ssh</span> user@目标IP
+<span class="token builtin class-name">cd</span> /home/user
+<span class="token function">tar</span> <span class="token parameter variable">-xzf</span> myproject.tar.gz
+<span class="token builtin class-name">cd</span> my-project
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span>    <span class="token comment"># 历史完整保留</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="三种方式对比"><a href="#三种方式对比" class="headerlink" title="三种方式对比"></a>三种方式对比</h4><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>包含 .git</th>
+<th>尊重 .gitignore</th>
+<th>文件大小</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>git archive</code></td>
+<td>不含</td>
+<td>是（只导出已跟踪文件）</td>
+<td>最小</td>
+<td>交付给客户&#x2F;生产部署</td>
+</tr>
+<tr>
+<td><code>git bundle</code></td>
+<td>完整历史</td>
+<td>是（只打包 Git 对象）</td>
+<td>比 archive 大</td>
+<td><strong>跨机器迁移开发（推荐）</strong></td>
+</tr>
+<tr>
+<td><code>zip -r</code> &#x2F; <code>tar</code></td>
+<td>完整历史</td>
+<td><strong>否</strong>（无差别打包整个目录）</td>
+<td>最大，含 node_modules 等</td>
+<td>快速完整备份</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-版本回退"><a href="#7-版本回退" class="headerlink" title="7. 版本回退"></a>7. 版本回退</h2><h3 id="7-1-先理解三个区域"><a href="#7-1-先理解三个区域" class="headerlink" title="7.1 先理解三个区域"></a>7.1 先理解三个区域</h3><pre class="line-numbers language-none"><code class="language-none">工作区          暂存区         本地仓库          远程仓库
+(Working)  →   (Stage)   →   (Local)    →    (Remote)
+  |              |              |               |
+git add      git commit     git push
+  |              |              |               |
+ ← git restore ← git restore  ← git reset      ← git revert
+                  --staged    ← git revert<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="7-2-回退方法对比"><a href="#7-2-回退方法对比" class="headerlink" title="7.2 回退方法对比"></a>7.2 回退方法对比</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>效果</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>git restore 文件</code></td>
+<td>撤销工作区改动</td>
+<td>还没 add</td>
+</tr>
+<tr>
+<td><code>git restore --staged 文件</code></td>
+<td>移出暂存区</td>
+<td>已经 add 但没 commit</td>
+</tr>
+<tr>
+<td><code>git reset --soft HEAD~1</code></td>
+<td>撤销 commit，改动保留在暂存区</td>
+<td>commit 错了，想重写</td>
+</tr>
+<tr>
+<td><code>git reset --mixed HEAD~1</code></td>
+<td>撤销 commit 和 add，改动保留在工作区</td>
+<td>commit 错了，从头来</td>
+</tr>
+<tr>
+<td><code>git reset --hard HEAD~1</code></td>
+<td>彻底丢弃最近一次提交的所有改动</td>
+<td>确定不要了</td>
+</tr>
+<tr>
+<td><code>git revert HEAD</code></td>
+<td>创建一次新提交来”反向”抵消</td>
+<td>已推送到远程</td>
+</tr>
+</tbody></table>
+<h3 id="7-3-实战：各种回退场景"><a href="#7-3-实战：各种回退场景" class="headerlink" title="7.3 实战：各种回退场景"></a>7.3 实战：各种回退场景</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 场景1：改乱了工作区，想恢复到上次 commit 的状态</span>
+<span class="token function">git</span> restore 文件名
+<span class="token function">git</span> restore <span class="token builtin class-name">.</span>                          <span class="token comment"># 恢复所有文件</span>
+
+<span class="token comment"># 场景2：git add 错了，想取消暂存</span>
+<span class="token function">git</span> restore <span class="token parameter variable">--staged</span> 文件名
+
+<span class="token comment"># 场景3：刚 commit 了，但发现漏改东西</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--soft</span> HEAD~1                <span class="token comment"># 回到 commit 前，改动还在暂存区</span>
+<span class="token comment"># ... 补改 ...</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"修正后的提交"</span>
+
+<span class="token comment"># 场景4：这次 commit 完全不想要了，回到干净状态</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> HEAD~1
+
+<span class="token comment"># 场景5：回退到指定版本（回退 N 个 commit）</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> HEAD~3                <span class="token comment"># 回退 3 次提交</span>
+
+<span class="token comment"># 场景6：回退到指定 commit hash</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span>                      <span class="token comment"># 先找到目标 commit</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> abc1234               <span class="token comment"># 回退到该 commit</span>
+<span class="token comment"># 警告：abc1234 之后的提交会全部丢失！</span>
+
+<span class="token comment"># 场景7：已经 push 到远程了，用 revert（安全）</span>
+<span class="token function">git</span> revert HEAD                        <span class="token comment"># 创建新 commit 撤销最近一次</span>
+<span class="token function">git</span> revert abc1234                     <span class="token comment"># 撤销指定 commit</span>
+<span class="token function">git</span> push origin main
+
+<span class="token comment"># 场景8：回退后又后悔了</span>
+<span class="token function">git</span> reflog                             <span class="token comment"># 查看所有 HEAD 的移动记录</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> HEAD@<span class="token punctuation">&#123;</span><span class="token number">1</span><span class="token punctuation">&#125;</span>              <span class="token comment"># 回到回退前的状态</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="7-4-reset-vs-revert-关键区别"><a href="#7-4-reset-vs-revert-关键区别" class="headerlink" title="7.4 reset vs revert 关键区别"></a>7.4 <code>reset</code> vs <code>revert</code> 关键区别</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># reset：真删了，不留痕（像时光倒流）</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> HEAD~1
+
+<span class="token comment"># revert：创建反向 commit，历史可追溯（像打补丁）</span>
+<span class="token function">git</span> revert HEAD<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>简单规则：<strong>已 push 到远程，用 revert；还在本地，用 reset。</strong></p>
+</blockquote>
+<hr>
+<h2 id="8-查看特定记录的代码"><a href="#8-查看特定记录的代码" class="headerlink" title="8. 查看特定记录的代码"></a>8. 查看特定记录的代码</h2><h3 id="8-1-查看某次提交的完整改动"><a href="#8-1-查看某次提交的完整改动" class="headerlink" title="8.1 查看某次提交的完整改动"></a>8.1 查看某次提交的完整改动</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> show abc1234                    <span class="token comment"># 看完整 diff</span>
+<span class="token function">git</span> show abc1234 <span class="token parameter variable">--stat</span>             <span class="token comment"># 只看改了哪些文件</span>
+<span class="token function">git</span> show abc1234 -- 文件名           <span class="token comment"># 只看某个文件的改动</span>
+<span class="token function">git</span> show HEAD~3                     <span class="token comment"># 看 3 次提交之前的改动</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="8-2-查看某个文件在某个版本时的内容"><a href="#8-2-查看某个文件在某个版本时的内容" class="headerlink" title="8.2 查看某个文件在某个版本时的内容"></a>8.2 查看某个文件在某个版本时的内容</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看文件在特定 commit 时的内容（不修改工作区）</span>
+<span class="token function">git</span> show abc1234:路径/文件名
+
+<span class="token comment"># 示例</span>
+<span class="token function">git</span> show abc1234:src/main.py
+<span class="token function">git</span> show v1.0.0:README.md
+<span class="token function">git</span> show HEAD~5:config/db.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="8-3-比较文件在不同版本间的差异"><a href="#8-3-比较文件在不同版本间的差异" class="headerlink" title="8.3 比较文件在不同版本间的差异"></a>8.3 比较文件在不同版本间的差异</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 同一个文件在两个版本间的差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> abc1234<span class="token punctuation">..</span>def5678 -- 文件名
+
+<span class="token comment"># 文件在两次提交间的变化</span>
+<span class="token function">git</span> <span class="token function">diff</span> HEAD~3<span class="token punctuation">..</span>HEAD -- src/main.py
+
+<span class="token comment"># 文件名在两处不一样怎么办，看下一节</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="8-4-临时切换到某个版本（仅查看，不改代码）"><a href="#8-4-临时切换到某个版本（仅查看，不改代码）" class="headerlink" title="8.4 临时切换到某个版本（仅查看，不改代码）"></a>8.4 临时切换到某个版本（仅查看，不改代码）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 切换到某个 commit（detached HEAD 状态）</span>
+<span class="token function">git</span> checkout abc1234
+<span class="token comment"># ... 看完代码 ...</span>
+<span class="token function">git</span> switch main   <span class="token comment"># 或 git checkout main  回到正常分支</span>
+
+<span class="token comment"># 切换到某个 tag</span>
+<span class="token function">git</span> checkout v1.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="8-5-实用对比脚本"><a href="#8-5-实用对比脚本" class="headerlink" title="8.5 实用对比脚本"></a>8.5 实用对比脚本</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看一个文件从一开始到现在的所有版本</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--follow</span> -- 文件名
+<span class="token comment"># --follow 会追踪文件重命名</span>
+
+<span class="token comment"># 查看某次提交前后10行上下文</span>
+<span class="token function">git</span> show abc1234 <span class="token parameter variable">-U10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="9-Merge-合并"><a href="#9-Merge-合并" class="headerlink" title="9. Merge 合并"></a>9. Merge 合并</h2><h3 id="9-1-基本合并流程"><a href="#9-1-基本合并流程" class="headerlink" title="9.1 基本合并流程"></a>9.1 基本合并流程</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 场景：把 feature-login 分支的代码合并到 main</span>
+
+<span class="token comment"># Step 1: 切换到目标分支</span>
+<span class="token function">git</span> checkout main
+<span class="token comment"># 或</span>
+<span class="token function">git</span> switch main
+
+<span class="token comment"># Step 2: 确保目标分支是最新的</span>
+<span class="token function">git</span> pull origin main
+
+<span class="token comment"># Step 3: 合并</span>
+<span class="token function">git</span> merge feature-login
+
+<span class="token comment"># Step 4: （如果没问题）推送到远程</span>
+<span class="token function">git</span> push origin main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="9-2-合并策略"><a href="#9-2-合并策略" class="headerlink" title="9.2 合并策略"></a>9.2 合并策略</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 默认合并（可能产生 merge commit）</span>
+<span class="token function">git</span> merge feature-login
+
+<span class="token comment"># Fast-Forward 合并：如果 main 没有新 commit，直接把 main 指针移过去</span>
+<span class="token comment"># 等同于 --ff，这是默认行为</span>
+<span class="token function">git</span> merge <span class="token parameter variable">--ff</span> feature-login
+
+<span class="token comment"># 禁止 Fast-Forward：强制生成一个 merge commit</span>
+<span class="token comment"># 好处：分支历史清晰可见</span>
+<span class="token function">git</span> merge --no-ff feature-login <span class="token parameter variable">-m</span> <span class="token string">"merge: 合并登录功能"</span>
+
+<span class="token comment"># Squash 合并：把 feature 分支的所有 commit 压成一个 commit</span>
+<span class="token comment"># 好处：main 分支历史干净</span>
+<span class="token function">git</span> merge <span class="token parameter variable">--squash</span> feature-login
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"feat: 登录功能（含10次提交）"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="9-3-三种合并方式对比"><a href="#9-3-三种合并方式对比" class="headerlink" title="9.3 三种合并方式对比"></a>9.3 三种合并方式对比</h3><pre class="line-numbers language-none"><code class="language-none">--ff (Fast-Forward)
+main:    A---B
+feature:     \---C---D
+结果:    A---B---C---D    （线性，看不出分支的存在）
+
+--no-ff
+main:    A---B
+feature:     \---C---D
+结果:    A---B-------M    （M 是 merge commit，保留分支结构）
+               \---C---D
+
+--squash
+main:    A---B
+feature:     \---C---D
+结果:    A---B---S        （S 包含了 C+D 的全部改动，只有一次 commit）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="9-4-合并前先预演"><a href="#9-4-合并前先预演" class="headerlink" title="9.4 合并前先预演"></a>9.4 合并前先预演</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 合并前看看有没有冲突，不真正执行</span>
+<span class="token function">git</span> merge --no-commit --no-ff feature-login
+<span class="token comment"># 检查完没问题的话：</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"merge: 合并 feature-login"</span>
+<span class="token comment"># 如果不想合并了：</span>
+<span class="token function">git</span> merge <span class="token parameter variable">--abort</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="9-5-中断合并"><a href="#9-5-中断合并" class="headerlink" title="9.5 中断合并"></a>9.5 中断合并</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 合并到一半发现有冲突不想解决了</span>
+<span class="token function">git</span> merge <span class="token parameter variable">--abort</span>
+<span class="token comment"># 回到合并前状态，干干净净</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="10-解决合并冲突"><a href="#10-解决合并冲突" class="headerlink" title="10. 解决合并冲突"></a>10. 解决合并冲突</h2><p>当两个分支<strong>改了同一个文件的同一行</strong>，git 无法自动判断用哪个版本，就会产生冲突。</p>
+<h3 id="10-1-冲突的样子"><a href="#10-1-冲突的样子" class="headerlink" title="10.1 冲突的样子"></a>10.1 冲突的样子</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;&lt;</span><span class="token operator">&lt;</span> HEAD                    <span class="token comment"># 这是当前分支（main）的内容</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> pwd<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> api<span class="token punctuation">.</span>login<span class="token punctuation">(</span>user<span class="token punctuation">,</span> pwd<span class="token punctuation">)</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>                         <span class="token comment"># 这是要合并进来的分支（feature）的内容</span>
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> pwd<span class="token punctuation">,</span> method<span class="token operator">=</span><span class="token string">'password'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> api<span class="token punctuation">.</span>authenticate<span class="token punctuation">(</span>user<span class="token punctuation">,</span> pwd<span class="token punctuation">,</span> method<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">>></span><span class="token operator">>></span><span class="token operator">></span> feature<span class="token operator">-</span>login<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="10-2-解决冲突三步法"><a href="#10-2-解决冲突三步法" class="headerlink" title="10.2 解决冲突三步法"></a>10.2 解决冲突三步法</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Step 1: 找到冲突</span>
+<span class="token function">git</span> merge feature-login
+<span class="token comment"># 输出：CONFLICT (content): Merge conflict in src/auth.py</span>
+
+<span class="token function">git</span> status                       <span class="token comment"># 看到 both modified: src/auth.py</span>
+
+<span class="token comment"># Step 2: 手动编辑文件，删除冲突标记</span>
+<span class="token comment"># 打开 src/auth.py，看到 &lt;&lt;&lt;&lt;&lt;&lt;&lt; ======= >>>>>>> 标记</span>
+<span class="token comment"># 决定保留哪个版本（或两个版本融合），删掉标记</span>
+
+<span class="token comment"># Step 3: 标记已解决并提交</span>
+<span class="token function">git</span> <span class="token function">add</span> src/auth.py
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"merge: 合并 feature-login（已解决冲突）"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="10-3-冲突解决示例"><a href="#10-3-冲突解决示例" class="headerlink" title="10.3 冲突解决示例"></a>10.3 冲突解决示例</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 原始文件有冲突：</span>
+<span class="token comment"># &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="token comment"># def login(user, pwd):</span>
+<span class="token comment"># =======</span>
+<span class="token comment"># def login(user, pwd, method='password'):</span>
+<span class="token comment"># >>>>>>> feature-login</span>
+
+<span class="token comment"># 手动编辑，保留你的选择，比如：</span>
+def login<span class="token punctuation">(</span>user, pwd, <span class="token assign-left variable">method</span><span class="token operator">=</span><span class="token string">'password'</span><span class="token punctuation">)</span>:
+    <span class="token builtin class-name">return</span> api.authenticate<span class="token punctuation">(</span>user, pwd, method<span class="token punctuation">)</span>
+
+<span class="token comment"># 保存后：</span>
+<span class="token function">git</span> <span class="token function">add</span> src/auth.py
+<span class="token comment"># 所有冲突都解决后：</span>
+<span class="token function">git</span> commit
+<span class="token comment"># 默认会打开编辑器让你确认 merge 信息，保存退出即可</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="10-4-冲突时的常用操作"><a href="#10-4-冲突时的常用操作" class="headerlink" title="10.4 冲突时的常用操作"></a>10.4 冲突时的常用操作</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看哪些文件有冲突</span>
+<span class="token function">git</span> <span class="token function">diff</span> --name-only --diff-filter<span class="token operator">=</span>U
+
+<span class="token comment"># 全部接受当前分支（ours）的版本</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">--ours</span> 文件名
+<span class="token function">git</span> <span class="token function">add</span> 文件名
+
+<span class="token comment"># 全部接受合并分支（theirs）的版本</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">--theirs</span> 文件名
+<span class="token function">git</span> <span class="token function">add</span> 文件名
+
+<span class="token comment"># 使用可视化 diff 工具（如果服务器装了）</span>
+<span class="token function">git</span> mergetool
+
+<span class="token comment"># 放弃合并</span>
+<span class="token function">git</span> merge <span class="token parameter variable">--abort</span>
+
+<span class="token comment"># 查看冲突的具体差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> 文件名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="10-5-查看合并历史"><a href="#10-5-查看合并历史" class="headerlink" title="10.5 查看合并历史"></a>10.5 查看合并历史</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看哪些分支已合并、未合并</span>
+<span class="token function">git</span> branch <span class="token parameter variable">--merged</span>
+<span class="token function">git</span> branch --no-merged
+
+<span class="token comment"># 查看合并日志</span>
+<span class="token function">git</span> log <span class="token parameter variable">--merges</span> <span class="token parameter variable">--oneline</span>
+
+<span class="token comment"># 查看某次合并引入了哪些改动</span>
+<span class="token function">git</span> log --first-parent main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="附：常用命令速查表"><a href="#附：常用命令速查表" class="headerlink" title="附：常用命令速查表"></a>附：常用命令速查表</h2><h3 id="最常用（每天都会用）"><a href="#最常用（每天都会用）" class="headerlink" title="最常用（每天都会用）"></a>最常用（每天都会用）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> status                           <span class="token comment"># 查看状态</span>
+<span class="token function">git</span> log <span class="token parameter variable">--oneline</span> <span class="token parameter variable">--graph</span> <span class="token parameter variable">--all</span>      <span class="token comment"># 查看历史图</span>
+<span class="token function">git</span> <span class="token function">diff</span>                             <span class="token comment"># 看工作区改动</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"..."</span>    <span class="token comment"># 提交</span>
+<span class="token function">git</span> push origin main                 <span class="token comment"># 推送到远程</span>
+<span class="token function">git</span> pull                             <span class="token comment"># 拉取远程更新</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="实用别名配置（建议加到-bashrc-或-gitconfig）"><a href="#实用别名配置（建议加到-bashrc-或-gitconfig）" class="headerlink" title="实用别名配置（建议加到 ~&#x2F;.bashrc 或 ~&#x2F;.gitconfig）"></a>实用别名配置（建议加到 ~&#x2F;.bashrc 或 ~&#x2F;.gitconfig）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 简洁状态</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.st status
+
+<span class="token comment"># 上次提交的改动</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.last <span class="token string">'log -1 --stat'</span>
+
+<span class="token comment"># 漂亮的分支图</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.tree <span class="token string">'log --oneline --graph --all --decorate'</span>
+
+<span class="token comment"># 漂亮日志</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.lg <span class="token string">"log --graph --format='%C(auto)%h %C(blue)%an %C(green)%ad %C(reset)%s' --date=short"</span>
+
+<span class="token comment"># 搜索提交信息</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.find <span class="token string">'log --oneline --grep'</span>
+
+<span class="token comment"># 配置完成后：</span>
+<span class="token function">git</span> st       <span class="token comment"># git status</span>
+<span class="token function">git</span> last     <span class="token comment"># 查看最近一次提交</span>
+<span class="token function">git</span> tree     <span class="token comment"># 查看分支图</span>
+<span class="token function">git</span> lg       <span class="token comment"># 漂亮的提交日志</span>
+<span class="token function">git</span> <span class="token function">find</span> <span class="token string">"关键词"</span>  <span class="token comment"># 搜索提交</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="紧急情况速查"><a href="#紧急情况速查" class="headerlink" title="紧急情况速查"></a>紧急情况速查</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 改坏了，回到上次 commit</span>
+<span class="token function">git</span> restore <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 刚 commit 了想反悔</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--soft</span> HEAD~1
+
+<span class="token comment"># 刚 push 了想反悔</span>
+<span class="token function">git</span> revert HEAD <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push
+
+<span class="token comment"># 合并乱了想重来</span>
+<span class="token function">git</span> merge <span class="token parameter variable">--abort</span>
+
+<span class="token comment"># 误删了 commit 想找回</span>
+<span class="token function">git</span> reflog <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> reset <span class="token parameter variable">--hard</span> HEAD@<span class="token punctuation">&#123;</span>n<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 查看某次提交的文件内容</span>
+<span class="token function">git</span> show abc1234:path/to/file<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="结语：命令行-vs-VS-Code-操作对照"><a href="#结语：命令行-vs-VS-Code-操作对照" class="headerlink" title="结语：命令行 vs VS Code 操作对照"></a>结语：命令行 vs VS Code 操作对照</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>VS Code 方式</th>
+<th>命令行方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>看改了什么</td>
+<td>左侧文件颜色</td>
+<td><code>git status</code> + <code>git diff</code></td>
+</tr>
+<tr>
+<td>看提交历史</td>
+<td>GitLens &#x2F; 时间线</td>
+<td><code>git log --oneline --graph --all</code></td>
+</tr>
+<tr>
+<td>看单次提交</td>
+<td>点击 commit 条目</td>
+<td><code>git show &lt;hash&gt;</code></td>
+</tr>
+<tr>
+<td>提交代码</td>
+<td>Ctrl+Enter</td>
+<td><code>git add</code> + <code>git commit -m &quot;...&quot;</code></td>
+</tr>
+<tr>
+<td>看文件历史</td>
+<td>GitLens blame</td>
+<td><code>git blame 文件名</code></td>
+</tr>
+<tr>
+<td>分支合并</td>
+<td>右键菜单</td>
+<td><code>git merge 分支名</code></td>
+</tr>
+<tr>
+<td>解决冲突</td>
+<td>内嵌编辑器</td>
+<td>手动编辑 → <code>git add</code> → <code>git commit</code></td>
+</tr>
+<tr>
+<td>版本回退</td>
+<td>右键 revert</td>
+<td><code>git reset</code> &#x2F; <code>git revert</code></td>
+</tr>
+<tr>
+<td>打标签</td>
+<td>右键创建 tag</td>
+<td><code>git tag -a v1.0 -m &quot;...&quot;</code></td>
+</tr>
+<tr>
+<td>打包发布</td>
+<td>手动压缩</td>
+<td><code>git archive -o v1.0.zip v1.0</code></td>
+</tr>
+</tbody></table>
+<p>命令行一开始可能不习惯，但一旦熟练，效率远高于鼠标点击。多练习，两周就能肌肉记忆。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>第三百八十五篇博文写完，开心！！！！</p>
+<p>今天，也是充满希望的一天。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LuYF-Lemon-love</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://luyf-lemon-love.space/2026/05/10/00385-git-ming-ling-xing-wan-quan-jiao-cheng/">https://luyf-lemon-love.space/2026/05/10/00385-git-ming-ling-xing-wan-quan-jiao-cheng/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LuYF-Lemon-love</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Git/">
+                                    <span class="chip bg-color">Git</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">谢谢小主！</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162303.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cos.luyf-lemon-love.space/images/20220511162220.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/05/10/00385-git-ming-ling-xing-wan-quan-jiao-cheng/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/085-%E7%BE%8E%E5%A5%B3-%E5%9D%90%E5%9C%B0%E6%9D%BF-%E6%8A%A5%E7%BA%B8%E5%A2%99%E8%83%8C%E6%99%AF.jpg" class="responsive-img" alt="00385 Git 命令行完全教程">
+                        
+                        <span class="card-title">00385 Git 命令行完全教程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-05-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    计算机基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Git/">
+                        <span class="chip bg-color">Git</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2026/05/03/00384-pyuvm-wan-zheng-ru-men-jiao-cheng-ji-yu-tinyalu-de-uvm-yan-zheng-ping-tai/">
+                    <div class="card-image">
+                        
+                        <img src="https://cos.luyf-lemon-love.space/images/084-%E8%8A%B1%E7%93%A3%E9%81%AE%E7%9C%BC.jpg" class="responsive-img" alt="00384 PyUVM 完整入门教程 —— 基于 TinyALU 的 UVM 验证平台">
+                        
+                        <span class="card-title">00384 PyUVM 完整入门教程 —— 基于 TinyALU 的 UVM 验证平台</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-05-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Verilog/" class="post-category">
+                                    Verilog
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Verilog/">
+                        <span class="chip bg-color">Verilog</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2026</span>
+            
+            <a href="/about" target="_blank">LuYF-Lemon-love</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2022";
+                        var startMonth = "5";
+                        var startDate = "7";
+                        var startHour = "4";
+                        var startMinute = "53";
+                        var startSecond = "32";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+                <span id="icp"><img src="/medias/icp.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="https://beian.miit.gov.cn" target="_blank">冀ICP备2022012632号-1</a>
+            </span>
+            
+            <br>
+            
+                <span id="gongan"><img src="https://cos.luyf-lemon-love.space/images/备案图标.png"
+                                    style="vertical-align: text-bottom;"/>
+                <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011618" target="_blank">苏公网安备 32011502011618号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yanfeng98" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:luyanfeng_nlp@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+        <!-- <script src='https://unpkg.com/mermaid@latest/dist/mermaid.min.js'></script> -->
+        <script src='/libs/mermaid/mermaid.min.js'></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            if (!window.mermaid) return;
+            // 支持 Markdown 代码块 ```mermaid
+            var codes = document.querySelectorAll('pre code.language-mermaid, pre code.lang-mermaid');
+            codes.forEach(function (code) {
+              var pre = code.parentElement;
+              var container = pre.parentElement;
+              var target = (container.tagName === 'FIGURE' || container.classList.contains('highlight')) ? container : pre;
+              var div = document.createElement('div');
+              div.className = 'mermaid';
+              div.textContent = code.textContent;
+              target.parentNode.replaceChild(div, target);
+            });
+            mermaid.initialize({ theme: 'forest', startOnLoad: false });
+            if (typeof mermaid.run === 'function') {
+              mermaid.run();
+            } else {
+              mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            }
+          });
+        </script>
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
