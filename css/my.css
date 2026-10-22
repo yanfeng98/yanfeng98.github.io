@@ -1,1 +1,46 @@
 /* Here is your custom css styles. */
+
+/* The header gets tight between the tablet breakpoint and the large-screen
+   container width after adding the Projects menu. Keep the logo and nav from
+   overlapping without changing the mobile breakpoint. */
+@media only screen and (min-width: 993px) and (max-width: 1180px) {
+    #headNav .nav-menu > li > a {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    #headNav .brand-logo .logo-span {
+        font-size: 1.25rem;
+    }
+}
+
+/* Keep the Projects dropdown panel and its entries left-aligned with the
+   trigger. The icon/text spacing itself stays the theme default so it matches
+   the other navigation items. */
+#headNav .nav-item-projects .sub-nav {
+    margin-left: 0;
+}
+
+#headNav .nav-item-projects .sub-nav li {
+    text-align: left;
+}
+
+#headNav .nav-item-projects .sub-nav li a {
+    padding-left: 15px;
+}
+
+/* The theme centers the little arrow at 50% of the panel. The panel is now
+   left-aligned, so point the arrow at the center of the "项目" trigger. */
+#headNav .nav-item-projects .sub-nav::before {
+    left: 47px;
+}
+
+@media only screen and (min-width: 993px) and (max-width: 1180px) {
+    #headNav .nav-item-projects .sub-nav::before {
+        left: 40px;
+    }
+
+    #headNav .nav-item-projects .sub-nav li a {
+        padding-left: 8px;
+    }
+}

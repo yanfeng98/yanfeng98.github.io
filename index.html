@@ -82,8 +82,12 @@
 <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
 <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
 <link rel="stylesheet" type="text/css" href="/css/matery.css">
-<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css?v=20261022d">
 <link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+<link rel="stylesheet" type="text/css" href="/css/projects.css?v=20261022d">
+
 
 
 
@@ -116,7 +120,7 @@
 <a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
 <ul class="right nav-menu">
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-index">
     
     <a href="/" class="waves-effect waves-light">
       
@@ -127,7 +131,7 @@
     
   </li>
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-archives">
     
     <a href="/archives" class="waves-effect waves-light">
       
@@ -138,7 +142,7 @@
     
   </li>
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-tags">
     
     <a href="/tags" class="waves-effect waves-light">
       
@@ -149,7 +153,7 @@
     
   </li>
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-categories">
     
     <a href="/categories" class="waves-effect waves-light">
       
@@ -160,7 +164,7 @@
     
   </li>
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-about">
     
     <a href="/about" class="waves-effect waves-light">
       
@@ -171,7 +175,43 @@
     
   </li>
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-projects">
+    
+    <a href="/#projects" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-layer-group" style="zoom: 0.6;"></i>
+      
+      <span>项目</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        
+        <a href="https://luyf-lemon-love.space/nano-dnf/" target="_blank" rel="noopener noreferrer">
+          
+          <i class="fas fa-gamepad" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>nano-dnf</span>
+        </a>
+      </li>
+      
+      <li>
+        
+        <a href="https://luyf-lemon-love.space/paper-reading-notes/" target="_blank" rel="noopener noreferrer">
+          
+          <i class="fas fa-book-open" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>论文阅读笔记</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item nav-item-friends">
     
     <a href="/friends" class="waves-effect waves-light">
       
@@ -182,7 +222,7 @@
     
   </li>
   
-  <li class="hide-on-med-and-down nav-item">
+  <li class="hide-on-med-and-down nav-item nav-item-list">
     
     <a href="" class="waves-effect waves-light">
 
@@ -195,6 +235,7 @@
     <ul class="sub-nav menus_item_child ">
       
       <li>
+        
         <a href="/galleries">
           
           <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
@@ -204,6 +245,7 @@
       </li>
       
       <li>
+        
         <a href="/verse">
           
           <i class="fas fa-comments" style="margin-top: -20px; zoom: 0.6;"></i>
@@ -213,6 +255,7 @@
       </li>
       
       <li>
+        
         <a href="/bilibili">
           
           <i class="fas fa-video" style="margin-top: -20px; zoom: 0.6;"></i>
@@ -309,6 +352,41 @@
         
         <li class="m-nav-item">
 	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-layer-group"></i>
+			
+			项目
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+                  
+                  <a href="https://luyf-lemon-love.space/nano-dnf/" target="_blank" rel="noopener noreferrer" style="margin-left:75px">
+				  
+				   <i class="fa fas fa-gamepad" style="position: absolute;left:50px" ></i>
+			      
+		          <span>nano-dnf</span>
+                  </a>
+                </li>
+              
+                <li>
+                  
+                  <a href="https://luyf-lemon-love.space/paper-reading-notes/" target="_blank" rel="noopener noreferrer" style="margin-left:75px">
+				  
+				   <i class="fa fas fa-book-open" style="position: absolute;left:50px" ></i>
+			      
+		          <span>论文阅读笔记</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
 		<a href="/friends" class="waves-effect waves-light">
 			
 			    <i class="fa-fw fas fa-comments"></i>
@@ -330,8 +408,8 @@
             <ul  style="background:  ;" >
               
                 <li>
-
-                  <a href="/galleries " style="margin-left:75px">
+                  
+                  <a href="/galleries" style="margin-left:75px">
 				  
 				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
 			      
@@ -340,8 +418,8 @@
                 </li>
               
                 <li>
-
-                  <a href="/verse " style="margin-left:75px">
+                  
+                  <a href="/verse" style="margin-left:75px">
 				  
 				   <i class="fa fas fa-comments" style="position: absolute;left:50px" ></i>
 			      
@@ -350,8 +428,8 @@
                 </li>
               
                 <li>
-
-                  <a href="/bilibili " style="margin-left:75px">
+                  
+                  <a href="/bilibili" style="margin-left:75px">
 				  
 				   <i class="fa fas fa-video" style="position: absolute;left:50px" ></i>
 			      
@@ -508,8 +586,9 @@
                 </a>
 
                 
-                    <a href="https://github.com/yanfeng98" class="waves-effect waves-light btn" target="_blank">
-                        <i class="fab fa-github-alt"></i>Github
+                
+                    <a href="#projects" class="waves-effect waves-light btn">
+                        <i class="fas fa-layer-group" aria-hidden="true"></i>项目入口
                     </a>
                 
             </div>
@@ -612,6 +691,175 @@
 
 
 <main class="content">
+    
+        
+
+<section id="projects" class="projects-section" aria-labelledby="projects-heading">
+    <div class="container projects-section__inner">
+        <header class="projects-header" data-aos="fade-up">
+            <p class="projects-eyebrow"><span class="projects-eyebrow__dot" aria-hidden="true"></span>FEATURED WORK</p>
+            <h2 id="projects-heading" class="projects-heading">两个入口，两个世界</h2>
+            <p class="projects-lede">一个可以玩的地下城，一座不断生长的论文图书馆。</p>
+        </header>
+
+        <div class="projects-grid">
+            
+            <article class="project-card project-card--dnf"
+                     data-aos="fade-up" data-aos-delay="0">
+                <div class="project-card__visual">
+                    
+                    <img class="project-card__image"
+                         src="/medias/projects/nano-dnf-share-card.png"
+                         alt="nano-dnf 分享图：鬼剑士站在地下城入口前"
+                         width="1200" height="630"
+                         loading="lazy" decoding="async">
+                    
+                    
+                    <span class="project-card__badge">
+                        <i class="fas fa-circle" aria-hidden="true"></i>PLAYABLE
+                    </span>
+                    
+                </div>
+
+                <div class="project-card__body">
+                    <p class="project-card__eyebrow">PLAYABLE · 2D ACTION</p>
+                    <h3 class="project-card__title">
+                        <a href="https://luyf-lemon-love.space/nano-dnf/" target="_blank"
+                           rel="noopener noreferrer" aria-label="打开 nano-dnf">nano-dnf</a>
+                    </h3>
+                    <p class="project-card__subtitle">鬼剑士 · 地下城试炼</p>
+                    <p class="project-card__desc">DNF 风格的 2D 横版动作地下城：种子化房间、通关翻牌、Boss 多阶段。单页 HTML5，打开就能玩。</p>
+
+                    
+                    <dl class="project-card__stats">
+                        
+                        <div>
+                            <dt>关卡</dt>
+                            <dd>8</dd>
+                        </div>
+                        
+                        <div>
+                            <dt>强化卡</dt>
+                            <dd>4</dd>
+                        </div>
+                        
+                        <div>
+                            <dt>种子</dt>
+                            <dd>∞</dd>
+                        </div>
+                        
+                    </dl>
+                    
+
+                    <ul class="project-card__tags" aria-label="项目标签">
+                        
+                        <li>DNF 风格</li>
+                        
+                        <li>2D 横版</li>
+                        
+                        <li>像素动作</li>
+                        
+                    </ul>
+
+                    <div class="project-card__actions">
+                        <a class="project-cta" href="https://luyf-lemon-love.space/nano-dnf/"
+                           target="_blank" rel="noopener noreferrer">
+                            立即试玩<i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                        <a class="project-repo" href="https://github.com/yanfeng98/nano-dnf"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="nano-dnf 的 GitHub 仓库">
+                            <i class="fab fa-github" aria-hidden="true"></i><span>GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="project-card project-card--prn"
+                     data-aos="fade-up" data-aos-delay="120">
+                <div class="project-card__visual">
+                    
+                    <div class="prn-preview" aria-hidden="true">
+                        <span class="prn-preview__mark">P</span>
+                        <span class="prn-preview__search"></span>
+                        <span class="prn-preview__sheet prn-preview__sheet--back"></span>
+                        <span class="prn-preview__sheet prn-preview__sheet--mid"></span>
+                        <span class="prn-preview__sheet prn-preview__sheet--front">
+                            <i></i><i></i><i></i>
+                        </span>
+                        <span class="prn-preview__progress">
+                            <i style="width:4.2%"></i>
+                        </span>
+                    </div>
+                    
+                    
+                    <span class="project-card__badge">
+                        <i class="fas fa-circle" aria-hidden="true"></i>LIVE
+                    </span>
+                    
+                </div>
+
+                <div class="project-card__body">
+                    <p class="project-card__eyebrow">PAPER LIBRARY · READING LOG</p>
+                    <h3 class="project-card__title">
+                        <a href="https://luyf-lemon-love.space/paper-reading-notes/" target="_blank"
+                           rel="noopener noreferrer" aria-label="打开 Paper Reading Notes">Paper Reading Notes</a>
+                    </h3>
+                    <p class="project-card__subtitle">论文阅读笔记</p>
+                    <p class="project-card__desc">把一篇论文读成自己的东西：核心结论、方法拆解、关键数字与横向对比。</p>
+
+                    
+                    <dl class="project-card__stats">
+                        
+                        <div>
+                            <dt>论文索引</dt>
+                            <dd>216</dd>
+                        </div>
+                        
+                        <div>
+                            <dt>已读笔记</dt>
+                            <dd>9</dd>
+                        </div>
+                        
+                        <div>
+                            <dt>待读</dt>
+                            <dd>207</dd>
+                        </div>
+                        
+                    </dl>
+                    
+
+                    <ul class="project-card__tags" aria-label="项目标签">
+                        
+                        <li>论文精读</li>
+                        
+                        <li>方法拆解</li>
+                        
+                        <li>横向对比</li>
+                        
+                    </ul>
+
+                    <div class="project-card__actions">
+                        <a class="project-cta" href="https://luyf-lemon-love.space/paper-reading-notes/"
+                           target="_blank" rel="noopener noreferrer">
+                            进入笔记库<i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                        <a class="project-repo" href="https://github.com/yanfeng98/paper-reading-notes"
+                           target="_blank" rel="noopener noreferrer"
+                           aria-label="Paper Reading Notes 的 GitHub 仓库">
+                            <i class="fab fa-github" aria-hidden="true"></i><span>GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            
+        </div>
+    </div>
+</section>
+<noscript><style>#projects [data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+
+    
 
     
     <div id="indexCard" class="index-card">
